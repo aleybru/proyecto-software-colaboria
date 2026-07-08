@@ -1,0 +1,80 @@
+####################################################
+# PROJECT MANIFEST — L1
+# Proyecto ColaborIA
+# Configuracion especifica de este proyecto.
+# Se usa junto con PROTOCOLO-OPERATIVO-MULTIPROYECTO-v1.md (L0, generico)
+# y las instrucciones de comportamiento del proyecto (L2/L3 destilado).
+####################################################
+
+project:
+  name: ColaborIA
+  type: software
+  description: >
+    Plataforma que formaliza y automatiza el protocolo de writer's room
+    de Chapu y Papu trabajando junto a Dani. ColaborIA es simultaneamente
+    el producto que se construye y su propio primer POC de software
+    (dogfooding): el desarrollo de la app se gestiona con el mismo
+    protocolo que la app va a automatizar.
+
+scope:
+  isolation: strict
+  # Ningun contenido de otros proyectos (Codigo del Alma, futuros proyectos)
+  # se usa aca salvo que Dani lo traiga el mismo, explicitamente, a la
+  # conversacion activa. Ver PROTOCOLO-OPERATIVO-MULTIPROYECTO-v1.md seccion 6.4.
+
+repositories:
+  governance: aleybru/proyecto-software-colaboria
+  code: aleybru/proyecto-software-colaboria-codigo
+
+drive:
+  root_folder: "Proyecto ColaborIA"
+  subfolders:
+    - documentacion/      # bootstrap comun compartido, en desuso una vez migrado al repo
+    - "Chapu Agent/"       # documentos generados por Claude
+    - "Papu Agent/"        # documentos generados por GPT
+
+agents:
+  chapu:
+    enabled: true
+    platform: Claude (Claude.ai)
+    access_model: token_por_sesion
+    # El acceso de Chapu al repositorio de gobernanza NO es persistente.
+    # Requiere que Dani provea un token de GitHub (fine-grained, expiracion
+    # corta) en cada sesion de trabajo que necesite leer o escribir el repo.
+  papu:
+    enabled: true
+    platform: ChatGPT
+
+protocol:
+  version: 1.0
+  source: PROTOCOLO-OPERATIVO-MULTIPROYECTO-v1.md
+  last_validated_at: 2026-07-06
+  # Fecha del ultimo cold-start exitoso de Chapu en este proyecto (9.5/10).
+  # Actualizar esta fecha cada vez que se corra el test de arranque en frio
+  # de nuevo (por ejemplo, tras cargar una version nueva del protocolo o
+  # de este manifiesto).
+
+decisiones_vigentes_del_proyecto:
+  # Resumen; el detalle completo vive en decisions/ del repo de gobernanza
+  # una vez migrado.
+  - id: DEC-C01
+    resumen: ColaborIA es su propio POC de software (dogfooding).
+  - id: DEC-C02
+    resumen: Dos repositorios separados, gobernanza y codigo (ver arriba).
+  - id: DEC-C03
+    resumen: Modo automatico acotado solo para tareas con criterio de exito verificable por maquina.
+  - id: DEC-C04
+    resumen: Capacidades con efectos secundarios reales requieren opt-in explicito de Dani por tarea.
+  - id: DEC-C06
+    resumen: Primer test de portabilidad de identidad de Chapu aprobado 9.5/10.
+
+rol_chapu_en_este_proyecto:
+  prioridades:
+    - consistencia longitudinal entre decisiones y codigo
+    - arquitectura tecnica
+    - impacto acumulativo de cambios
+    - recuperacion historica de decisiones
+    - revision de divergencias entre documentacion e implementacion
+  nota: >
+    Prioridades de partida, no exclusividad ni division rigida de tareas
+    (ver PROTOCOLO-OPERATIVO-MULTIPROYECTO-v1.md seccion 7).
