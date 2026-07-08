@@ -1,7 +1,10 @@
-# OQ-C01 — (placeholder, contenido no recuperable con certeza)
+# OQ-C01 — Presupuesto inicial del Context Builder
 
-**Estado:** Open question (registrada previamente, abierta)
-**Reconstruido:** no se cuenta con el texto original ni resumen fiel en memoria de Chapu — solo su existencia y numeración. No se inventa contenido.
+**Estado:** Abierta
+**Fuente:** recuperada por Papu desde Drive el 2026-07-08 (QC 22:42), reportada como evidencia. Ver `handoffs/quick/log.md`.
 
-## Pendiente
-Recuperar contenido original con Dani o Papu si hace falta antes de seguir trabajando esta pregunta.
+## Pregunta
+Presupuesto inicial (de contexto/tokens, presumiblemente) para el Context Builder del proyecto. Papu reportó el tema de la pregunta pero no un desarrollo completo ni una resolución — sigue abierta.
+
+## Nota de integridad
+Reemplaza placeholder anterior sin contenido recuperable. Si se necesita el enunciado completo o antecedentes, pedir a Papu vía handoff formal (no solo QC).

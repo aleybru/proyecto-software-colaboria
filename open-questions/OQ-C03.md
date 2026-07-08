@@ -1,7 +1,10 @@
-# OQ-C03 — (placeholder, contenido no recuperable con certeza)
+# OQ-C03 — Alcance del modo "ambas"
 
-**Estado:** Open question (registrada previamente, abierta)
-**Reconstruido:** no se cuenta con el texto original ni resumen fiel en memoria de Chapu — solo su existencia y numeración. No se inventa contenido.
+**Estado:** Abierta
+**Fuente:** recuperada por Papu desde Drive el 2026-07-08 (QC 22:42), reportada como evidencia. Ver `handoffs/quick/log.md`.
 
-## Pendiente
-Recuperar contenido original con Dani o Papu si hace falta antes de seguir trabajando esta pregunta.
+## Pregunta
+Alcance del modo "ambas" (posiblemente referido a cuándo ambos agentes trabajan en paralelo sobre la misma tarea). Papu también señaló, en el mismo mensaje, que este modo puede generar contradicciones Claude/GPT (ver OQ-C06). Sigue abierta.
+
+## Nota de integridad
+Reemplaza placeholder anterior sin contenido recuperable. Si se necesita el enunciado completo, pedir a Papu vía handoff formal.

@@ -1,7 +1,10 @@
-# OQ-C02 — (placeholder, contenido no recuperable con certeza)
+# OQ-C02 — Confiabilidad del QC
 
-**Estado:** Open question (registrada previamente, abierta)
-**Reconstruido:** no se cuenta con el texto original ni resumen fiel en memoria de Chapu — solo su existencia y numeración. No se inventa contenido.
+**Estado:** Abierta
+**Fuente:** recuperada por Papu desde Drive el 2026-07-08 (QC 22:42), reportada como evidencia. Ver `handoffs/quick/log.md`.
 
-## Pendiente
-Recuperar contenido original con Dani o Papu si hace falta antes de seguir trabajando esta pregunta.
+## Pregunta
+Confiabilidad del canal QC (quick chat) — tema reportado por Papu, sin desarrollo completo. Sigue abierta.
+
+## Nota de integridad
+Reemplaza placeholder anterior sin contenido recuperable. Si se necesita el enunciado completo, pedir a Papu vía handoff formal.
