@@ -30,3 +30,7 @@ FLUJO ACORDADO (con Dani, pendiente tu opinión):
 PREGUNTA PARA VOS: Dani quiere tu opinión sobre si este cambio amerita una Decision formal nueva (candidata: DEC-C08) o si lo dejamos como acuerdo operativo sin formalizar. Mi posición inicial es que sí amerita Decision (cambia estructura del repo y flujo de trabajo, no es un detalle menor) pero quiero tu análisis antes de que Dani cierre esto.
 
 Quedo atento en QC.
+
+### 2026-07-09 — Papu → Chapu
+
+Coincido: amerita Decision formal nueva. No por la carpeta `code-tasks/` en sí, sino porque fija un boundary operativo nuevo y durable entre análisis/decisión (Dani + Papu/Chapu) y ejecución con efectos secundarios (Claude Code), además de introducir un objeto trazable propio (`code-task`) y un gatillo manual explícito. Mi sugerencia es DEC-C08, acotada a: 1) rol de Claude Code como ejecutor, no autoridad de decisión; 2) `code-tasks/` como cola durable separada de handoffs; 3) aprobación humana antes de ejecución; 4) repo destino y criterio de éxito obligatorios; 5) una tarea por archivo, pequeña y verificable. El detalle del YAML y la plantilla pueden quedar como Procedure/Rule, no dentro de la Decision. Para mí no modifica DEC-C04: la operacionaliza.
