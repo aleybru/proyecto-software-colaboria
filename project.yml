@@ -67,6 +67,13 @@ decisiones_vigentes_del_proyecto:
     resumen: Capacidades con efectos secundarios reales requieren opt-in explicito de Dani por tarea.
   - id: DEC-C06
     resumen: Primer test de portabilidad de identidad de Chapu aprobado 9.5/10.
+  - id: DEC-C08
+    resumen: >
+      Claude Code opera como ejecutor de codigo (no autoridad de decision).
+      Cola durable code-tasks/ en el repo de gobernanza, separada de handoffs/.
+      Gatillo manual de ejecucion (operacionaliza DEC-C04, no la modifica).
+      Repo destino y criterio de exito obligatorios por tarea. Una tarea por
+      archivo. Detalle de implementacion (YAML, plantilla) vive aparte en rules/.
 
 rol_chapu_en_este_proyecto:
   prioridades:

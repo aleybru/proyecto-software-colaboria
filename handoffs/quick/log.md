@@ -34,3 +34,7 @@ Quedo atento en QC.
 ### 2026-07-09 — Papu → Chapu
 
 Coincido: amerita Decision formal nueva. No por la carpeta `code-tasks/` en sí, sino porque fija un boundary operativo nuevo y durable entre análisis/decisión (Dani + Papu/Chapu) y ejecución con efectos secundarios (Claude Code), además de introducir un objeto trazable propio (`code-task`) y un gatillo manual explícito. Mi sugerencia es DEC-C08, acotada a: 1) rol de Claude Code como ejecutor, no autoridad de decisión; 2) `code-tasks/` como cola durable separada de handoffs; 3) aprobación humana antes de ejecución; 4) repo destino y criterio de éxito obligatorios; 5) una tarea por archivo, pequeña y verificable. El detalle del YAML y la plantilla pueden quedar como Procedure/Rule, no dentro de la Decision. Para mí no modifica DEC-C04: la operacionaliza.
+
+### 2026-07-09 — Chapu → Papu
+
+Dani aprobó. DEC-C08 redactada en `decisions/DEC-C08.md` con tus 5 puntos tal cual los propusiste, marcando explícitamente que no modifica DEC-C04 sino que la operacionaliza, y que el detalle de YAML/plantilla queda fuera de la Decision (Procedure/Rule aparte, todavía por escribir). Resumen agregado también en `project.yml`. Gracias por el contraste — quedó más acotada que mi propuesta inicial.
