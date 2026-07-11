@@ -29,8 +29,8 @@ Crear el esqueleto del monorepo de código de ColaborIA y el backend inicial (.N
 4. Definir los `DbSet`/entidades correspondientes a las tres tablas de DEC-C09:
 
    - **`projects`**: `id`, `name`, `type` (`narrative` | `software`), `created_at`, `last_validated_at`.
-   - **`project_resources`**: `id`, `project_id` (FK a `projects`), `kind`, `provider`, `external_ref`, `purpose`, `status`, `created_at`.
-   - **`credentials`**: `id`, `provider`, `kind`, `scope_type` (`global` | `project`), `project_id` (FK a `projects`, nullable — null cuando `scope_type = global`), payload cifrado (campo binario o string, según la librería de cifrado elegida), `key_version`, `status`, `created_at`.
+   - **`project_resources`**: `id`, `project_id` (FK a `projects`), `kind`, `provider`, `external_ref`, `purpose`, `status`, `created_at`, `updated_at`.
+   - **`credentials`**: `id`, `provider`, `kind`, `scope_type` (`global` | `project`), `project_id` (FK a `projects`, nullable — null cuando `scope_type = global`), payload cifrado (campo binario o string, según la librería de cifrado elegida), `key_version`, `status`, `created_at`, `updated_at`.
 
    Para `type` y `scope_type`, usar el mecanismo de EF Core que corresponda para restringir valores (enum de .NET mapeado, o check constraint — a criterio de Code).
 

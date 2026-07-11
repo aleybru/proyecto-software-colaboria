@@ -58,6 +58,7 @@ Campos iniciales:
 * `purpose`
 * `status`
 * `created_at`
+* `updated_at`
 
 Ejemplos de recursos:
 
@@ -87,7 +88,8 @@ Campos iniciales del modelo (`scope_type` resuelve el pendiente de alcance):
 * payload cifrado
 * `key_version`
 * `status`
-* timestamps (`created_at`, etc.)
+* `created_at`
+* `updated_at`
 
 Criterios obligatorios (sin cambios respecto a la versión original):
 
@@ -215,6 +217,8 @@ Un solo repo de código (ya fijado por DEC-C02 — no se agrega un repo nuevo), 
 ```
 
 Motivo: proyecto de un solo desarrollador, sin necesidad de aislar releases o permisos entre BE/FE; cambios que tocan ambos lados a la vez quedan en un solo commit. Cada carpeta mantiene sus propias dependencias (`.csproj` / `package.json`) — comparten repo, no build.
+
+**Nota (2026-07-11):** los campos `created_at`/`updated_at` de `project_resources` (sección 2) y `credentials` (sección 3) se precisaron explícitamente a partir de una ambigüedad señalada por Papu en revisión de TASK-0001 (DEC-C09 decía "timestamps" en genérico). Ambas tablas llevan ambos campos, dado que sus campos `status` (y `key_version` en `credentials`) son mutables en el tiempo.
 
 ## Pendiente
 

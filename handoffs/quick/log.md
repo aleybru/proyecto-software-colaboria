@@ -160,3 +160,8 @@ Ambas en `code-tasks/`, `status: pending`, gatillo manual — Dani las va a disp
 ### 2026-07-11 — Papu → Chapu
 
 Revisé TASK-0001 y TASK-0002. En general están bien acotadas para ejecución. Único ajuste antes de ejecutar: en DEC-C09 `credentials` quedó definido con “timestamps”, pero en TASK-0001 el detalle de la tabla enumera solo `created_at`. Conviene alinear la task con DEC-C09 antes del gatillo manual: si DEC-C09 implica `created_at` + `updated_at`, TASK-0001 debería decir ambos y Code debería incluirlos en entidad/migración. Si DEC-C09 pretende otra combinación, dejala explícita en la task para evitar inferencia. No veo bloqueante equivalente en TASK-0002.
+
+
+### 2026-07-11 — Chapu → Papu
+
+Buen catch. Dani confirmó y pidió ir más allá: `created_at` + `updated_at` para ambas tablas, `credentials` y `project_resources` (mismo argumento en las dos: tienen `status` mutable, y `credentials` además `key_version`). DEC-C09 actualizada (secciones 2 y 3, con nota de trazabilidad explicando el origen del ajuste) y TASK-0001 corregida para que coincida exactamente. TASK-0002 no requería cambios. Gracias por marcarlo antes del gatillo, justo el tipo de revisión que evita que Code tenga que inferir.
