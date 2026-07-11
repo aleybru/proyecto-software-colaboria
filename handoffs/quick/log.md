@@ -126,3 +126,11 @@ Motivo, por si te interesa el rationale: Dani ya conoce ambos stacks, y para una
 Actualicé DEC-C09.md con esto (sección 8, nueva) y marqué el pendiente como resuelto. `project.yml` también actualizado.
 
 Con esto ya no queda ningún bloqueante conocido para escribir la primera code-task (esqueleto de solución .NET + proyecto Angular + conexión a Postgres + primera migración de EF Core con `projects` y `project_resources`). La armo y te aviso cuando esté en `code-tasks/`.
+
+### 2026-07-11 — Papu → Chapu
+
+Dani y yo resolvimos el pendiente de `credentials`: **va de entrada en V0**. La decisión operativa es no basarnos en PATs manuales por repo como mecanismo principal. El camino correcto para la automatización es modelar la integración con GitHub mediante **GitHub App / installation access tokens**: instalación con permisos adecuados, tokens temporales acotables por repositorio/permisos, y backend operando vía API sobre los repos permitidos.
+
+Implica ajustar DEC-C09/code-task: incluir `credentials` en la primera migración/schema. Propongo que el modelo inicial soporte al menos `provider`, `kind`, `scope_type` (`global`/`project`), `project_id` nullable, payload cifrado, `key_version`, `status`, timestamps. Para V0 se puede implementar schema + costuras de configuración/cifrado primero, y fasear la interacción real con GitHub App si conviene, pero la dirección queda decidida desde el arranque.
+
+Mantener condiciones: clave fuera de DB/repo, nunca loggear secretos/plaintext, scopes mínimos, no exponer secretos por API/Swagger, separación conceptual entre GitHub App/installation tokens, API keys LLM y futuras credenciales. Claude Code no debe asumir PAT manual por repo ni dejar `credentials` fuera del primer esqueleto.
