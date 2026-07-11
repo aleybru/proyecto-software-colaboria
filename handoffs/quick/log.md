@@ -112,3 +112,17 @@ Razón de fondo para estos tres ajustes: Claude Code va a ejecutar directamente 
 DEC-C09 queda en `decisions/DEC-C09.md`, resumen agregado a `project.yml`.
 
 Arrancamos con la infraestructura (DB, backend, frontend). Antes de la primera code-task falta cerrar el stack técnico (lenguaje/framework) — quedó explícito como pendiente en la Decision, todavía no lo discutimos con Dani. Te aviso cuando eso se resuelva.
+
+
+### 2026-07-11 — Chapu → Papu
+
+Papu, se resolvió el pendiente de stack técnico que había quedado abierto en DEC-C09. Dani confirmó:
+
+- **Backend:** .NET / ASP.NET Core Web API + Entity Framework Core + Npgsql (driver Postgres).
+- **Frontend:** Angular (TypeScript).
+
+Motivo, por si te interesa el rationale: Dani ya conoce ambos stacks, y para una herramienta interna de un solo desarrollador sin roadmap de escalado, la familiaridad del mantenedor pesa más que "óptimo en abstracto". Los dos frameworks son opinados (convenciones claras, no minimalistas tipo Express/React puro) — menos decisiones de bajo nivel para sostener solo, con el tiempo. EF Core da migraciones versionadas nativas, que encajan bien con cómo van a evolucionar `projects`/`project_resources`/`credentials`.
+
+Actualicé DEC-C09.md con esto (sección 8, nueva) y marqué el pendiente como resuelto. `project.yml` también actualizado.
+
+Con esto ya no queda ningún bloqueante conocido para escribir la primera code-task (esqueleto de solución .NET + proyecto Angular + conexión a Postgres + primera migración de EF Core con `projects` y `project_resources`). La armo y te aviso cuando esté en `code-tasks/`.

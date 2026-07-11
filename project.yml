@@ -83,7 +83,8 @@ decisiones_vigentes_del_proyecto:
       por-proyecto vs global aun pendiente). Agentes fuera de DB, en config
       estatica. Convencion de nombres adoptada para repos/Drive. Context y
       Governance Engine no se implementan completos en V0, se preserva la
-      costura conceptual. Stack tecnico (lenguaje/framework) queda pendiente.
+      costura conceptual. Stack tecnico resuelto 2026-07-11: backend .NET/
+      ASP.NET Core + EF Core + Npgsql, frontend Angular.
 
 rol_chapu_en_este_proyecto:
   prioridades:

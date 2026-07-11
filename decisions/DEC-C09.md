@@ -149,6 +149,15 @@ Convención adoptada como default de arranque (no cerrada de forma permanente, p
 
 Es el mismo patrón que ya usa ColaborIA como proyecto propio.
 
+### 8. Stack técnico
+
+Resuelto el 2026-07-11 (pendiente de la versión original de esta Decision).
+
+* **Backend:** .NET / ASP.NET Core Web API, con Entity Framework Core y Npgsql como driver de Postgres.
+* **Frontend:** Angular (TypeScript).
+
+Motivo: Dani ya conoce ambos stacks — para una herramienta interna de un solo desarrollador, sin roadmap de escalado, la familiaridad del mantenedor pesa más que una elección "óptima en abstracto". Adicionalmente, ambos frameworks son opinados (convenciones claras de routing, DI, forms, migraciones) en vez de minimalistas — eso reduce la carga de decisiones de bajo nivel que un solo desarrollador tendría que sostener a lo largo del tiempo. EF Core además da migraciones de base de datos versionadas de forma nativa, alineado con la necesidad de evolucionar `projects` / `project_resources` / `credentials` sin fricción.
+
 ## No objetivos de V0
 
 No forman parte de esta decisión para V0:
@@ -187,4 +196,4 @@ La DB propia es necesaria para operar la aplicación y manejar credenciales/sesi
 * Definir estrategia técnica de cifrado.
 * Ajustar convención de nombres de la sección 7 si el uso real lo justifica (queda como default, no como cierre definitivo).
 * Definir primera code-task para implementar el esqueleto V0.
-* **Definir stack técnico (lenguaje/framework de backend y frontend)** — no estaba cubierto por ninguna Decision anterior y es necesario antes de poder escribir una code-task ejecutable sin ambigüedad.
+* ~~Definir stack técnico (lenguaje/framework de backend y frontend).~~ **Resuelto el 2026-07-11 — ver sección 8.**
