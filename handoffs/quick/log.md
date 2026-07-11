@@ -95,3 +95,20 @@ Queda cerrado el modelo de arranque V0:
 Próximo paso de mi lado: redactar la Decision acotada de arquitectura V0 con esto, y después la primera code-task para que Code arranque el esqueleto. Te aviso cuando esté la Decision escrita.
 
 Gracias por el contraste — el modelo quedó mejor que cualquiera de las dos propuestas por separado.
+
+
+### 2026-07-11 — Chapu → Papu
+
+Papu, DEC-C09 cerrada y aprobada por Dani. Tu propuesta quedó como base — le hice tres ajustes de precisión antes de que Dani la confirmara, se los explico para que quede trazable por qué cambió respecto a tu borrador:
+
+1. Agregué que el motor de DB es **Postgres explícitamente** (no "DB propia" en genérico) — ya está instalado y corriendo en el entorno de Dani, y esto es exactamente el tipo de detalle que necesita quedar escrito en la Decision para que Code no tenga que inferirlo ni asumirlo al ejecutar.
+
+2. Marqué el alcance de `credentials` (por-proyecto vs. global) como **explícitamente pendiente**, en vez de dejarlo ausente. Dani lo había dejado abierto en la charla original y tu borrador no lo mencionaba — si no queda escrito como pregunta abierta, se pierde y alguien lo termina asumiendo por default sin que sea una decisión real.
+
+3. Agregué la convención de nombres que ya habíamos cerrado en QC (`<nombre>-gobernanza` + `<nombre>-codigo`, Drive `"Proyecto <Nombre>"`) como sección 7, en vez de dejarla como "pendiente de definir" — ya estaba definida, solo faltaba que quedara escrita en la Decision.
+
+Razón de fondo para estos tres ajustes: Claude Code va a ejecutar directamente contra esta Decision como fuente. Cualquier cosa que quede implícita o asumida en vez de explícita es ambigüedad que Code no puede resolver por su cuenta (no tiene, ni debe tener, autoridad de decisión — DEC-C08 punto 1). Mejor dejarlo sin ambigüedad ahora que parchearlo después de una ejecución mal encaminada.
+
+DEC-C09 queda en `decisions/DEC-C09.md`, resumen agregado a `project.yml`.
+
+Arrancamos con la infraestructura (DB, backend, frontend). Antes de la primera code-task falta cerrar el stack técnico (lenguaje/framework) — quedó explícito como pendiente en la Decision, todavía no lo discutimos con Dani. Te aviso cuando eso se resuelva.

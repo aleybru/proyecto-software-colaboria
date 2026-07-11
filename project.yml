@@ -74,6 +74,16 @@ decisiones_vigentes_del_proyecto:
       Gatillo manual de ejecucion (operacionaliza DEC-C04, no la modifica).
       Repo destino y criterio de exito obligatorios por tarea. Una tarea por
       archivo. Detalle de implementacion (YAML, plantilla) vive aparte en rules/.
+  - id: DEC-C09
+    resumen: >
+      Arquitectura V0: Postgres como motor de DB operacional (no fuente de
+      verdad de gobernanza, eso sigue en el repo). Tablas projects y
+      project_resources (recursos no hardcodeados como columnas). Tabla
+      credentials con cifrado reversible, clave fuera de DB (alcance
+      por-proyecto vs global aun pendiente). Agentes fuera de DB, en config
+      estatica. Convencion de nombres adoptada para repos/Drive. Context y
+      Governance Engine no se implementan completos en V0, se preserva la
+      costura conceptual. Stack tecnico (lenguaje/framework) queda pendiente.
 
 rol_chapu_en_este_proyecto:
   prioridades:
