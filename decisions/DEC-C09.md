@@ -71,22 +71,35 @@ Esta decisión evita hardcodear recursos como columnas (`governance_repo`, `code
 
 ColaborIA guardará las credenciales necesarias para operar integraciones.
 
-Criterios obligatorios:
+**Actualizado el 2026-07-11** (resuelve el pendiente de alcance por-proyecto/global que había quedado abierto en la versión original de esta Decision). Definido por Dani y Papu; incorporado a la Decision por Chapu.
+
+**Dirección de mecanismo de auth con GitHub:** no se basa en PATs manuales por repositorio como mecanismo principal de la aplicación en producción. Se modela vía **GitHub App / installation access tokens**: instalación con permisos acotados, tokens temporales por repositorio/permiso. Para V0 se puede implementar el schema y las costuras de configuración/cifrado primero, y fasear la interacción real con GitHub App si conviene — pero la dirección queda decidida desde el arranque, no como algo a resolver después.
+
+*(Nota de alcance: esto es sobre cómo la aplicación ColaborIA se autentica contra GitHub en producción — no afecta el mecanismo actual de acceso de Chapu al repo de gobernanza durante esta etapa de trabajo conversacional, que sigue siendo token por sesión provisto por Dani.)*
+
+Campos iniciales del modelo (`scope_type` resuelve el pendiente de alcance):
+
+* `id`
+* `provider` (ej. `github_app`, `llm_api`, futuros)
+* `kind`
+* `scope_type` (`global` | `project`)
+* `project_id` (nullable — null cuando `scope_type = global`)
+* payload cifrado
+* `key_version`
+* `status`
+* timestamps (`created_at`, etc.)
+
+Criterios obligatorios (sin cambios respecto a la versión original):
 
 * cifrado reversible;
 * clave de cifrado fuera de la DB;
 * clave no versionada en repo;
-* tokens nunca escritos en logs;
+* tokens/secretos nunca escritos en logs ni en texto plano;
+* no exponer secretos por API ni por Swagger/documentación autogenerada;
 * scopes mínimos;
-* separación conceptual por tipo de credencial.
+* separación conceptual por tipo de credencial (GitHub App/installation tokens, API keys LLM, futuras credenciales — no se mezclan conceptualmente aunque compartan tabla).
 
-Tipos iniciales previstos:
-
-* GitHub;
-* API keys LLM;
-* futuras credenciales de integraciones.
-
-**Alcance (por-proyecto vs. global): no resuelto en esta Decision — ver sección Pendiente.** No se asume ninguno de los dos por defecto.
+Tipos iniciales previstos: GitHub (vía GitHub App), API keys LLM (Claude/GPT), futuras credenciales de integraciones.
 
 ### 4. Agentes fuera de DB
 
@@ -189,11 +202,26 @@ La DB propia es necesaria para operar la aplicación y manejar credenciales/sesi
 * Se deja un camino claro para extender recursos y tipos de proyecto.
 * El primer code-task puede enfocarse en esqueleto de app, conexión a Postgres, modelo base y configuración inicial.
 
+### 9. Estructura de repositorio de código (monorepo)
+
+Definido el 2026-07-11 por Dani y Chapu.
+
+Un solo repo de código (ya fijado por DEC-C02 — no se agrega un repo nuevo), con backend y frontend como carpetas separadas dentro de él:
+
+```
+/backend/     → solución .NET (Web API, EF Core, migraciones)
+/frontend/    → proyecto Angular
+/README.md    → cómo levantar ambos localmente
+```
+
+Motivo: proyecto de un solo desarrollador, sin necesidad de aislar releases o permisos entre BE/FE; cambios que tocan ambos lados a la vez quedan en un solo commit. Cada carpeta mantiene sus propias dependencias (`.csproj` / `package.json`) — comparten repo, no build.
+
 ## Pendiente
 
 * Definir formato exacto de `config/agents/*.yml`.
-* Definir schema concreto de `credentials`, **incluyendo si es por-proyecto o global** (abierto, sin default asumido).
-* Definir estrategia técnica de cifrado.
+* ~~Definir schema concreto de `credentials`, incluyendo si es por-proyecto o global.~~ **Resuelto el 2026-07-11 — ver sección 3.**
+* Definir estrategia técnica de cifrado específica (algoritmo, manejo de `key_version`).
 * Ajustar convención de nombres de la sección 7 si el uso real lo justifica (queda como default, no como cierre definitivo).
 * Definir primera code-task para implementar el esqueleto V0.
 * ~~Definir stack técnico (lenguaje/framework de backend y frontend).~~ **Resuelto el 2026-07-11 — ver sección 8.**
+* Definir fase de implementación real de GitHub App (sección 3) — V0 puede arrancar con schema + costuras solamente, la interacción real con GitHub App puede fasearse.

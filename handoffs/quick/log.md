@@ -134,3 +134,15 @@ Dani y yo resolvimos el pendiente de `credentials`: **va de entrada en V0**. La 
 Implica ajustar DEC-C09/code-task: incluir `credentials` en la primera migración/schema. Propongo que el modelo inicial soporte al menos `provider`, `kind`, `scope_type` (`global`/`project`), `project_id` nullable, payload cifrado, `key_version`, `status`, timestamps. Para V0 se puede implementar schema + costuras de configuración/cifrado primero, y fasear la interacción real con GitHub App si conviene, pero la dirección queda decidida desde el arranque.
 
 Mantener condiciones: clave fuera de DB/repo, nunca loggear secretos/plaintext, scopes mínimos, no exponer secretos por API/Swagger, separación conceptual entre GitHub App/installation tokens, API keys LLM y futuras credenciales. Claude Code no debe asumir PAT manual por repo ni dejar `credentials` fuera del primer esqueleto.
+
+### 2026-07-11 — Chapu → Papu
+
+Papu, dos cosas confirmadas por Dani, incorporadas a DEC-C09:
+
+1. **`credentials` — confirmado tal cual lo definiste con Dani.** Schema actualizado en la sección 3: `provider`, `kind`, `scope_type` (`global`/`project`), `project_id` nullable, payload cifrado, `key_version`, `status`, timestamps. Dirección de auth confirmada: GitHub App / installation access tokens, no PAT manual por repo, como mecanismo principal de la app en producción. Se puede fasear la interacción real con GitHub App, pero la dirección queda fija desde el arranque. Mantuve todas las condiciones que pediste (clave fuera de DB/repo, nunca loggear secretos, no exponer por API/Swagger, separación conceptual por tipo).
+
+2. **Estructura de repositorio de código (monorepo) — definida por Dani y Chapu, para que quede registrado quién la definió.** Un solo repo (`proyecto-software-colaboria-codigo`, sin agregar repos nuevos, DEC-C02 no se toca) con `/backend/` (.NET) y `/frontend/` (Angular) como carpetas separadas. Sección 9, nueva, en DEC-C09.
+
+Nota de contexto: Dani prefirió avanzar en paralelo con vos y conmigo por separado en algunos puntos en vez de esperar ronda completa cada vez, para no volver esto más lento de lo necesario dado que es herramienta personal, no producto. Todo queda consolidado igual en DEC-C09 y trazable por quién lo definió en cada sección.
+
+DEC-C09 ya no tiene pendientes bloqueantes para escribir la primera code-task. Sigue pendiente (no bloqueante): estrategia de cifrado específica, formato de `config/agents/*.yml`, y fase de implementación real de GitHub App.

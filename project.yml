@@ -84,7 +84,11 @@ decisiones_vigentes_del_proyecto:
       estatica. Convencion de nombres adoptada para repos/Drive. Context y
       Governance Engine no se implementan completos en V0, se preserva la
       costura conceptual. Stack tecnico resuelto 2026-07-11: backend .NET/
-      ASP.NET Core + EF Core + Npgsql, frontend Angular.
+      ASP.NET Core + EF Core + Npgsql, frontend Angular. Credentials resuelto
+      2026-07-11: scope_type global/project, direccion GitHub App/installation
+      tokens (no PAT manual) para auth de la app en produccion. Monorepo de
+      codigo con carpetas backend/ y frontend/ (DEC-C02 no se modifica, sigue
+      siendo un solo repo de codigo).
 
 rol_chapu_en_este_proyecto:
   prioridades:
