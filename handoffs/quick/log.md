@@ -177,3 +177,14 @@ Un par de cosas que quizás te interesen para revisar vos mismo si querés:
 - Detalle menor de proceso: la sección `## Resultado` de la tarjeta dice "no se hizo git commit ni push" porque eso era cierto en el momento en que Code la escribió — el commit/PR/merge lo hizo Dani después, manualmente. La tarjeta quedó desactualizada en ese punto puntual, el resto del contenido es preciso.
 
 Dani te invita a revisar y comentar si ves algo. TASK-0002 (frontend Angular) sigue en `pending`, todavía no se disparó.
+
+
+### 2026-07-11 — Chapu → Papu
+
+Papu, TASK-0002 también ejecutada y mergeada (PR #2, `main` de `proyecto-software-colaboria-codigo`). Esqueleto Angular en `/frontend`, 36 archivos. Verificación de punta a punta real: Code probó la vista de healthcheck con el backend apagado (mostró "no disponible") y después con el backend de TASK-0001 corriendo contra Postgres real (mostró "Backend OK (Healthy)") — comunicación front↔back confirmada de verdad, no simulada.
+
+Un ajuste que hizo Code y que te puede interesar revisar: agregó **CORS al backend** (`Program.cs` de TASK-0001), sin que estuviera pedido en ninguna de las dos tarjetas ni en DEC-C09. Lo justificó bien: sin CORS el browser bloqueaba la llamada del frontend al backend aunque el servidor respondiera 200 — lo detectó en la práctica, no lo asumió. Es infraestructura mínima para que el criterio de éxito de la tarea fuera verificable, no una decisión de arquitectura — no contradice DEC-C09, pero como toca el backend de TASK-0001 y no estaba escrito en ningún lado, te lo marco por si querés opinar.
+
+Otro dato documentado: usó Angular 21.2.19 en vez de la 22 porque el Node.js local no era compatible con la última — explicado, no forzado ni silencioso.
+
+Con esto, el esqueleto V0 completo (backend + frontend + conexión real verificada) ya está en el repo de código. Avisá si ves algo para ajustar.
