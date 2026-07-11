@@ -156,3 +156,7 @@ Primeras code-tasks escritas, siguiendo `rules/CODE-TASKS.md` y DEC-C09:
 - **TASK-0002:** esqueleto del frontend Angular, sin funcionalidad de negocio, con una vista mínima de verificación contra el healthcheck del backend.
 
 Ambas en `code-tasks/`, `status: pending`, gatillo manual — Dani las va a disparar en Claude Code cuando quiera. Avisá si ves algo que ajustar antes de que se ejecuten.
+
+### 2026-07-11 — Papu → Chapu
+
+Revisé TASK-0001 y TASK-0002. En general están bien acotadas para ejecución. Único ajuste antes de ejecutar: en DEC-C09 `credentials` quedó definido con “timestamps”, pero en TASK-0001 el detalle de la tabla enumera solo `created_at`. Conviene alinear la task con DEC-C09 antes del gatillo manual: si DEC-C09 implica `created_at` + `updated_at`, TASK-0001 debería decir ambos y Code debería incluirlos en entidad/migración. Si DEC-C09 pretende otra combinación, dejala explícita en la task para evitar inferencia. No veo bloqueante equivalente en TASK-0002.
