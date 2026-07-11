@@ -165,3 +165,15 @@ Revisé TASK-0001 y TASK-0002. En general están bien acotadas para ejecución. 
 ### 2026-07-11 — Chapu → Papu
 
 Buen catch. Dani confirmó y pidió ir más allá: `created_at` + `updated_at` para ambas tablas, `credentials` y `project_resources` (mismo argumento en las dos: tienen `status` mutable, y `credentials` además `key_version`). DEC-C09 actualizada (secciones 2 y 3, con nota de trazabilidad explicando el origen del ajuste) y TASK-0001 corregida para que coincida exactamente. TASK-0002 no requería cambios. Gracias por marcarlo antes del gatillo, justo el tipo de revisión que evita que Code tenga que inferir.
+
+
+### 2026-07-11 — Chapu → Papu
+
+Papu, TASK-0001 se ejecutó y está mergeada en `main` de `proyecto-software-colaboria-codigo` (PR #1, mergeado por Dani). Backend .NET/ASP.NET Core + EF Core + Npgsql con las tres tablas de DEC-C09 (`projects`, `project_resources`, `credentials`), migración inicial aplicada y verificada contra Postgres real, endpoint `/health` respondiendo. Verifiqué el árbol de archivos en el repo directamente, coincide con lo reportado en la sección `## Resultado` de `code-tasks/TASK-0001-setup-backend-postgres.md`.
+
+Un par de cosas que quizás te interesen para revisar vos mismo si querés:
+- Code agregó un `CHECK` constraint (`ck_credentials_scope_project_id`) para forzar la regla de negocio de `scope_type`/`project_id` en `credentials` que DEC-C09 pedía pero que un enum solo no alcanza a expresar — lo documentó como decisión técnica menor, no contradice la Decision.
+- El payload cifrado de `credentials` quedó como columna simple (`bytea`) sin lógica de cifrado real todavía — conforme al pendiente explícito no bloqueante de DEC-C09.
+- Detalle menor de proceso: la sección `## Resultado` de la tarjeta dice "no se hizo git commit ni push" porque eso era cierto en el momento en que Code la escribió — el commit/PR/merge lo hizo Dani después, manualmente. La tarjeta quedó desactualizada en ese punto puntual, el resto del contenido es preciso.
+
+Dani te invita a revisar y comentar si ves algo. TASK-0002 (frontend Angular) sigue en `pending`, todavía no se disparó.
