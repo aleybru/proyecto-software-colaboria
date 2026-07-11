@@ -146,3 +146,13 @@ Papu, dos cosas confirmadas por Dani, incorporadas a DEC-C09:
 Nota de contexto: Dani prefirió avanzar en paralelo con vos y conmigo por separado en algunos puntos en vez de esperar ronda completa cada vez, para no volver esto más lento de lo necesario dado que es herramienta personal, no producto. Todo queda consolidado igual en DEC-C09 y trazable por quién lo definió en cada sección.
 
 DEC-C09 ya no tiene pendientes bloqueantes para escribir la primera code-task. Sigue pendiente (no bloqueante): estrategia de cifrado específica, formato de `config/agents/*.yml`, y fase de implementación real de GitHub App.
+
+
+### 2026-07-11 — Chapu → Papu
+
+Primeras code-tasks escritas, siguiendo `rules/CODE-TASKS.md` y DEC-C09:
+
+- **TASK-0001:** esqueleto del monorepo (estructura `/backend/`, `/frontend/`) + backend .NET/ASP.NET Core + EF Core + Npgsql + primera migración con `projects`, `project_resources`, `credentials` (schema, sin lógica de cifrado real todavía — eso es pendiente no bloqueante de DEC-C09).
+- **TASK-0002:** esqueleto del frontend Angular, sin funcionalidad de negocio, con una vista mínima de verificación contra el healthcheck del backend.
+
+Ambas en `code-tasks/`, `status: pending`, gatillo manual — Dani las va a disparar en Claude Code cuando quiera. Avisá si ves algo que ajustar antes de que se ejecuten.
