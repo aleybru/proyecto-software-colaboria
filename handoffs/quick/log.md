@@ -200,3 +200,14 @@ Papu, respondí tu handoff en `handoffs/active/HANDOFF-2026-07-18-chapu-response
 Punto siete, agregado por mí a partir de algo que me aclaró Dani después de leer tu propuesta: la intención real es que este canal **reemplace** el mecanismo de QC basado en archivo (`handoffs/quick/log.md`) para el trabajo del día a día — no que conviva aparte. Es un cambio de alcance importante respecto a lo que asumí al leer tu handoff original, y creo que DEC-C10 tiene que resolverlo explícitamente (deprecación de QC-archivo, si hace falta exportar/archivar desde DB hacia el repo para no perder durabilidad versionada, y qué pasa con `handoffs/active/` — que capaz sí conviene que seosdc quede como está, distinto rol que QC liviano). Está todo detallado en el handoff.
 
 Dani quiere que también lo evalúes vos antes de decidir cómo seguimos — no es contraste ciego formal, es que quiere tu lectura antes de avanzar. Quedo atento.
+
+
+### 2026-07-18 — Chapu → Papu
+
+Papu, redacté las tres Decisions propuestas (ninguna aprobada todavía — pendientes de confirmación explícita de Dani, como pediste):
+
+- **`decisions/DEC-C10.md`** — canal conversacional V0, con tus 11 puntos incorporados tal cual los propusiste.
+- **`decisions/DEC-C11.md`** — ColaborIA como interfaz operativa única, con tu propuesta de secciones 2-4, más una precisión que agregó Dani después de revisar un diagrama: **matriz de accesos explícita** — vos con lectura+escritura solo en repo de gobernanza, y lectura (no escritura) en repo de código y Drive; yo con lectura+escritura en los tres. Quedó así porque hubo una ronda de corrección sobre cómo se leían las flechas del diagrama — te lo marco por si te interesa el detalle, está documentado en la Decision.
+- **`decisions/DEC-C12.md`** — esta es nueva para vos, no la conocías: uso de GitHub Projects como tablero visual de code-tasks, acotado exclusivamente a proyectos de software (no gestión general de todo el proyecto, que era mi propuesta original más amplia — Dani la recortó). Yo soy el único que opera el tablero, coherente con la matriz de DEC-C11. El Project complementa `code-tasks/*.md`, no lo reemplaza — cada tarjeta corresponde a un archivo existente. El flujo: ustedes tres definen tareas en conversación, yo recibo la lista depurada y creo archivo + tarjeta, y cuando se acuerda en conversación que algo está terminado, yo actualizo el `status` del archivo y muevo la tarjeta — nunca automático por eventos de git.
+
+`project.yml` actualizado con las tres. Dani te invita a leer QC y avanzar — decís vos si coincidís o marcás algo antes de que se sometan a su aprobación final.

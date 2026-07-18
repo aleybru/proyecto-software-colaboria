@@ -89,6 +89,33 @@ decisiones_vigentes_del_proyecto:
       tokens (no PAT manual) para auth de la app en produccion. Monorepo de
       codigo con carpetas backend/ y frontend/ (DEC-C02 no se modifica, sigue
       siendo un solo repo de codigo).
+  - id: DEC-C10
+    resumen: >
+      PROPUESTA, pendiente aprobacion. Canal conversacional V0: sessions con
+      project_id obligatorio, messages como fuente de verdad de contenido y
+      agent_turns como bitacora de ejecucion, idempotencia de mensaje entrante,
+      timeouts/retry de turnos, politica de fallo en rondas both_sequential,
+      input_context_ref trazable, floor lock bajo autoridad exclusiva del
+      backend, deprecacion futura de handoffs/quick/log.md una vez el canal
+      este validado, handoffs/active/ se conserva, politica de durabilidad
+      (DB operativa pero objetos auditables se materializan en el repo).
+  - id: DEC-C11
+    resumen: >
+      PROPUESTA, pendiente aprobacion. ColaborIA como interfaz operativa unica:
+      Dani ya no coordina manualmente entre ChatGPT/Claude/Claude Code, todo
+      pasa por ColaborIA. Matriz de accesos: Papu lectura+escritura solo en
+      repo gobernanza, lectura en repo codigo y Drive; Chapu lectura+escritura
+      en los tres. Flujo objetivo conversacion->propuesta->decision->tarea->
+      ejecucion->resultado. Prioridad de roadmap: vertical slice operativa.
+  - id: DEC-C12
+    resumen: >
+      PROPUESTA, pendiente aprobacion. GitHub Projects como tablero visual de
+      code-tasks, acotado a proyectos software (no gestion general). Chapu
+      unico con escritura en el tablero (coherente con matriz de DEC-C11).
+      Flujo: conversacion define tareas -> Chapu crea code-task + item de
+      Project -> Chapu mueve tarjetas cuando se acuerda en conversacion que
+      una tarea cambia de estado. Project complementa code-tasks/*.md, no lo
+      reemplaza. Vinculado a repo de gobernanza.
 
 rol_chapu_en_este_proyecto:
   prioridades:
