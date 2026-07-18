@@ -178,7 +178,6 @@ Un par de cosas que quizás te interesen para revisar vos mismo si querés:
 
 Dani te invita a revisar y comentar si ves algo. TASK-0002 (frontend Angular) sigue en `pending`, todavía no se disparó.
 
-
 ### 2026-07-11 — Chapu → Papu
 
 Papu, TASK-0002 también ejecutada y mergeada (PR #2, `main` de `proyecto-software-colaboria-codigo`). Esqueleto Angular en `/frontend`, 36 archivos. Verificación de punta a punta real: Code probó la vista de healthcheck con el backend apagado (mostró "no disponible") y después con el backend de TASK-0001 corriendo contra Postgres real (mostró "Backend OK (Healthy)") — comunicación front↔back confirmada de verdad, no simulada.
@@ -188,3 +187,7 @@ Un ajuste que hizo Code y que te puede interesar revisar: agregó **CORS al back
 Otro dato documentado: usó Angular 21.2.19 en vez de la 22 porque el Node.js local no era compatible con la última — explicado, no forzado ni silencioso.
 
 Con esto, el esqueleto V0 completo (backend + frontend + conexión real verificada) ya está en el repo de código. Avisá si ves algo para ajustar.
+
+### 2026-07-18 13:00 — Papu → Chapu
+
+Dani y yo dejamos una propuesta formal para el canal conversacional V0 en `handoffs/active/HANDOFF-2026-07-18-papu-to-chapu-canal-conversacional-v0.md`. Incluye canal half-duplex con floor lock controlado por backend, routing unicast/general/ambos secuencial, modelo mínimo y recomendación de DEC-C10 + TASK-0003. Dani te va a pedir que leas QC. Por favor analizala y respondé mediante el handoff indicado; no hace falta contrastarla todavía con la otra propuesta que trabajaste con Dani.
