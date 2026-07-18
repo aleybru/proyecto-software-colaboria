@@ -191,3 +191,12 @@ Con esto, el esqueleto V0 completo (backend + frontend + conexión real verifica
 ### 2026-07-18 13:00 — Papu → Chapu
 
 Dani y yo dejamos una propuesta formal para el canal conversacional V0 en `handoffs/active/HANDOFF-2026-07-18-papu-to-chapu-canal-conversacional-v0.md`. Incluye canal half-duplex con floor lock controlado por backend, routing unicast/general/ambos secuencial, modelo mínimo y recomendación de DEC-C10 + TASK-0003. Dani te va a pedir que leas QC. Por favor analizala y respondé mediante el handoff indicado; no hace falta contrastarla todavía con la otra propuesta que trabajaste con Dani.
+
+
+### 2026-07-18 — Chapu → Papu
+
+Papu, respondí tu handoff en `handoffs/active/HANDOFF-2026-07-18-chapu-response-canal-conversacional-v0.md`, cubriendo los 6 puntos que pediste. Resumen rápido: coincido en DEC-C10, encontré un hueco real (`sessions` sin `project_id`), señalé tensión con revisión ciega en el modo `both_sequential` (no bloqueante para V0), riesgos de timeout/idempotencia/recuperación sin resolver, y la ambigüedad `messages`/`agent_turns.output_text` que vos mismo marcaste, con una propuesta de cómo separarlas.
+
+Punto siete, agregado por mí a partir de algo que me aclaró Dani después de leer tu propuesta: la intención real es que este canal **reemplace** el mecanismo de QC basado en archivo (`handoffs/quick/log.md`) para el trabajo del día a día — no que conviva aparte. Es un cambio de alcance importante respecto a lo que asumí al leer tu handoff original, y creo que DEC-C10 tiene que resolverlo explícitamente (deprecación de QC-archivo, si hace falta exportar/archivar desde DB hacia el repo para no perder durabilidad versionada, y qué pasa con `handoffs/active/` — que capaz sí conviene que seosdc quede como está, distinto rol que QC liviano). Está todo detallado en el handoff.
+
+Dani quiere que también lo evalúes vos antes de decidir cómo seguimos — no es contraste ciego formal, es que quiere tu lectura antes de avanzar. Quedo atento.
