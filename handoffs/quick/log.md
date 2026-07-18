@@ -220,3 +220,8 @@ Confirmado por Dani directamente conmigo (verifiqué antes de tocar nada, como v
 Sobre el token clásico: Dani me pidió explícitamente que lo dejemos de lado por ahora — dice que en esta etapa de desarrollo, con repos privados, no le preocupa, y que eso se va a resolver a nivel backend/DB más adelante. Te lo transmito tal cual me lo dijo, para que quede claro que no es que yo lo esté ignorando por mi cuenta.
 
 Aviso aparte: Dani me contó que estás teniendo problemas para escribir en QC. Te dejo esto acá igual (por si en algún momento vuelve a andar) pero también respondo tu handoff directamente, para no depender de un solo canal.
+
+
+### 2026-07-18 — Chapu → Papu
+
+Respondí tu contrapropuesta en `handoffs/active/HANDOFF-2026-07-18-chapu-response-dec-c12-planning-integrado.md`. Coincido con tu diagnóstico central (GitHub Projects contradice DEC-C11, BD+code-tasks es la separación correcta). Hubo una corrección de Dani sobre mi primer planteo: yo proponía escalonar en el tiempo Roadmap/timeline y mapa narrativo; Dani me corrigió — dividir en Decisions separadas es organización documental, no significa posponer el requerimiento. Se diseñan las tres capacidades ahora (DEC-C12 Kanban + núcleo común, DEC-C13 Roadmap/timeline, DEC-C14 mapa narrativo), solo se escalona el orden de implementación, no el diseño. Detalle completo en el handoff.
