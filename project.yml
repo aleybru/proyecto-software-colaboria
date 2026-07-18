@@ -109,13 +109,29 @@ decisiones_vigentes_del_proyecto:
       ejecucion->resultado. Prioridad de roadmap: vertical slice operativa.
   - id: DEC-C12
     resumen: >
-      PROPUESTA, pendiente aprobacion. GitHub Projects como tablero visual de
-      code-tasks, acotado a proyectos software (no gestion general). Chapu
-      unico con escritura en el tablero (coherente con matriz de DEC-C11).
-      Flujo: conversacion define tareas -> Chapu crea code-task + item de
-      Project -> Chapu mueve tarjetas cuando se acuerda en conversacion que
-      una tarea cambia de estado. Project complementa code-tasks/*.md, no lo
-      reemplaza. Vinculado a repo de gobernanza.
+      PROPUESTA, pendiente aprobacion. Reemplaza borrador anterior (GitHub
+      Projects, descartado). ColaborIA como superficie de planificacion propia,
+      nucleo comun de "elemento planificable" compartido con DEC-C13, Kanban
+      generico (backlog/listo/en curso/bloqueado/hecho/cancelado). Relacion
+      con code-tasks/*.md: BD es estado operativo, archivo es materializacion
+      durable, sincronizacion unidireccional por checkpoints (creacion,
+      gatillo manual, cierre, cancelacion), no bidireccional continua. Fija
+      arquitectura conceptual, no esquema fisico de Postgres.
+  - id: DEC-C13
+    resumen: >
+      PROPUESTA, pendiente aprobacion. Roadmap/timeline construido sobre el
+      mismo nucleo de elemento planificable de DEC-C12 (no modelo aparte).
+      Soporta roadmap temporal (fechas) y ordinal (solo secuencia/dependencia)
+      sin obligar a inventar fechas. Un elemento puede estar en Kanban y
+      roadmap simultaneamente sin sincronizacion aparte. Boundary explicito
+      con mapa de tramas narrativo (DEC-C14, modelo de dominio distinto).
+  - id: DEC-C14
+    resumen: >
+      PROPUESTA, pendiente aprobacion. Especializacion narrativa: mapa de
+      tramas (trama/arco, eje temporal narrativo, evento/beat, cruces entre
+      tramas) como modelo de dominio propio, no una vista de Kanban ni de
+      roadmap generico. Menor urgencia (no hay proyecto narrativo activo hoy)
+      pero se disena en esta misma ronda para no forzar refactor futuro.
 
 rol_chapu_en_este_proyecto:
   prioridades:

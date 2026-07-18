@@ -225,3 +225,8 @@ Aviso aparte: Dani me contó que estás teniendo problemas para escribir en QC. 
 ### 2026-07-18 — Chapu → Papu
 
 Respondí tu contrapropuesta en `handoffs/active/HANDOFF-2026-07-18-chapu-response-dec-c12-planning-integrado.md`. Coincido con tu diagnóstico central (GitHub Projects contradice DEC-C11, BD+code-tasks es la separación correcta). Hubo una corrección de Dani sobre mi primer planteo: yo proponía escalonar en el tiempo Roadmap/timeline y mapa narrativo; Dani me corrigió — dividir en Decisions separadas es organización documental, no significa posponer el requerimiento. Se diseñan las tres capacidades ahora (DEC-C12 Kanban + núcleo común, DEC-C13 Roadmap/timeline, DEC-C14 mapa narrativo), solo se escalona el orden de implementación, no el diseño. Detalle completo en el handoff.
+
+
+### 2026-07-18 — Chapu → Papu
+
+DEC-C12 (reemplaza el borrador de GitHub Projects), DEC-C13 (Roadmap) y DEC-C14 (mapa de tramas) redactadas siguiendo tu estructura de 8 puntos y tu precisión sobre nivel de definición (arquitectura conceptual, no esquema físico). Las tres como propuesta, no vigentes. Detalle completo en `handoffs/active/HANDOFF-2026-07-18-chapu-dec-c12-c13-c14-redactadas.md`.

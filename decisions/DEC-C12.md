@@ -1,69 +1,70 @@
-# DEC-C12 — GitHub Projects como tablero visual de code-tasks
+# DEC-C12 — ColaborIA como superficie de planificación: núcleo común y Kanban
 
 **Estado:** Decision propuesta — pendiente de aprobación explícita de Dani
 **Fecha:** 2026-07-18
-**Origen:** propuesta inicial de Chapu contrastada con Dani (`Chapu Agent/ColaborIA - Propuesta GitHub Projects.docx`, Drive), acotada por Dani en conversación directa.
-**Relacionada con:** DEC-C08, DEC-C09 (code-tasks/), DEC-C11 (matriz de accesos — esta Decision depende de que Chapu sea quien tiene escritura en repo de código).
+**Reemplaza:** el borrador anterior de DEC-C12 ("GitHub Projects como tablero visual de code-tasks"), descartado tras contraste entre Papu, Chapu y Dani.
+**Origen:** contrapropuesta de Papu (`handoffs/active/HANDOFF-2026-07-18-papu-to-chapu-contrapropuesta-dec-c12-planning-integrado.md`), corrección de alcance de Dani (diseñar las tres capacidades ahora, escalonar solo la implementación), acuerdo final de Papu sobre nivel de definición (`handoffs/active/HANDOFF-2026-07-18-papu-response-dec-c12-c13-c14.md`).
+**Relacionada con:** DEC-C08, DEC-C09, DEC-C10, DEC-C11, DEC-C13 (Roadmap, construida sobre el núcleo definido acá), DEC-C14 (especialización narrativa).
 
 ## Resumen
 
-Se adopta GitHub Projects (v2) como tablero visual del trabajo de codificación, **acotado exclusivamente a proyectos de tipo software y a tareas de código** — no como herramienta general de gestión de todo el trabajo del proyecto (se descarta la Opción B más amplia que Chapu había propuesto originalmente en el documento de Drive).
+GitHub Projects se descarta como dependencia operativa de V0 — contradice DEC-C11 (ColaborIA como interfaz operativa única) al introducir una segunda superficie que hay que mantener sincronizada, aunque Dani no la toque directamente. **ColaborIA construye su propio espacio de planificación**, con un núcleo conceptual de "elemento planificable" compartido entre el Kanban (esta Decision) y el Roadmap (DEC-C13).
 
-El Project **complementa** los archivos `code-tasks/*.md` — no los reemplaza. Cada ítem del Project corresponde 1:1 a un archivo `code-tasks/TASK-000X.md` existente. La fuente de verdad de qué tiene que hacer Code sigue siendo el archivo Markdown (DEC-C08, `rules/CODE-TASKS.md`); el Project es una vista de estado, no una instrucción de ejecución.
+Esta Decision fija **arquitectura conceptual**: capacidades de negocio, objetos, relaciones, invariantes y boundaries. No fija el esquema físico de Postgres (tablas, columnas, índices, migraciones) — eso se define después en especificación arquitectónica y tareas ejecutables, apoyándose en lo que se fija acá.
 
 ## Decisión
 
-### 1. Alcance
+### 1. Capacidad de negocio
 
-Exclusivo para proyectos de tipo `software` con tareas de código gestionadas vía `code-tasks/` (DEC-C08). No se usa como backlog general para otro tipo de trabajo (decisiones pendientes, preguntas abiertas, tareas narrativas) — eso sigue viviendo donde ya vivía.
+Dani, sin salir de ColaborIA, debe poder ver y gestionar: qué hay en backlog, qué está listo, en curso, bloqueado, hecho o cancelado; qué depende de qué. GitHub Projects no se adopta como componente obligatorio — puede existir a futuro como exportación o proyección opcional, sin autoridad.
 
-### 2. Propiedad y control del tablero
+### 2. Objeto conceptual central: elemento planificable
 
-Conforme a la matriz de accesos de DEC-C11 (Chapu es el único agente con escritura en el repo de código), **Chapu es el único que crea y mueve tarjetas en el Project**. Papu y Dani no operan el tablero directamente — participan en la definición del contenido de las tareas por conversación.
+Un elemento planificable puede relacionarse conceptualmente con: proyecto, título y descripción, tipo de elemento, estado, prioridad, responsable/actor asignado, dependencias, bloqueos, Decision/propuesta/conversación de origen, tarea de ejecución asociada (si existe), resultado durable asociado, y estimaciones o fechas cuando corresponda. No todos estos campos necesitan existir en la primera implementación — es la capacidad objetivo que la arquitectura no debe cerrar de antemano.
 
-### 3. Flujo operativo
+### 3. Kanban genérico
 
-1. Dani, Papu y Chapu conversan (por el canal de DEC-C10, o por el mecanismo vigente hasta que ese canal esté validado) sobre qué tareas de código hacen falta.
-2. Esa conversación produce una **lista depurada y final** de tareas — no es el Project el lugar donde se decide qué hacer, es donde se refleja lo ya decidido.
-3. Chapu recibe la lista depurada y:
-   - crea el archivo `code-tasks/TASK-000X.md` correspondiente para cada tarea (esquema ya definido en `rules/CODE-TASKS.md`);
-   - crea el ítem correspondiente en el Project, vinculado conceptualmente al archivo (mismo `id`/número de tarea en el título del ítem, como mínimo).
-4. A medida que el trabajo avanza y se acuerda en la conversación que una tarea está terminada, Chapu:
-   - actualiza el `status` en el YAML frontmatter del archivo `code-tasks/TASK-000X.md` (ya definido en `rules/CODE-TASKS.md`);
-   - mueve la tarjeta correspondiente en el Project al estado equivalente.
+Estados mínimos: backlog, listo, en curso, bloqueado, hecho, cancelado (si corresponde). Los nombres exactos y la posibilidad de configurar estados por proyecto quedan abiertos a diseño posterior — el invariante es que Dani entienda de inmediato el estado del trabajo.
 
-El estado de una tarea se decide en la conversación, no se infiere automáticamente de ningún evento técnico (por ejemplo, un merge de PR no mueve la tarjeta por sí solo — el criterio sigue siendo la conversación y el gatillo manual, coherente con DEC-C08 punto 3).
+### 4. Especialización software: relación con `code-tasks/*.md`
 
-### 4. Correspondencia de estados
+DEC-C08 sigue vigente sin modificaciones. Se fija esta relación:
 
-Las columnas del Project deben corresponder exactamente a los valores ya definidos en `rules/CODE-TASKS.md` para `status` en el frontmatter — no se crea un vocabulario de estados nuevo y distinto:
+- el elemento planificable (BD) es la fuente del **estado operativo cotidiano** de una tarea;
+- el archivo `code-tasks/TASK-000X.md` es la **materialización durable y ejecutable** de una tarea ya aprobada — lo que Claude Code lee para ejecutar (sin cambios respecto a `rules/CODE-TASKS.md`);
+- la relación entre ambos debe ser trazable y verificable, pero **no es sincronización bidireccional continua** — evita el riesgo de que la misma tarea tenga estados divergentes en dos lugares editados en paralelo.
 
-| Columna del Project | `status` en YAML |
-|---|---|
-| Backlog | `pending` |
-| En curso | `in_progress` |
-| Bloqueado | `blocked` |
-| Hecho | `done` |
-| Cancelado | `cancelled` |
+**Checkpoints de sincronización** (unidireccional, BD → archivo, en momentos puntuales, no continuo):
+- creación de la tarea aprobada (se genera el archivo `code-tasks`);
+- gatillo manual de ejecución (DEC-C08 punto 3);
+- cierre/verificación (se actualiza `status` en el frontmatter);
+- cancelación.
 
-### 5. Vínculo al repo
+Fuera de esos checkpoints, no se edita el archivo en paralelo a la BD.
 
-El Project se vincula al repositorio de gobernanza (`aleybru/proyecto-software-colaboria`), no al repo de código — mismo razonamiento ya validado en la prueba técnica: el repo de gobernanza es el único que todo proyecto tiene garantizado, y aunque esta Decision acota el *uso* del Project a tareas de código, no hay razón para que el *anclaje* dependa del tipo de proyecto.
+### 5. Boundary con la planificación narrativa
 
-## Estado de la prueba técnica previa
+El Kanban genérico (esta Decision) cubre trabajo tipo backlog/producción para cualquier tipo de proyecto, incluido narrativo (ej. idea → planificado → en escritura → revisión → aprobado → publicado). La especialización narrativa de **mapa de tramas** (arcos, beats, cruces entre tramas) es un modelo de dominio distinto, no una vista del Kanban — se define en DEC-C14, no acá.
 
-Ya se verificó viabilidad técnica antes de esta Decision: se creó un Project de prueba ("ColaborIA - TEST", vinculado al repo de gobernanza) con 4 tareas de ejemplo, confirmado por lectura directa de la API. Detalle completo en el documento de Drive referenciado arriba.
+### 6. Integración con la sala de trabajo (DEC-C10, DEC-C11)
 
-Hallazgo técnico relevante para la implementación futura: los tokens fine-grained de GitHub no soportan todavía el permiso "Projects" para proyectos de cuenta personal (gap documentado por GitHub). La automatización de este flujo (si se lleva a código en vez de operarse manualmente vía Chapu con token clásico) debe tenerlo en cuenta.
+Flujo objetivo: conversación → análisis/contraste → propuesta → aprobación de Dani → creación/actualización de elemento planificable → ejecución → verificación → resultado → actualización del roadmap. Desde la sala debe poder promoverse contenido aprobado a elemento planificable; desde el tablero debe poder rastrearse la conversación/Decision/ejecución/resultado de origen. Esto opera DEC-C11 sin que toda conversación se vuelva estado automáticamente (protocolo común, sección 8).
+
+### 7. Fuente de verdad y durabilidad
+
+- **Base de datos**: fuente operativa activa — boards, elementos planificables, estados, prioridades, responsables, dependencias, historial operativo.
+- **Repositorio de gobernanza**: fuente durable de Decisions, tareas formales (`code-tasks`), Results, reglas, y snapshots aprobados del roadmap cuando deban auditarse.
+- Regla heredada de DEC-C09/DEC-C10: la conversación no es estado; la BD puede sostener estado operativo; el repo materializa gobernanza y resultados durables.
 
 ## No objetivos de esta Decision
 
-- No convierte al Project en fuente de verdad de ningún contenido — eso sigue siendo `code-tasks/*.md`, Decisions, y el resto de la gobernanza en repo.
-- No automatiza el movimiento de tarjetas por eventos de git (commits, PRs, merges) — el movimiento es decidido en conversación y ejecutado por Chapu.
-- No extiende el uso del Project a proyectos narrativos ni a gestión general de trabajo no relacionado con código.
+- Esquema exacto de tablas, columnas, claves, índices, estrategia de historial y migraciones de Postgres.
+- Endpoints, librería Angular específica para el Kanban, mecánica de drag-and-drop.
+- Algoritmo técnico exacto de sincronización BD ↔ `code-tasks` (solo se fija la regla de checkpoints unidireccionales, no la implementación).
+- Roadmap/timeline (DEC-C13) y mapa de tramas narrativo (DEC-C14) — se referencian pero se definen en sus propias Decisions.
+- Orden de implementación (queda para roadmap de tareas posterior a la aprobación de las tres Decisions).
 
 ## Pendiente
 
-- Decidir si se reutiliza el Project de prueba ("ColaborIA - TEST") como base real (renombrándolo y limpiando las 4 tareas de ejemplo) o se descarta y se crea uno nuevo.
-- Revocar o regenerar el token clásico usado en la prueba técnica (quedó expuesto en texto plano durante la sesión de trabajo).
-- Si en el futuro se decide automatizar este flujo desde el backend de ColaborIA (en vez de que Chapu lo opere conversacionalmente), definir cómo se resuelve el gap de permisos de tokens fine-grained señalado arriba.
+- Especificación arquitectónica que baje esta Decision a esquema físico de Postgres.
+- Definición de la primera tarea ejecutable de esta capacidad (fuera del alcance de esta Decision).
