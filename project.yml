@@ -91,9 +91,9 @@ decisiones_vigentes_del_proyecto:
       siendo un solo repo de codigo).
   - id: DEC-C10
     resumen: >
-      PROPUESTA, pendiente aprobacion. Canal conversacional V0: sessions con
-      project_id obligatorio, messages como fuente de verdad de contenido y
-      agent_turns como bitacora de ejecucion, idempotencia de mensaje entrante,
+      APROBADA 2026-07-18. Canal conversacional V0: sessions con project_id
+      obligatorio, messages como fuente de verdad de contenido y agent_turns
+      como bitacora de ejecucion, idempotencia de mensaje entrante,
       timeouts/retry de turnos, politica de fallo en rondas both_sequential,
       input_context_ref trazable, floor lock bajo autoridad exclusiva del
       backend, deprecacion futura de handoffs/quick/log.md una vez el canal
@@ -101,11 +101,11 @@ decisiones_vigentes_del_proyecto:
       (DB operativa pero objetos auditables se materializan en el repo).
   - id: DEC-C11
     resumen: >
-      PROPUESTA, pendiente aprobacion. ColaborIA como interfaz operativa unica:
-      Dani ya no coordina manualmente entre ChatGPT/Claude/Claude Code, todo
-      pasa por ColaborIA. Matriz de accesos: Papu lectura+escritura solo en
-      repo gobernanza, lectura en repo codigo y Drive; Chapu lectura+escritura
-      en los tres. Flujo objetivo conversacion->propuesta->decision->tarea->
+      APROBADA 2026-07-18. ColaborIA como interfaz operativa unica: Dani ya
+      no coordina manualmente entre ChatGPT/Claude/Claude Code, todo pasa por
+      ColaborIA. Matriz de accesos: Papu lectura+escritura solo en repo
+      gobernanza, lectura en repo codigo y Drive; Chapu lectura+escritura en
+      los tres. Flujo objetivo conversacion->propuesta->decision->tarea->
       ejecucion->resultado. Prioridad de roadmap: vertical slice operativa.
   - id: DEC-C12
     resumen: >

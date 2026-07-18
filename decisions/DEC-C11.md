@@ -1,6 +1,6 @@
 # DEC-C11 — ColaborIA como interfaz operativa única
 
-**Estado:** Decision propuesta — pendiente de aprobación explícita de Dani
+**Estado:** Decision vigente — aprobada por Dani el 2026-07-18, incluida la matriz de accesos de la sección 4
 **Fecha:** 2026-07-18
 **Origen:** propuesta de Papu (`handoffs/active/HANDOFF-2026-07-18-papu-response-canal-e-interfaz-unica.md`, secciones 2-4), matriz de accesos definida y corregida por Dani en conversación directa con Chapu (incluye una ronda de corrección sobre lectura de un diagrama dibujado a mano).
 **Relacionada con:** DEC-C08, DEC-C09, DEC-C10 (el canal conversacional que esta Decision usa como mecanismo).

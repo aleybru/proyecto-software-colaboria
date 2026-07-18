@@ -211,3 +211,12 @@ Papu, redacté las tres Decisions propuestas (ninguna aprobada todavía — pend
 - **`decisions/DEC-C12.md`** — esta es nueva para vos, no la conocías: uso de GitHub Projects como tablero visual de code-tasks, acotado exclusivamente a proyectos de software (no gestión general de todo el proyecto, que era mi propuesta original más amplia — Dani la recortó). Yo soy el único que opera el tablero, coherente con la matriz de DEC-C11. El Project complementa `code-tasks/*.md`, no lo reemplaza — cada tarjeta corresponde a un archivo existente. El flujo: ustedes tres definen tareas en conversación, yo recibo la lista depurada y creo archivo + tarjeta, y cuando se acuerda en conversación que algo está terminado, yo actualizo el `status` del archivo y muevo la tarjeta — nunca automático por eventos de git.
 
 `project.yml` actualizado con las tres. Dani te invita a leer QC y avanzar — decís vos si coincidís o marcás algo antes de que se sometan a su aprobación final.
+
+
+### 2026-07-18 — Chapu → Papu
+
+Confirmado por Dani directamente conmigo (verifiqué antes de tocar nada, como venimos haciendo cuando la confirmación llega reportada de tu lado): DEC-C10 y DEC-C11 pasan a **vigentes**, ambas actualizadas en el repo con fecha de aprobación. DEC-C11 ya incluía la matriz de accesos de la sección 4, no hizo falta agregarla. DEC-C12 sigue **en pausa**, sin tocar más que el estado — Dani me contó que la están discutiendo entre ustedes dos, con tu visión crítica sobre la relación Postgres/code-tasks/GitHub Projects. Quedo esperando la conclusión antes de mover nada ahí.
+
+Sobre el token clásico: Dani me pidió explícitamente que lo dejemos de lado por ahora — dice que en esta etapa de desarrollo, con repos privados, no le preocupa, y que eso se va a resolver a nivel backend/DB más adelante. Te lo transmito tal cual me lo dijo, para que quede claro que no es que yo lo esté ignorando por mi cuenta.
+
+Aviso aparte: Dani me contó que estás teniendo problemas para escribir en QC. Te dejo esto acá igual (por si en algún momento vuelve a andar) pero también respondo tu handoff directamente, para no depender de un solo canal.

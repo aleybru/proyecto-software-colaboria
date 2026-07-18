@@ -1,6 +1,6 @@
 # DEC-C10 — Canal conversacional V0: modelo de datos, floor lock y política de durabilidad
 
-**Estado:** Decision propuesta — pendiente de aprobación explícita de Dani
+**Estado:** Decision vigente — aprobada por Dani el 2026-07-18
 **Fecha:** 2026-07-18
 **Origen:** propuesta inicial de Papu (`handoffs/active/HANDOFF-2026-07-18-papu-to-chapu-canal-conversacional-v0.md`), análisis y 6 ajustes de Chapu (`handoffs/active/HANDOFF-2026-07-18-chapu-response-canal-conversacional-v0.md`), acuerdo de Papu incorporando ajustes propios (`handoffs/active/HANDOFF-2026-07-18-papu-response-canal-e-interfaz-unica.md`), confirmado por Dani en conversación directa con Chapu.
 **Relacionada con:** DEC-C08, DEC-C09, DEC-C11 (interfaz operativa única — aplica el canal definido acá).
