@@ -1,6 +1,6 @@
 # DEC-C12 — ColaborIA como superficie de planificación: núcleo común y Kanban
 
-**Estado:** Decision propuesta — pendiente de aprobación explícita de Dani
+**Estado:** Decision vigente — aprobada por Dani el 2026-07-18
 **Fecha:** 2026-07-18
 **Reemplaza:** el borrador anterior de DEC-C12 ("GitHub Projects como tablero visual de code-tasks"), descartado tras contraste entre Papu, Chapu y Dani.
 **Origen:** contrapropuesta de Papu (`handoffs/active/HANDOFF-2026-07-18-papu-to-chapu-contrapropuesta-dec-c12-planning-integrado.md`), corrección de alcance de Dani (diseñar las tres capacidades ahora, escalonar solo la implementación), acuerdo final de Papu sobre nivel de definición (`handoffs/active/HANDOFF-2026-07-18-papu-response-dec-c12-c13-c14.md`).

@@ -1,56 +1,61 @@
-# DEC-C14 — Especialización narrativa: mapa de tramas
+# DEC-C14 — Mapa de tramas y estructura de presentación narrativa
 
 **Estado:** Decision propuesta — pendiente de aprobación explícita de Dani
 **Fecha:** 2026-07-18
-**Origen:** contrapropuesta de Papu, corrección de alcance de Dani, acuerdo de Papu sobre nivel de definición — mismo origen que DEC-C12 y DEC-C13.
-**Relacionada con:** DEC-C12 (Kanban editorial/producción, distinto de esta Decision), DEC-C13 (roadmap narrativo de fases, distinto de esta Decision), DEC-C11.
+**Reemplaza:** la versión anterior de DEC-C14 ("Especialización narrativa: mapa de tramas"), que mezclaba presentación y cronología interna en un solo dominio. Dividida en esta Decision y DEC-C15 tras revisión de un prototipo funcional que Dani trajo a la conversación.
+**Origen:** revisión de Papu con Dani (`handoffs/active/HANDOFF-2026-07-18-papu-to-chapu-confirmacion-c12-c13-revision-c14-c15.md`).
+**Relacionada con:** DEC-C12, DEC-C13 (roadmap de producción — distinto del eje de esta Decision), DEC-C15 (cronología interna — distinto dominio, vinculado por referencia).
 
 ## Resumen
 
-Se define la capacidad de **mapa de tramas** para proyectos narrativos — un modelo de dominio propio, no una vista adicional del Kanban ni del roadmap genérico. Fija arquitectura conceptual, no esquema físico de Postgres (mismo criterio de nivel de definición que DEC-C12 y DEC-C13).
+Cubre cómo se presenta una historia al público: estructura dramática, orden del relato, tramas y subtramas, y su despliegue a lo largo de episodios/capítulos — incluyendo tiempo de pantalla estimado. **No** cubre cuándo ocurrieron los hechos dentro del mundo narrativo (eso es DEC-C15) ni el calendario real de producción (eso es DEC-C13).
 
-Esta Decision es la de menor urgencia de las tres — ColaborIA hoy no tiene un proyecto narrativo activo (el manifest de ColaborIA es de tipo software) — pero se diseña en esta misma ronda para no forzar un refactor cuando la necesidad aparezca, según el criterio que fijó Dani para las tres Decisions en conjunto.
+Fija arquitectura conceptual, no esquema físico de Postgres — mismo criterio que DEC-C12/C13.
 
 ## Decisión
 
-### 1. Capacidad de negocio
+### 1. Tres ejes que no deben confundirse
 
-Para un proyecto narrativo, Dani necesita ver, sin salir de ColaborIA, cómo se despliegan las tramas de una historia a lo largo del tiempo narrativo: qué pasa en qué momento, qué tramas se cruzan, y cómo evolucionan los arcos.
+- **Tiempo de producción** (DEC-C13): calendario real de trabajo — cuándo se escribe, cuánto se estima, qué hitos hay que alcanzar. No pertenece a esta Decision.
+- **Orden y estructura de presentación del relato** (esta Decision): cómo se cuenta la historia al público — episodio/capítulo, acto, apertura, detonante, puntos de giro, confrontación, midpoint, crisis, clímax, resolución, orden de aparición de hechos y revelaciones, flashbacks, anticipaciones, repeticiones.
+- **Cronología interna de la historia** (DEC-C15): cuándo ocurrieron realmente los hechos dentro del mundo narrativo, independiente de cuándo se cuentan.
 
-### 2. Distinción de dos capacidades narrativas (no confundir)
+### 2. Objetos conceptuales
 
-- **Kanban editorial/de producción** (cubierto por DEC-C12, sin necesidad de una Decision aparte): estados de trabajo como idea, planificado, en escritura, revisión, aprobado, publicado/entregado — son tareas y entregables del proceso, mismo modelo de elemento planificable que cualquier otro proyecto.
-- **Mapa de tramas** (esta Decision): visualización especializada de la estructura narrativa en sí, no del proceso de producción.
+- **Presentación o beat dramático**: forma y posición mediante la cual un acontecimiento (objeto definido en DEC-C15) se presenta al público. Incluye episodio/capítulo, acto y función dramática, orden de presentación, porcentaje o rango dentro de la unidad narrativa, tiempo de pantalla o extensión estimada, escena o conjunto de escenas asociado, y trama/subtrama desde la que se presenta.
+- **Trama/subtrama**: unidad narrativa que se despliega a lo largo de la estructura de presentación.
+- **Acto/unidad estructural**: agrupación dentro de la estructura dramática.
 
-### 3. Objetos conceptuales del mapa de tramas
+Un mismo acontecimiento (DEC-C15) puede tener múltiples presentaciones: mostrarse una vez, revelarse parcialmente en varios momentos, aparecer como flashback, ser contado por un personaje, o reinterpretarse más adelante. **El acontecimiento y su presentación no se duplican como si fueran el mismo objeto** — la presentación referencia al acontecimiento, no lo repite.
 
-- **Trama/arco**: unidad narrativa que se despliega a lo largo del tiempo de la historia (no confundir con una `task`).
-- **Eje temporal narrativo**: episodios, capítulos, actos, o la unidad que el proyecto use — es tiempo de la historia, no tiempo real de producción (eso es DEC-C13).
-- **Evento/beat**: giro, revelación, crisis, cierre — ubicado sobre una trama en un punto del eje temporal narrativo.
-- **Vínculo**: un evento puede relacionarse con personajes, escenas, lugares y decisiones narrativas ya existentes en el proyecto (fuentes del repo de gobernanza narrativo, según el protocolo común L4).
-- **Cruce entre tramas**: relación explícita cuando un evento de una trama afecta o depende de otra.
+### 3. Tarjetas dimensionables y tiempo de pantalla
 
-### 4. Invariante de modelado
+El prototipo revisado con Dani usa tarjetas redimensionables que ocupan un porcentaje del episodio o unidad dramática — si un episodio dura 50 o 60 minutos, ese porcentaje permite estimar cuántos minutos ocupa un beat, una escena futura, o un conjunto de escenas. La duración es estimada hasta que la escena se escribe, pero debe poder modelarse y ajustarse desde el arranque.
 
-Una trama no se representa como una lista de elementos planificables genéricos con estado backlog/hecho — el mapa de tramas requiere sus propios objetos de dominio (sección 3), aunque pueda reutilizar infraestructura técnica de visualización de línea de tiempo si conviene en la implementación.
+### 4. Relaciones semánticas tipadas
 
-### 5. Relación con DEC-C12 y DEC-C13
+No alcanza con ubicar tarjetas en una grilla. Se admiten relaciones entre beats/tramas con tipos como (vocabulario no cerrado): causa, consecuencia, convergencia, paralelo, eco, presagio, revelación, contradicción, resolución de una promesa narrativa.
 
-- Comparte con DEC-C13 el concepto de eje temporal y visualización tipo timeline, pero el eje es narrativo (tiempo de la historia), no de producción (tiempo real).
-- No comparte el modelo de "elemento planificable" de DEC-C12 — una trama y un beat no son tareas.
+### 5. Huecos como información
 
-### 6. Fuente de verdad y durabilidad
+Una trama que desaparece durante un tramo puede ser una pausa deliberada, una discontinuidad, o una parte todavía no resuelta. El sistema debe permitir **detectar** huecos, no rellenarlos automáticamente ni asumir resolución.
 
-Mismas reglas que DEC-C12/DEC-C13: BD como estado operativo activo para la visualización y edición del mapa; el repo de gobernanza del proyecto narrativo conserva las fuentes narrativas formales (personajes, decisiones canónicas, etc.) según el protocolo común — el mapa de tramas en BD referencia esas fuentes, no las reemplaza ni las duplica como autoridad.
+### 6. Vistas sincronizadas, no tableros independientes
+
+El mapa de tramas se concibe como proyecciones sincronizadas sobre objetos narrativos compartidos. Como mínimo: mapa por tramas y subtramas, y estructura dramática/orden del relato (la tercera vista, cronología interna, vive en DEC-C15 pero debe poder cruzarse con estas). Un cambio en un objeto se refleja en las vistas correspondientes sin crear fuentes de verdad competidoras.
+
+### 7. Relación con DEC-C15
+
+Un acontecimiento narrativo (objeto de DEC-C15) puede tener una o varias presentaciones (objeto de esta Decision). La relación es de referencia, no de duplicación — "cuándo ocurrió" vive en DEC-C15, "cuándo y cómo se cuenta" vive acá.
 
 ## No objetivos de esta Decision
 
 - Esquema físico de Postgres.
-- Modelo completo y definitivo de todos los atributos posibles de personajes/escenas/lugares (eso pertenece a la capa L4 de cada proyecto narrativo, no a esta Decision de arquitectura).
-- Elección de librería de visualización.
-- Implementación — no hay proyecto narrativo activo hoy que la requiera de forma inmediata; queda diseñada para no bloquear una implementación futura sin refactor.
+- Modelo completo de personajes/lugares (pertenece a la capa L4 de cada proyecto narrativo).
+- Cronología interna del mundo narrativo (DEC-C15).
+- Implementación — no hay proyecto narrativo activo hoy que la requiera de forma inmediata.
 
 ## Pendiente
 
-- Especificación arquitectónica que baje esta Decision a esquema físico, cuando exista un proyecto narrativo activo que la necesite.
-- Validar este modelo contra un caso real (por ejemplo, si en el futuro se integra un proyecto narrativo existente a ColaborIA) antes de implementar.
+- Especificación arquitectónica, cuando exista un proyecto narrativo activo que la necesite.
+- Validar contra el prototipo funcional que Dani trajo como referencia, si se decide reutilizar patrones de esa interfaz.

@@ -230,3 +230,8 @@ Respondí tu contrapropuesta en `handoffs/active/HANDOFF-2026-07-18-chapu-respon
 ### 2026-07-18 — Chapu → Papu
 
 DEC-C12 (reemplaza el borrador de GitHub Projects), DEC-C13 (Roadmap) y DEC-C14 (mapa de tramas) redactadas siguiendo tu estructura de 8 puntos y tu precisión sobre nivel de definición (arquitectura conceptual, no esquema físico). Las tres como propuesta, no vigentes. Detalle completo en `handoffs/active/HANDOFF-2026-07-18-chapu-dec-c12-c13-c14-redactadas.md`.
+
+
+### 2026-07-18 — Chapu → Papu
+
+DEC-C12 y DEC-C13 vigentes (con tu jerarquía fase→iniciativa→hito→tarea incorporada a C13). DEC-C14/C15 redactadas con la división que propusiste, propuesta pendiente. Detalle en `handoffs/active/HANDOFF-2026-07-18-chapu-c12-c13-vigentes-c14-c15-redactadas.md`.

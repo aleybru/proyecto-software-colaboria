@@ -109,29 +109,37 @@ decisiones_vigentes_del_proyecto:
       ejecucion->resultado. Prioridad de roadmap: vertical slice operativa.
   - id: DEC-C12
     resumen: >
-      PROPUESTA, pendiente aprobacion. Reemplaza borrador anterior (GitHub
-      Projects, descartado). ColaborIA como superficie de planificacion propia,
-      nucleo comun de "elemento planificable" compartido con DEC-C13, Kanban
-      generico (backlog/listo/en curso/bloqueado/hecho/cancelado). Relacion
-      con code-tasks/*.md: BD es estado operativo, archivo es materializacion
+      APROBADA 2026-07-18. Reemplaza borrador anterior (GitHub Projects,
+      descartado). ColaborIA como superficie de planificacion propia, nucleo
+      comun de "elemento planificable" compartido con DEC-C13, Kanban generico
+      (backlog/listo/en curso/bloqueado/hecho/cancelado). Relacion con
+      code-tasks/*.md: BD es estado operativo, archivo es materializacion
       durable, sincronizacion unidireccional por checkpoints (creacion,
       gatillo manual, cierre, cancelacion), no bidireccional continua. Fija
       arquitectura conceptual, no esquema fisico de Postgres.
   - id: DEC-C13
     resumen: >
-      PROPUESTA, pendiente aprobacion. Roadmap/timeline construido sobre el
-      mismo nucleo de elemento planificable de DEC-C12 (no modelo aparte).
+      APROBADA 2026-07-18, con jerarquia obligatoria incorporada antes de
+      aprobar: fase -> iniciativa/frente -> hito -> tarea. Roadmap/timeline
+      construido sobre el mismo nucleo de elemento planificable de DEC-C12.
       Soporta roadmap temporal (fechas) y ordinal (solo secuencia/dependencia)
-      sin obligar a inventar fechas. Un elemento puede estar en Kanban y
-      roadmap simultaneamente sin sincronizacion aparte. Boundary explicito
-      con mapa de tramas narrativo (DEC-C14, modelo de dominio distinto).
+      sin obligar a inventar fechas. Boundary explicito con DEC-C14/C15
+      (dominio narrativo, distinto).
   - id: DEC-C14
     resumen: >
-      PROPUESTA, pendiente aprobacion. Especializacion narrativa: mapa de
-      tramas (trama/arco, eje temporal narrativo, evento/beat, cruces entre
-      tramas) como modelo de dominio propio, no una vista de Kanban ni de
-      roadmap generico. Menor urgencia (no hay proyecto narrativo activo hoy)
-      pero se disena en esta misma ronda para no forzar refactor futuro.
+      PROPUESTA, pendiente aprobacion. Reemplaza version anterior (dividida
+      tras revision de prototipo funcional). Mapa de tramas y estructura de
+      PRESENTACION narrativa: episodio/acto/beat, orden del relato, tarjetas
+      dimensionables con tiempo de pantalla estimado, relaciones semanticas
+      tipadas, vistas sincronizadas. No cubre cronologia interna (DEC-C15) ni
+      tiempo de produccion (DEC-C13).
+  - id: DEC-C15
+    resumen: >
+      PROPUESTA, pendiente aprobacion. Cronologia INTERNA del mundo narrativo:
+      acontecimiento canonico, fecha/edad/generacion segun el mundo de la
+      historia, causalidad historica - independiente de cuando y como se
+      presenta al publico (DEC-C14). Menor urgencia (no hay proyecto
+      narrativo activo hoy) pero disenada ahora igual.
 
 rol_chapu_en_este_proyecto:
   prioridades:
