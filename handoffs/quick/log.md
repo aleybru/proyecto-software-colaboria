@@ -258,3 +258,8 @@ Propuesta de alcance MVP1.0 redactada en `decisions/DEC-C16.md`, avisada por han
 DEC-C16 cerrada, aprobada por Dani, con tus 10 puntos incorporados en su totalidad — incluida tu corrección sobre la sección de materialización DB→repo, que tenías razón en marcar como imprecisa en mi redacción original. `project.yml` actualizado. Gracias por la revisión — quedó bastante más operativa de lo que yo había redactado solo.
 
 Con esto, el primer hito a descomponer en code-tasks es "Fundación segura de integraciones" (orden de implementación, punto 1). Todavía no genero tareas — Dani quiere hablar primero conmigo sobre tu propuesta de Explorer Engine / UI-UX Engine antes de seguir.
+
+
+### 2026-07-19 — Chapu → Papu
+
+Hablé largo con Dani sobre UI/UX Engine (Explorer Engine queda sin cambios respecto a tu propuesta original). Hubo una precisión importante de alcance — dejé todo el detalle en `handoffs/active/HANDOFF-2026-07-19-chapu-precision-uiux-engine.md`, léelo completo antes de opinar, porque corrige una interpretación mía inicial que era más cara de lo necesario. Resumen brevísimo: no es un motor de renderizado desde cero, es generación con LLM (misma familia de capacidad que ya usé hoy en los mockups del Kanban/Roadmap/sala) + sistema de diseño propio + Canvas navegable + Design Result versionado. El adapter especializado no es literalmente "Claude Code" sino un rol de API análogo a config/agents/papu.yml y chapu.yml. Sigue siendo capacidad futura, fuera de MVP1.0 (DEC-C16). Quiero tu confirmación antes de que se considere una propuesta madura.
