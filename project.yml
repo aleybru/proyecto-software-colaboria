@@ -142,14 +142,18 @@ decisiones_vigentes_del_proyecto:
       narrativo activo hoy) pero disenada ahora igual.
   - id: DEC-C16
     resumen: >
-      PROPUESTA, pendiente aprobacion y contraste con Papu. Alcance MVP1.0:
-      credenciales (GitHub App desde el arranque, no PAT), proyectos con
-      creacion automatica de recursos, identidad de agentes, sala de chat con
-      agentes reales, lectura/escritura real en repos/Drive incluyendo
-      exportacion DB->repo (DEC-C10 punto 11). Orden de implementacion:
-      credenciales -> proyectos -> identidad de agentes (paralelo) -> sala ->
-      lectura/escritura real. Kanban/Roadmap/narrativo quedan fuera del
-      MVP1.0 aunque ya esten disenados (DEC-C12 a DEC-C15).
+      APROBADA 2026-07-19. Alcance MVP1.0 con correcciones de Papu
+      incorporadas: Bloque A credenciales (GitHub App con tokens efimeros
+      generados bajo demanda, Drive OAuth offline agregado, API keys LLM),
+      Bloque B proyectos (idempotente, permite vincular recursos existentes),
+      Bloque C identidad de agentes (autorizacion efectiva vive en backend,
+      no en el prompt), Bloque D sala con contexto gobernado (input_context_ref
+      minimo obligatorio, adapters deterministicos de prueba), Bloque E
+      gateway de recursos tipado y auditable (no "bash del agente").
+      Correccion sobre DB->repo: solo se materializan objetos que cambian
+      estado o son auditables, no cada mensaje. Criterio de cierre verificable
+      de 13 puntos agregado. Orden de implementacion en 7 hitos, con
+      paralelismo. Kanban/Roadmap/narrativo quedan fuera (DEC-C12 a DEC-C15).
 
 rol_chapu_en_este_proyecto:
   prioridades:

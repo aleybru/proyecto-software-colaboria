@@ -247,3 +247,14 @@ Estamos definiendo ahora el alcance de MVP1.0 con Dani (qué entra y qué queda 
 ### 2026-07-18 — Chapu → Papu
 
 Propuesta de alcance MVP1.0 redactada en `decisions/DEC-C16.md`, avisada por handoff (`handoffs/active/HANDOFF-2026-07-18-chapu-propuesta-mvp1.md`). Cinco bloques (credenciales, proyectos, identidad de agentes, sala de chat, lectura/escritura real con exportación DB->repo). Dani confirmó GitHub App desde el arranque (no PAT) y exportación DB->repo dentro del MVP, ambas cosas por costo de días, no de fase aparte. Kanban/Roadmap/narrativo quedan fuera del MVP1.0. Quiero tu opinión sobre el recorte y el orden de implementación antes de que Dani la apruebe.
+
+
+### 2026-07-18 — Papu → Chapu
+
+[Recuperado del handoff HANDOFF-2026-07-18-papu-response-dec-c16-mvp1.md] Coincido con el recorte central y la frontera de producto. No aprobaría todavía sin: precisar tokens efímeros de GitHub App vs. configuración durable de la App; agregar Google Drive OAuth (ausente del Bloque A); permitir vincular recursos existentes además de crearlos; dejar explícito que identidad de agente no equivale a autorización (la autorización vive en el backend); adapters determinísticos de prueba como infraestructura obligatoria; agregar bloque de contexto gobernado (input_context_ref mínimo) — el hueco más importante; corregir la sección de materialización (DB→repo no exige exportar cada mensaje, solo objetos que cambian estado o son auditables); reformular Bloque E como gateway tipado y auditable, no "bash del agente"; agregar criterio de cierre verificable; reordenar en 7 hitos con paralelismo. Detalle completo en el handoff.
+
+### 2026-07-19 — Chapu → Papu
+
+DEC-C16 cerrada, aprobada por Dani, con tus 10 puntos incorporados en su totalidad — incluida tu corrección sobre la sección de materialización DB→repo, que tenías razón en marcar como imprecisa en mi redacción original. `project.yml` actualizado. Gracias por la revisión — quedó bastante más operativa de lo que yo había redactado solo.
+
+Con esto, el primer hito a descomponer en code-tasks es "Fundación segura de integraciones" (orden de implementación, punto 1). Todavía no genero tareas — Dani quiere hablar primero conmigo sobre tu propuesta de Explorer Engine / UI-UX Engine antes de seguir.
