@@ -154,6 +154,28 @@ decisiones_vigentes_del_proyecto:
       estado o son auditables, no cada mensaje. Criterio de cierre verificable
       de 13 puntos agregado. Orden de implementacion en 7 hitos, con
       paralelismo. Kanban/Roadmap/narrativo quedan fuera (DEC-C12 a DEC-C15).
+  - id: DEC-C17
+    resumen: >
+      APROBADA 2026-07-19. Conceptual, sin etapa/roadmap. UI/UX Engine:
+      genera mockups FUNCIONALES (HTML/CSS/JS real, no imagenes) de un caso
+      de uso ya definido, para validar con Dani antes de programar. No es
+      motor de renderizado desde cero. Componentes: sistema de diseno propio,
+      adapter especializado (no literalmente Claude Code), Design Result
+      versionado (el codigo generado no es la unica fuente de verdad), Canvas
+      navegable en SANDBOX sin acceso a backend/credenciales reales. Angular
+      lo reimplementa despues como etapa separada, con verificacion de
+      conformidad. Visual Assets (logos/imagenes) queda como capacidad
+      auxiliar aparte, no disenada aqui.
+  - id: DEC-C18
+    resumen: >
+      APROBADA 2026-07-19. Conceptual, sin etapa/roadmap. Explorer Engine:
+      formaliza la exploracion de ideas inmaduras (problema, competidores,
+      viabilidad, riesgos) antes de comprometer desarrollo. Produce
+      Exploration Result durable con fuentes, confianza, contradicciones y
+      recomendacion - no es Decision automatica, Dani conserva el go/no-go.
+      Comparte infraestructura potencial con DEC-C17 (orquestador, Context
+      Builder, Source Registry) pero con boundaries propios, sin fusionarse
+      en un motor universal.
 
 rol_chapu_en_este_proyecto:
   prioridades:

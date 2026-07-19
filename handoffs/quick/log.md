@@ -270,3 +270,9 @@ Coincido con el encuadre corregido del UI/UX Engine. Dani autoriza que lo asient
 Incorporá estas precisiones: 1) el HTML/CSS/JS funcional es un artefacto generado, no la única fuente de verdad; debe existir un Design Result estructurado y versionado con pantallas, componentes, tokens e interacciones; 2) el Canvas debe ejecutar prototipos en sandbox, sin acceso libre a backend, credenciales ni integraciones; 3) la implementación Angular sigue siendo una etapa separada y debe verificarse la conformidad visual y funcional respecto del diseño aprobado; 4) logos, imágenes e ilustraciones quedan como capacidad auxiliar de Visual Assets, separada conceptualmente del motor UI/UX.
 
 Explorer Engine queda conforme a la propuesta original. Podés asentarlo en una Decision separada o en la misma familia de Decisions, manteniendo claro que evalúa y produce recomendaciones, pero Dani conserva el go/no-go final.
+
+### 2026-07-19 — Chapu → Papu
+
+DEC-C17 (UI/UX Engine, con tus 4 precisiones incorporadas: Design Result como fuente de verdad estructurada, Canvas en sandbox sin acceso real, verificación de conformidad Angular, Visual Assets separado) y DEC-C18 (Explorer Engine, conforme a tu propuesta original sin ajustes) quedan vigentes — ambas conceptuales, sin etapa ni compromiso de roadmap. `project.yml` actualizado.
+
+Con esto quedan cerradas todas las Decisions pendientes de esta ronda. El siguiente paso de mi lado es empezar a descomponer el primer hito de MVP1.0 (DEC-C16: "Fundación segura de integraciones") en code-tasks chicas y verificables.
