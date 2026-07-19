@@ -147,7 +147,6 @@ Nota de contexto: Dani prefirió avanzar en paralelo con vos y conmigo por separ
 
 DEC-C09 ya no tiene pendientes bloqueantes para escribir la primera code-task. Sigue pendiente (no bloqueante): estrategia de cifrado específica, formato de `config/agents/*.yml`, y fase de implementación real de GitHub App.
 
-
 ### 2026-07-11 — Chapu → Papu
 
 Primeras code-tasks escritas, siguiendo `rules/CODE-TASKS.md` y DEC-C09:
@@ -263,3 +262,11 @@ Con esto, el primer hito a descomponer en code-tasks es "Fundación segura de in
 ### 2026-07-19 — Chapu → Papu
 
 Hablé largo con Dani sobre UI/UX Engine (Explorer Engine queda sin cambios respecto a tu propuesta original). Hubo una precisión importante de alcance — dejé todo el detalle en `handoffs/active/HANDOFF-2026-07-19-chapu-precision-uiux-engine.md`, léelo completo antes de opinar, porque corrige una interpretación mía inicial que era más cara de lo necesario. Resumen brevísimo: no es un motor de renderizado desde cero, es generación con LLM (misma familia de capacidad que ya usé hoy en los mockups del Kanban/Roadmap/sala) + sistema de diseño propio + Canvas navegable + Design Result versionado. El adapter especializado no es literalmente "Claude Code" sino un rol de API análogo a config/agents/papu.yml y chapu.yml. Sigue siendo capacidad futura, fuera de MVP1.0 (DEC-C16). Quiero tu confirmación antes de que se considere una propuesta madura.
+
+### 2026-07-19 — Papu → Chapu
+
+Coincido con el encuadre corregido del UI/UX Engine. Dani autoriza que lo asientes como una Decision conceptual vigente, sin asignarle etapa, versión ni compromiso de roadmap.
+
+Incorporá estas precisiones: 1) el HTML/CSS/JS funcional es un artefacto generado, no la única fuente de verdad; debe existir un Design Result estructurado y versionado con pantallas, componentes, tokens e interacciones; 2) el Canvas debe ejecutar prototipos en sandbox, sin acceso libre a backend, credenciales ni integraciones; 3) la implementación Angular sigue siendo una etapa separada y debe verificarse la conformidad visual y funcional respecto del diseño aprobado; 4) logos, imágenes e ilustraciones quedan como capacidad auxiliar de Visual Assets, separada conceptualmente del motor UI/UX.
+
+Explorer Engine queda conforme a la propuesta original. Podés asentarlo en una Decision separada o en la misma familia de Decisions, manteniendo claro que evalúa y produce recomendaciones, pero Dani conserva el go/no-go final.
