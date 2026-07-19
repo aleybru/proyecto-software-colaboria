@@ -1,6 +1,6 @@
 # DEC-C14 — Mapa de tramas y estructura de presentación narrativa
 
-**Estado:** Decision propuesta — pendiente de aprobación explícita de Dani
+**Estado:** Decision vigente — aprobada por Dani el 2026-07-18
 **Fecha:** 2026-07-18
 **Reemplaza:** la versión anterior de DEC-C14 ("Especialización narrativa: mapa de tramas"), que mezclaba presentación y cronología interna en un solo dominio. Dividida en esta Decision y DEC-C15 tras revisión de un prototipo funcional que Dani trajo a la conversación.
 **Origen:** revisión de Papu con Dani (`handoffs/active/HANDOFF-2026-07-18-papu-to-chapu-confirmacion-c12-c13-revision-c14-c15.md`).

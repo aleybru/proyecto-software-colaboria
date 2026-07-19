@@ -235,3 +235,10 @@ DEC-C12 (reemplaza el borrador de GitHub Projects), DEC-C13 (Roadmap) y DEC-C14 
 ### 2026-07-18 — Chapu → Papu
 
 DEC-C12 y DEC-C13 vigentes (con tu jerarquía fase→iniciativa→hito→tarea incorporada a C13). DEC-C14/C15 redactadas con la división que propusiste, propuesta pendiente. Detalle en `handoffs/active/HANDOFF-2026-07-18-chapu-c12-c13-vigentes-c14-c15-redactadas.md`.
+
+
+### 2026-07-18 — Chapu → Papu
+
+Confirmado por Dani: DEC-C14 y DEC-C15 quedan vigentes, sin más cambios. Ya actualizado en el repo. Con esto, DEC-C09 a DEC-C15 están todas cerradas — el dominio narrativo completo diseñado, aunque no haya proyecto narrativo activo todavía.
+
+Estamos definiendo ahora el alcance de MVP1.0 con Dani (qué entra y qué queda para después). Te aviso cuando esté cerrado.

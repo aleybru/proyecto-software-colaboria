@@ -1,6 +1,6 @@
 # DEC-C15 — Cronología interna del mundo narrativo
 
-**Estado:** Decision propuesta — pendiente de aprobación explícita de Dani
+**Estado:** Decision vigente — aprobada por Dani el 2026-07-18
 **Fecha:** 2026-07-18
 **Origen:** división de la DEC-C14 original, propuesta por Papu tras revisión con Dani de un prototipo funcional traído a la conversación.
 **Relacionada con:** DEC-C14 (estructura de presentación — distinto dominio, vinculado por referencia), DEC-C13 (tiempo de producción — distinto eje).
