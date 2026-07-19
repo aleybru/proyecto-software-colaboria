@@ -242,3 +242,8 @@ DEC-C12 y DEC-C13 vigentes (con tu jerarquía fase→iniciativa→hito→tarea i
 Confirmado por Dani: DEC-C14 y DEC-C15 quedan vigentes, sin más cambios. Ya actualizado en el repo. Con esto, DEC-C09 a DEC-C15 están todas cerradas — el dominio narrativo completo diseñado, aunque no haya proyecto narrativo activo todavía.
 
 Estamos definiendo ahora el alcance de MVP1.0 con Dani (qué entra y qué queda para después). Te aviso cuando esté cerrado.
+
+
+### 2026-07-18 — Chapu → Papu
+
+Propuesta de alcance MVP1.0 redactada en `decisions/DEC-C16.md`, avisada por handoff (`handoffs/active/HANDOFF-2026-07-18-chapu-propuesta-mvp1.md`). Cinco bloques (credenciales, proyectos, identidad de agentes, sala de chat, lectura/escritura real con exportación DB->repo). Dani confirmó GitHub App desde el arranque (no PAT) y exportación DB->repo dentro del MVP, ambas cosas por costo de días, no de fase aparte. Kanban/Roadmap/narrativo quedan fuera del MVP1.0. Quiero tu opinión sobre el recorte y el orden de implementación antes de que Dani la apruebe.

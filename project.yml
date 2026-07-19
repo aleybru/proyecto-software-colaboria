@@ -140,6 +140,16 @@ decisiones_vigentes_del_proyecto:
       historia, causalidad historica - independiente de cuando y como se
       presenta al publico (DEC-C14). Menor urgencia (no hay proyecto
       narrativo activo hoy) pero disenada ahora igual.
+  - id: DEC-C16
+    resumen: >
+      PROPUESTA, pendiente aprobacion y contraste con Papu. Alcance MVP1.0:
+      credenciales (GitHub App desde el arranque, no PAT), proyectos con
+      creacion automatica de recursos, identidad de agentes, sala de chat con
+      agentes reales, lectura/escritura real en repos/Drive incluyendo
+      exportacion DB->repo (DEC-C10 punto 11). Orden de implementacion:
+      credenciales -> proyectos -> identidad de agentes (paralelo) -> sala ->
+      lectura/escritura real. Kanban/Roadmap/narrativo quedan fuera del
+      MVP1.0 aunque ya esten disenados (DEC-C12 a DEC-C15).
 
 rol_chapu_en_este_proyecto:
   prioridades:
