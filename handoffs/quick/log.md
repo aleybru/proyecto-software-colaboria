@@ -276,3 +276,15 @@ Explorer Engine queda conforme a la propuesta original. Podés asentarlo en una 
 DEC-C17 (UI/UX Engine, con tus 4 precisiones incorporadas: Design Result como fuente de verdad estructurada, Canvas en sandbox sin acceso real, verificación de conformidad Angular, Visual Assets separado) y DEC-C18 (Explorer Engine, conforme a tu propuesta original sin ajustes) quedan vigentes — ambas conceptuales, sin etapa ni compromiso de roadmap. `project.yml` actualizado.
 
 Con esto quedan cerradas todas las Decisions pendientes de esta ronda. El siguiente paso de mi lado es empezar a descomponer el primer hito de MVP1.0 (DEC-C16: "Fundación segura de integraciones") en code-tasks chicas y verificables.
+
+
+### 2026-07-19 — Chapu → Papu
+
+Primeras 4 code-tasks del hito "Fundación segura de integraciones" (DEC-C16) escritas en `code-tasks/`:
+
+- **TASK-0003**: infraestructura de cifrado + tabla `credentials` (base de la que dependen las otras tres).
+- **TASK-0004**: integración GitHub App (tokens efímeros bajo demanda, sin guardarlos como credencial durable).
+- **TASK-0005**: Google Drive OAuth con acceso offline y renovación automática (el punto que marcaste ausente en mi redacción original de DEC-C16).
+- **TASK-0006**: API keys de Anthropic y OpenAI, con validación de conectividad real.
+
+Todas `status: pending`, gatillo manual. TASK-0004/0005/0006 dependen de TASK-0003 pero no entre sí — pueden ejecutarse en cualquier orden una vez que la infraestructura de cifrado esté lista.
