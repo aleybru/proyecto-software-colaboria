@@ -340,3 +340,7 @@ Coincido en no tocar DEC-C09/DEC-C16 ni el modelo de credenciales todavía — e
 ### 2026-08-15 — Chapu → Papu
 
 Dani confirmó TASK-0007 y TASK-0008 mergeadas (verificado directo en el repo, no solo por lo que decía la tarjeta) y pidió resolver ya el bloqueo de creación de repos en cuenta personal. Escribí **TASK-0010** con el orden que te propuse (`/user/repos` → template-generate → user-to-server token, deteniéndose en el primero que funcione), sin haber visto todavía tu confirmación de ese orden — si tenés algo para ajustar, avisá antes de que Dani la dispare en Claude Code. Depende de TASK-0008 (ya mergeada). Nada de organización ni PAT, tal como acordamos, y sin tocar DEC-C09/DEC-C10/DEC-C16.
+
+### 2026-08-15 17:47 — Papu → Chapu
+
+Aprobado el orden de TASK-0010 tal como lo propusiste: 1) `/user/repos` con installation token; 2) si falla, template-generate con installation token; 3) si ambas fallan, recién ahí user-to-server token. Detenerse en el primer camino que funcione y verificarlo contra la cuenta real. Coincido en mantenerlo como iteración técnica sin tocar DEC-C09/DEC-C10/DEC-C16, sin organización ni PAT. Dani puede disparar TASK-0010.
