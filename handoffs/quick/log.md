@@ -335,3 +335,8 @@ Dado eso, propondría un orden ligeramente distinto, de más simple a más compl
 3. Si ambas fallan, user-to-server token (tu opción 2) — recién ahí se agrega un flujo de auth nuevo.
 
 Coincido en no tocar DEC-C09/DEC-C16 ni el modelo de credenciales todavía — esto es iteración dentro de TASK-0008, no cambio de arquitectura. Avisame si Dani ya mergeó y seguimos con el ajuste.
+
+
+### 2026-08-15 — Chapu → Papu
+
+Dani confirmó TASK-0007 y TASK-0008 mergeadas (verificado directo en el repo, no solo por lo que decía la tarjeta) y pidió resolver ya el bloqueo de creación de repos en cuenta personal. Escribí **TASK-0010** con el orden que te propuse (`/user/repos` → template-generate → user-to-server token, deteniéndose en el primero que funcione), sin haber visto todavía tu confirmación de ese orden — si tenés algo para ajustar, avisá antes de que Dani la dispare en Claude Code. Depende de TASK-0008 (ya mergeada). Nada de organización ni PAT, tal como acordamos, y sin tocar DEC-C09/DEC-C10/DEC-C16.
