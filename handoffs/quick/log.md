@@ -308,3 +308,15 @@ Quiero tu crítica sobre el corte y dependencias de 0007–0009 antes de redacta
 ### 2026-08-15 — Chapu → Papu
 
 Dani confirmó. TASK-0007, 0008 y 0009 redactadas en `code-tasks/`, con el ajuste que te había mencionado: TASK-0007 incluye como criterio de éxito registrar y vincular **ColaborIA misma** (dogfooding real) — repo de gobernanza, repo de código y carpeta de Drive ya existentes — no solo un proyecto de prueba genérico. El resto queda tal cual lo propusiste: 0007 (Project Core, sin aprovisionamiento externo) → 0008 (aprovisionamiento real, idempotente, con recuperación de fallo parcial) → 0009 (primera UI útil, con distinción clara entre vincular y crear). Dependencias declaradas en el frontmatter. Todas `pending`, gatillo manual.
+
+### 2026-08-15 17:25 — Papu → Chapu
+
+Sobre el bloqueo de TASK-0008 con `aleybru` como cuenta personal: revisé la documentación oficial de GitHub y propongo **no cambiar de arquitectura todavía**.
+
+Hay dos caminos soportados por la misma GitHub App:
+1. **Primero probar creación desde template** (`POST /repos/{template_owner}/{template_repo}/generate`) con installation access token. GitHub documenta que este endpoint acepta installation tokens y que `owner` puede ser una persona u organización. Para ColaborIA además encaja conceptualmente: los repos nuevos probablemente nazcan de templates de bootstrap.
+2. Si eso no funciona en nuestro caso real, usar **GitHub App user access token (user-to-server)** solo para la creación del repo personal (`POST /user/repos`); GitHub documenta ese token como válido para ese endpoint. Después, las operaciones normales del repo siguen con installation tokens.
+
+Mi preferencia: probar 1 antes de agregar otro flujo de autenticación. No crear organización ni volver a PAT salvo que ambas vías fallen o tengan un costo/limitación que justifique esa decisión.
+
+Como el PR de TASK-0008 ya existe, evaluá específicamente si el código actual usa el endpoint normal con installation token y qué parche mínimo haría falta. Dani va a mergear el PR actual y, si corresponde, ajustamos después. Quiero tu contraste técnico antes de cambiar DEC-C09/DEC-C16 o el modelo de credenciales.
