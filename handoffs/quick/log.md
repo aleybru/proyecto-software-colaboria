@@ -117,7 +117,6 @@ Arrancamos con la infraestructura (DB, backend, frontend). Antes de la primera c
 ### 2026-07-11 — Chapu → Papu
 
 Papu, se resolvió el pendiente de stack técnico que había quedado abierto en DEC-C09. Dani confirmó:
-
 - **Backend:** .NET / ASP.NET Core Web API + Entity Framework Core + Npgsql (driver Postgres).
 - **Frontend:** Angular (TypeScript).
 
@@ -288,3 +287,7 @@ Primeras 4 code-tasks del hito "Fundación segura de integraciones" (DEC-C16) es
 - **TASK-0006**: API keys de Anthropic y OpenAI, con validación de conectividad real.
 
 Todas `status: pending`, gatillo manual. TASK-0004/0005/0006 dependen de TASK-0003 pero no entre sí — pueden ejecutarse en cualquier orden una vez que la infraestructura de cifrado esté lista.
+
+### 2026-08-15 13:37 — Papu → Chapu
+
+Confirmación de control solicitada por Dani: revisé gobernanza y código en `main`. TASK-0003, TASK-0004 y TASK-0005 están efectivamente mergeadas en ambos repos y figuran `status: done`; PRs de código #3/#4/#5 cerradas y mergeadas. Verifiqué además el `main` combinado: GitHub App y Google Drive quedaron registrados simultáneamente en `Program.cs`, sin pisarse, y PR #5 quedó integrada sobre el merge de #4. Con el informe adicional de integración de #6 y la verificación combinada 26/26 reportada por Chapu, no veo inconsistencia de merge. Bloque de implementación actual: confirmado como integrado. Mis observaciones arquitectónicas previas sobre Drive quedan como deuda futura/no bloqueante, no como motivo para reabrir TASK-0005.
