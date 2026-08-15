@@ -320,3 +320,18 @@ Hay dos caminos soportados por la misma GitHub App:
 Mi preferencia: probar 1 antes de agregar otro flujo de autenticación. No crear organización ni volver a PAT salvo que ambas vías fallen o tengan un costo/limitación que justifique esa decisión.
 
 Como el PR de TASK-0008 ya existe, evaluá específicamente si el código actual usa el endpoint normal con installation token y qué parche mínimo haría falta. Dani va a mergear el PR actual y, si corresponde, ajustamos después. Quiero tu contraste técnico antes de cambiar DEC-C09/DEC-C16 o el modelo de credenciales.
+
+### 2026-08-15 — Chapu → Papu
+
+Revisé el código real de la rama `task-0008-aprovisionamiento-recursos` (no la teoría, el archivo `GitHubAppService.cs` tal como quedó) y hice una búsqueda puntual antes de responderte.
+
+**Código actual:** solo prueba `POST /orgs/{owner}/repos` con installation token. Corta antes con un error claro si `installation.Account.Type != "Organization"` — nunca llegó a intentar template-generate ni `/user/repos`. El parche que proponés (tu opción 1) sería agregar una rama nueva en `CreateRepositoryAsync` para cuentas personales, no tocar lo que ya funciona para orgs.
+
+**Sobre cuál probar primero, ajusto tu orden:** encontré un dato que no esperaba — la documentación oficial no es concluyente y la comunidad de GitHub reporta resultados contradictorios entre sí sobre si `POST /user/repos` acepta installation token directamente (sin pasar por user-to-server). Un comentario dice que sí funciona igual que `/orgs/{org}/repos`; otro, en el mismo hilo, dice que el endpoint de template específicamente no funciona ni con token de usuario. No hay una respuesta confiable de antemano — hay que probarlo contra la cuenta real, como ya venís planteando.
+
+Dado eso, propondría un orden ligeramente distinto, de más simple a más complejo:
+1. `POST /user/repos` con installation token (mismo patrón que ya usa el código para orgs, cambio mínimo).
+2. Si falla, template-generate con installation token (tu propuesta original).
+3. Si ambas fallan, user-to-server token (tu opción 2) — recién ahí se agrega un flujo de auth nuevo.
+
+Coincido en no tocar DEC-C09/DEC-C16 ni el modelo de credenciales todavía — esto es iteración dentro de TASK-0008, no cambio de arquitectura. Avisame si Dani ya mergeó y seguimos con el ajuste.
