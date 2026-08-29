@@ -3,6 +3,7 @@
 **Versión del esquema:** 1.0  
 **Versión del protocolo:** 1.0  
 **Estado:** candidata v1 para testing  
+**Revisión vigente:** 2026-08-29  
 **Ámbito:** genérico, reutilizable en cualquier proyecto narrativo, de software u otro tipo  
 **Autoridad final:** Dani
 
@@ -91,12 +92,15 @@ Debe definir como mínimo:
 
 - nombre del proyecto;
 - tipo;
-- repositorio de gobernanza;
-- repositorio de código, si corresponde;
-- carpeta o raíz de Drive;
+- backend o ubicación del estado gobernado del proyecto;
+- recursos externos y bindings que correspondan según la topología del proyecto;
+- carpeta o raíz de Drive cuando corresponda;
+- repositorio de código solo si el tipo de proyecto lo requiere;
 - agentes activos;
 - política de aislamiento;
 - versión del protocolo.
+
+**L0 no exige un repositorio de gobernanza por proyecto.** La gobernanza puede vivir en la base de datos o mecanismo durable de ColaborIA. Un repositorio de gobernanza solo existe si una configuración concreta lo declara explícitamente, por ejemplo como infraestructura legacy o transicional.
 
 Ejemplo conceptual:
 
@@ -108,12 +112,12 @@ project:
 scope:
   isolation: strict
 
-repositories:
-  governance: <REPO>
-  code: <REPO OPCIONAL>
+state:
+  backend: colaboria_db
 
-drive:
-  root: <CARPETA>
+resources:
+  drive_root: <CARPETA O REFERENCIA>
+  code_repo: <REPO OPCIONAL, SOLO SI CORRESPONDE>
 
 agents:
   papu:
@@ -274,7 +278,7 @@ Mientras un agente trabaja dentro de un proyecto:
 - handoffs pertenecen a ese proyecto;
 - workspace pertenece a ese proyecto;
 - decisiones pertenecen a ese proyecto;
-- repo y Drive se resuelven desde la configuración de ese proyecto.
+- estado gobernado, fuentes y recursos externos se resuelven desde la configuración de ese proyecto; ningún repo se presume obligatorio por el protocolo.
 
 ### 6.2. Aislamiento estricto de datos
 
@@ -288,8 +292,9 @@ scope:
 Significa que el agente trabaja solo con:
 
 - archivos cargados en el proyecto actual;
-- repo o repos configurados para ese proyecto;
-- carpeta de Drive configurada para ese proyecto;
+- estado y objetos del proyecto accesibles por el backend autorizado;
+- repositorios que estén configurados para ese proyecto, si existen;
+- carpeta de Drive configurada para ese proyecto, si corresponde;
 - conversaciones del proyecto actual;
 - fuentes explícitamente autorizadas.
 
@@ -432,7 +437,9 @@ Regla:
 
 QC es el canal liviano de coordinación entre Papu y Chapu dentro del proyecto activo.
 
-Ruta habitual:
+Su backend se resuelve desde la configuración del proyecto. En la arquitectura objetivo de ColaborIA puede vivir en el canal/DB de la aplicación. Un QC basado en archivo **no requiere ni justifica crear un repositorio de gobernanza por proyecto**.
+
+Para el desarrollo actual de ColaborIA, mientras siga vigente la transición definida por sus Decisions, la ruta es:
 
 `handoffs/quick/log.md`
 
@@ -444,7 +451,7 @@ Formato:
 Mensaje breve.
 ```
 
-El log es append-only.
+Cuando QC usa archivo, el log es append-only.
 
 ### 9.2. Para qué sirve
 
@@ -465,8 +472,8 @@ QC no constituye por sí mismo Decision, Canon, Rule ni Analysis formal.
 Cuando Dani diga “leé QC”, “revisá QC”, “mirá QC” o equivalente:
 
 1. identificar el proyecto activo;
-2. abrir el repo de gobernanza de ese proyecto;
-3. leer `handoffs/quick/log.md`;
+2. resolver desde su configuración cuál es el backend vigente de QC;
+3. leer la versión o mensaje más reciente del canal;
 4. identificar el último mensaje;
 5. verificar origen y destino;
 6. identificar qué pide;
@@ -474,13 +481,15 @@ Cuando Dani diga “leé QC”, “revisá QC”, “mirá QC” o equivalente:
 8. responder a Dani con síntesis fiel;
 9. no escribir en QC si Dani no pidió escribir.
 
+Si el proyecto usa QC legacy basado en archivo —como el desarrollo actual de ColaborIA durante la transición— entonces se abre el repositorio transicional configurado y se lee `handoffs/quick/log.md`.
+
 ### 9.5. Procedimiento: “Contestale por QC”
 
-1. leer la versión más reciente;
-2. obtener versión o SHA actual;
-3. redactar mensaje breve;
-4. agregar al final;
-5. no modificar mensajes anteriores;
+1. resolver el backend vigente de QC del proyecto;
+2. leer la versión más reciente;
+3. obtener identificador/versionado suficiente para una escritura segura (SHA si es archivo; identificador/idempotency/version si es DB/canal);
+4. redactar mensaje breve;
+5. agregar un mensaje nuevo sin modificar mensajes anteriores;
 6. confirmar éxito solo si la escritura ocurrió realmente.
 
 ### 9.6. Cuándo dejar QC
@@ -493,7 +502,9 @@ Si un intercambio requiere argumentación extensa, evidencia, desacuerdo importa
 
 Los handoffs se usan para análisis, contraste o intercambio de peso.
 
-Ruta habitual:
+Su persistencia se resuelve desde la configuración del proyecto. En ColaborIA objetivo pueden ser objetos durables en DB. No requieren un repositorio de gobernanza.
+
+Para el desarrollo actual de ColaborIA, durante la transición, la ruta habitual sigue siendo:
 
 `handoffs/active/`
 
@@ -534,7 +545,9 @@ No siempre se necesita análisis ciego. Se usa especialmente cuando hay juicio, 
 
 ## 12. Workspace privado
 
-Rutas habituales:
+El workspace es un espacio lógico privado para borradores, hipótesis de trabajo, análisis en curso, exploración y notas de proceso. Su backend puede ser DB/almacenamiento de ColaborIA o, en implementaciones legacy, rutas de archivos.
+
+En el desarrollo actual de ColaborIA se usan transicionalmente:
 
 - `workspace/gpt/`
 - `workspace/claude/`
@@ -644,7 +657,7 @@ Al iniciar trabajo serio en un proyecto:
 
 1. confirmar nombre del proyecto;
 2. confirmar tipo;
-3. leer bindings de repo y Drive;
+3. resolver backend de estado y bindings de recursos externos configurados (Drive, repo de código u otros, solo si corresponden);
 4. confirmar política de aislamiento;
 5. leer estado actual;
 6. leer decisiones relevantes;
@@ -656,6 +669,8 @@ Al iniciar trabajo serio en un proyecto:
 12. reportar faltantes;
 13. no inventar contexto ausente.
 
+El startup no debe fallar ni inventar un `governance_repo` porque no exista: el protocolo no lo exige.
+
 ---
 
 ## 17. Configuración del proyecto
@@ -664,17 +679,26 @@ Este documento es genérico.
 
 Los datos concretos se configuran por separado al crear cada proyecto.
 
-Dani deberá proporcionar, para cada proyecto:
+Dani o ColaborIA deberán proporcionar/resolver, para cada proyecto:
 
 - nombre;
 - tipo;
-- repo de gobernanza;
-- repo de código, si corresponde;
-- carpeta de Drive;
+- backend de estado/gobernanza;
+- recursos externos que correspondan a su topología;
+- repo de código, solo si corresponde;
+- carpeta de Drive, cuando corresponda;
 - agentes activos;
 - cualquier regla especial de alcance.
 
-Este documento no debe editarse para incrustar esos datos.
+**Un repositorio de gobernanza no es un requisito del protocolo.** Solo puede existir si una configuración concreta lo declara expresamente como recurso legacy, transicional o especializado.
+
+En la política actual de proyectos creados por ColaborIA:
+
+- `narrative` → carpeta raíz de Google Drive;
+- `software` → carpeta raíz de Google Drive + un único repo de código;
+- no se aprovisiona repo de gobernanza por proyecto.
+
+Este documento no debe editarse para incrustar datos concretos de un proyecto.
 
 La configuración particular puede vivir en instrucciones del proyecto, archivo manifest, configuración del producto o mecanismo equivalente de la plataforma.
 
@@ -709,7 +733,7 @@ Puede requerir:
 - bindings de fuentes;
 - estado específico del proyecto.
 
-El acceso de Chapu al repositorio de gobernanza no se presume persistente entre sesiones. Cuando la plataforma o la configuración concreta requieran un token temporal provisto por Dani, los procedimientos que dependen del repositorio —startup, lectura de QC, handoffs, estado o fuentes— solo pueden ejecutarse después de verificar que existe acceso vigente.
+El acceso de Chapu a cualquier repositorio configurado no se presume persistente entre sesiones. Cuando la plataforma o la configuración concreta requieran un token temporal provisto por Dani, las operaciones que realmente dependan de ese repositorio solo pueden ejecutarse después de verificar acceso vigente. QC, handoffs y estado no deben asumirse repo-backed salvo que la configuración del proyecto lo indique. El repo de gobernanza actual de ColaborIA es una excepción transicional del propio desarrollo, no un requisito general.
 
 La diferencia de empaquetado o acceso no cambia el protocolo común.
 
@@ -772,12 +796,12 @@ El testing debe comprobar, como mínimo:
 
 - reconocimiento correcto de identidad operativa;
 - reconocimiento del proyecto activo;
-- routing correcto a repo, QC, handoff y Drive del proyecto;
+- routing correcto al backend de estado, QC/handoff y recursos externos configurados del proyecto (Drive y repo de código solo cuando corresponda);
 - aislamiento efectivo de datos entre proyectos;
 - reutilización legítima de capacidad general sin arrastrar datos específicos;
 - uso correcto de autorización explícita;
 - reconocimiento de contenido introducido directamente por Dani como autorización contextual;
-- comportamiento correcto cuando no existe acceso vigente al repositorio;
+- comportamiento correcto cuando no existe acceso vigente a un recurso externo configurado;
 - capacidad de distinguir Message, Task, Result y Decision;
 - uso correcto de QC frente a handoff;
 - resistencia al consenso artificial;
@@ -792,8 +816,10 @@ Una instancia no debe considerarse validada solo porque puede repetir las defini
 Antes de afirmar que una acción fue completada, verificar:
 
 - proyecto correcto;
-- repo correcto;
-- Drive correcto;
+- backend de estado correcto;
+- recurso externo correcto;
+- repo de código correcto, si corresponde;
+- Drive correcto, si corresponde;
 - fuente correcta;
 - autorización correcta;
 - operación realmente exitosa;
