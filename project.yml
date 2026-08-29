@@ -1,46 +1,39 @@
 ####################################################
 # PROJECT MANIFEST — L1
 # Proyecto ColaborIA
-# Configuracion especifica de este proyecto.
-# Se usa junto con PROTOCOLO-OPERATIVO-MULTIPROYECTO-v1.md (L0, generico)
-# y las instrucciones de comportamiento del proyecto (L2/L3 destilado).
 ####################################################
 
 project:
   name: ColaborIA
   type: software
   description: >
-    Plataforma que formaliza y automatiza el protocolo de writer's room
-    de Chapu y Papu trabajando junto a Dani. ColaborIA es simultaneamente
-    el producto que se construye y su propio primer POC de software
-    (dogfooding): el desarrollo de la app se gestiona con el mismo
-    protocolo que la app va a automatizar.
+    Plataforma que formaliza y automatiza la coordinación entre Dani,
+    Papu, Chapu y runtimes de ejecución. ColaborIA es simultáneamente
+    el producto y su propio POC de software mediante dogfooding.
 
 scope:
   isolation: strict
-  # Ningun contenido de otros proyectos (Codigo del Alma, futuros proyectos)
-  # se usa aca salvo que Dani lo traiga el mismo, explicitamente, a la
-  # conversacion activa. Ver PROTOCOLO-OPERATIVO-MULTIPROYECTO-v1.md seccion 6.4.
 
 repositories:
-  governance: aleybru/proyecto-software-colaboria
-  code: aleybru/proyecto-software-colaboria-codigo
+  governance:
+    full_name: aleybru/proyecto-software-colaboria
+    status: transitional_current_project_only
+    purpose: >
+      Infraestructura normativa e histórica del desarrollo actual de ColaborIA.
+      No forma parte de la topología que ColaborIA crea para proyectos nuevos.
+  code:
+    full_name: aleybru/proyecto-software-colaboria-codigo
+    purpose: código fuente de ColaborIA; monorepo backend/frontend.
 
 drive:
-  root_folder: "Proyecto ColaborIA"
-  subfolders:
-    - documentacion/      # bootstrap comun compartido, en desuso una vez migrado al repo
-    - "Chapu Agent/"       # documentos generados por Claude
-    - "Papu Agent/"        # documentos generados por GPT
+  root_folder:
+    name: "Proyecto ColaborIA"
+    purpose: raíz documental actual del proyecto ColaborIA.
 
 agents:
   chapu:
     enabled: true
-    platform: Claude (Claude.ai)
-    access_model: token_por_sesion
-    # El acceso de Chapu al repositorio de gobernanza NO es persistente.
-    # Requiere que Dani provea un token de GitHub (fine-grained, expiracion
-    # corta) en cada sesion de trabajo que necesite leer o escribir el repo.
+    platform: Claude
   papu:
     enabled: true
     platform: ChatGPT
@@ -49,141 +42,90 @@ protocol:
   version: 1.0
   source: PROTOCOLO-OPERATIVO-MULTIPROYECTO-v1.md
   last_validated_at: 2026-07-06
-  # Fecha del ultimo cold-start exitoso de Chapu en este proyecto (9.5/10).
-  # Actualizar esta fecha cada vez que se corra el test de arranque en frio
-  # de nuevo (por ejemplo, tras cargar una version nueva del protocolo o
-  # de este manifiesto).
 
 decisiones_vigentes_del_proyecto:
-  # Resumen; el detalle completo vive en decisions/ del repo de gobernanza
-  # una vez migrado.
   - id: DEC-C01
-    resumen: ColaborIA es su propio POC de software (dogfooding).
+    resumen: ColaborIA es su propio POC de software mediante dogfooding.
   - id: DEC-C02
-    resumen: Dos repositorios separados, gobernanza y codigo (ver arriba).
+    resumen: >
+      ColaborIA actualmente conserva repo de gobernanza y repo de código
+      separados como infraestructura de su propio desarrollo. Esto no implica
+      dos repos para proyectos nuevos creados por la aplicación.
   - id: DEC-C03
-    resumen: Modo automatico acotado solo para tareas con criterio de exito verificable por maquina.
+    resumen: Bounded Auto solo para tareas con criterio de éxito verificable por máquina.
   - id: DEC-C04
-    resumen: Capacidades con efectos secundarios reales requieren opt-in explicito de Dani por tarea.
+    resumen: Efectos secundarios reales requieren autorización explícita de Dani.
   - id: DEC-C06
-    resumen: Primer test de portabilidad de identidad de Chapu aprobado 9.5/10.
+    resumen: Primer test de portabilidad de Chapu aprobado 9.5/10.
   - id: DEC-C08
     resumen: >
-      Claude Code opera como ejecutor de codigo (no autoridad de decision).
-      Cola durable code-tasks/ en el repo de gobernanza, separada de handoffs/.
-      Gatillo manual de ejecucion (operacionaliza DEC-C04, no la modifica).
-      Repo destino y criterio de exito obligatorios por tarea. Una tarea por
-      archivo. Detalle de implementacion (YAML, plantilla) vive aparte en rules/.
+      Workflow transicional actual con Claude Code como ejecutor y code-tasks/
+      en el repo de gobernanza de ColaborIA. No convierte al repo de gobernanza
+      en recurso obligatorio de proyectos nuevos.
   - id: DEC-C09
     resumen: >
-      Arquitectura V0: Postgres como motor de DB operacional (no fuente de
-      verdad de gobernanza, eso sigue en el repo). Tablas projects y
-      project_resources (recursos no hardcodeados como columnas). Tabla
-      credentials con cifrado reversible, clave fuera de DB (alcance
-      por-proyecto vs global aun pendiente). Agentes fuera de DB, en config
-      estatica. Convencion de nombres adoptada para repos/Drive. Context y
-      Governance Engine no se implementan completos en V0, se preserva la
-      costura conceptual. Stack tecnico resuelto 2026-07-11: backend .NET/
-      ASP.NET Core + EF Core + Npgsql, frontend Angular. Credentials resuelto
-      2026-07-11: scope_type global/project, direccion GitHub App/installation
-      tokens (no PAT manual) para auth de la app en produccion. Monorepo de
-      codigo con carpetas backend/ y frontend/ (DEC-C02 no se modifica, sigue
-      siendo un solo repo de codigo).
+      REVISADA 2026-08-29. Postgres + project_resources. Topología base fija:
+      todo proyecto crea automáticamente drive_root; software agrega un único
+      code_repo GitHub; narrative no crea repo; governance_repo deprecado para
+      proyectos nuevos. Alta UI: nombre + tipo solamente. Drive es raíz
+      documental del proyecto; DB sostiene gobernanza/estado del producto.
   - id: DEC-C10
     resumen: >
-      APROBADA 2026-07-18. Canal conversacional V0: sessions con project_id
-      obligatorio, messages como fuente de verdad de contenido y agent_turns
-      como bitacora de ejecucion, idempotencia de mensaje entrante,
-      timeouts/retry de turnos, politica de fallo en rondas both_sequential,
-      input_context_ref trazable, floor lock bajo autoridad exclusiva del
-      backend, deprecacion futura de handoffs/quick/log.md una vez el canal
-      este validado, handoffs/active/ se conserva, politica de durabilidad
-      (DB operativa pero objetos auditables se materializan en el repo).
+      REVISADA 2026-08-29. Canal persistente con sessions/messages/agent_turns,
+      floor lock e input_context_ref. DB es fuente durable de conversación y
+      objetos formales del producto. QC/handoffs en repo quedan como transición
+      del desarrollo actual de ColaborIA, no como recurso por proyecto.
   - id: DEC-C11
     resumen: >
-      APROBADA 2026-07-18. ColaborIA como interfaz operativa unica: Dani ya
-      no coordina manualmente entre ChatGPT/Claude/Claude Code, todo pasa por
-      ColaborIA. Matriz de accesos: Papu lectura+escritura solo en repo
-      gobernanza, lectura en repo codigo y Drive; Chapu lectura+escritura en
-      los tres. Flujo objetivo conversacion->propuesta->decision->tarea->
-      ejecucion->resultado. Prioridad de roadmap: vertical slice operativa.
+      REVISADA 2026-08-29. ColaborIA es interfaz única. Persistencia objetivo:
+      estado/gobernanza en DB, documentos en Drive, código en un único repo
+      solo para software. Matriz: Papu DB R/W autorizada, Drive/código RO;
+      Chapu DB/Drive/código R/W autorizada según recurso y aprobación.
   - id: DEC-C12
     resumen: >
-      APROBADA 2026-07-18. Reemplaza borrador anterior (GitHub Projects,
-      descartado). ColaborIA como superficie de planificacion propia, nucleo
-      comun de "elemento planificable" compartido con DEC-C13, Kanban generico
-      (backlog/listo/en curso/bloqueado/hecho/cancelado). Relacion con
-      code-tasks/*.md: BD es estado operativo, archivo es materializacion
-      durable, sincronizacion unidireccional por checkpoints (creacion,
-      gatillo manual, cierre, cancelacion), no bidireccional continua. Fija
-      arquitectura conceptual, no esquema fisico de Postgres.
+      REVISADA 2026-08-29. Kanban/planificación viven operativa y durablemente
+      en DB. code-tasks/*.md es mecanismo transicional del desarrollo actual,
+      no requisito de proyectos nuevos ni fuente canónica futura.
   - id: DEC-C13
     resumen: >
-      APROBADA 2026-07-18, con jerarquia obligatoria incorporada antes de
-      aprobar: fase -> iniciativa/frente -> hito -> tarea. Roadmap/timeline
-      construido sobre el mismo nucleo de elemento planificable de DEC-C12.
-      Soporta roadmap temporal (fechas) y ordinal (solo secuencia/dependencia)
-      sin obligar a inventar fechas. Boundary explicito con DEC-C14/C15
-      (dominio narrativo, distinto).
+      REVISADA 2026-08-29. Roadmap/timeline sobre el núcleo de planificación;
+      jerarquía fase->iniciativa->hito->tarea; DB es fuente durable y Drive
+      puede almacenar exportaciones/documentos derivados.
   - id: DEC-C14
     resumen: >
-      APROBADA 2026-07-18. Reemplaza version anterior (dividida
-      tras revision de prototipo funcional). Mapa de tramas y estructura de
-      PRESENTACION narrativa: episodio/acto/beat, orden del relato, tarjetas
-      dimensionables con tiempo de pantalla estimado, relaciones semanticas
-      tipadas, vistas sincronizadas. No cubre cronologia interna (DEC-C15) ni
-      tiempo de produccion (DEC-C13).
+      Mapa de tramas y estructura de presentación narrativa: episodio/acto/beat,
+      orden del relato, tiempo de pantalla estimado y relaciones semánticas.
   - id: DEC-C15
     resumen: >
-      APROBADA 2026-07-18. Cronologia INTERNA del mundo narrativo:
-      acontecimiento canonico, fecha/edad/generacion segun el mundo de la
-      historia, causalidad historica - independiente de cuando y como se
-      presenta al publico (DEC-C14). Menor urgencia (no hay proyecto
-      narrativo activo hoy) pero disenada ahora igual.
+      Cronología interna del mundo narrativo, separada de la presentación y
+      del calendario real de producción.
   - id: DEC-C16
     resumen: >
-      APROBADA 2026-07-19. Alcance MVP1.0 con correcciones de Papu
-      incorporadas: Bloque A credenciales (GitHub App con tokens efimeros
-      generados bajo demanda, Drive OAuth offline agregado, API keys LLM),
-      Bloque B proyectos (idempotente, permite vincular recursos existentes),
-      Bloque C identidad de agentes (autorizacion efectiva vive en backend,
-      no en el prompt), Bloque D sala con contexto gobernado (input_context_ref
-      minimo obligatorio, adapters deterministicos de prueba), Bloque E
-      gateway de recursos tipado y auditable (no "bash del agente").
-      Correccion sobre DB->repo: solo se materializan objetos que cambian
-      estado o son auditables, no cada mensaje. Criterio de cierre verificable
-      de 13 puntos agregado. Orden de implementacion en 7 hitos, con
-      paralelismo. Kanban/Roadmap/narrativo quedan fuera (DEC-C12 a DEC-C15).
+      REVISADA 2026-08-29. MVP1.0: crear proyecto con nombre+tipo; Drive siempre;
+      software además un único repo de código; narrative solo Drive; sin repo
+      de gobernanza por proyecto ni selectores kind/provider. OAuth Drive debe
+      recuperarse desde UI. Estado formal durable en DB; documentos en Drive;
+      código en repo software. Criterio de cierre actualizado a este flujo.
   - id: DEC-C17
     resumen: >
-      APROBADA 2026-07-19. Conceptual, sin etapa/roadmap. UI/UX Engine:
-      genera mockups FUNCIONALES (HTML/CSS/JS real, no imagenes) de un caso
-      de uso ya definido, para validar con Dani antes de programar. No es
-      motor de renderizado desde cero. Componentes: sistema de diseno propio,
-      adapter especializado (no literalmente Claude Code), Design Result
-      versionado (el codigo generado no es la unica fuente de verdad), Canvas
-      navegable en SANDBOX sin acceso a backend/credenciales reales. Angular
-      lo reimplementa despues como etapa separada, con verificacion de
-      conformidad. Visual Assets (logos/imagenes) queda como capacidad
-      auxiliar aparte, no disenada aqui.
+      UI/UX Engine conceptual: Design Result versionado, prototipos funcionales
+      en sandbox y posterior implementación Angular con verificación.
   - id: DEC-C18
     resumen: >
-      APROBADA 2026-07-19. Conceptual, sin etapa/roadmap. Explorer Engine:
-      formaliza la exploracion de ideas inmaduras (problema, competidores,
-      viabilidad, riesgos) antes de comprometer desarrollo. Produce
-      Exploration Result durable con fuentes, confianza, contradicciones y
-      recomendacion - no es Decision automatica, Dani conserva el go/no-go.
-      Comparte infraestructura potencial con DEC-C17 (orquestador, Context
-      Builder, Source Registry) pero con boundaries propios, sin fusionarse
-      en un motor universal.
+      Explorer Engine conceptual para explorar ideas y producir recomendaciones;
+      Dani conserva el go/no-go final.
 
 rol_chapu_en_este_proyecto:
   prioridades:
-    - consistencia longitudinal entre decisiones y codigo
-    - arquitectura tecnica
+    - consistencia longitudinal entre decisiones y código
+    - arquitectura técnica
     - impacto acumulativo de cambios
-    - recuperacion historica de decisiones
-    - revision de divergencias entre documentacion e implementacion
-  nota: >
-    Prioridades de partida, no exclusividad ni division rigida de tareas
-    (ver PROTOCOLO-OPERATIVO-MULTIPROYECTO-v1.md seccion 7).
+    - recuperación histórica de decisiones
+    - revisión de divergencias entre documentación e implementación
+
+rol_papu_en_este_proyecto:
+  prioridades:
+    - arquitectura conceptual y técnica
+    - dominio y boundaries
+    - workflows y modelos de datos
+    - contexto, trazabilidad, seguridad y trade-offs
