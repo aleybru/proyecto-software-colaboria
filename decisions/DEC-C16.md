@@ -1,102 +1,193 @@
 # DEC-C16 — MVP1.0: alcance, criterio de cierre y orden de implementación
 
-**Estado:** Decision vigente — aprobada por Dani el 2026-07-19
-**Fecha:** 2026-07-18 (redacción inicial), cerrada 2026-07-19
-**Origen:** definición conjunta Dani-Chapu; contraste y correcciones de Papu (`handoffs/active/HANDOFF-2026-07-18-papu-response-dec-c16-mvp1.md`) incorporadas en su totalidad antes de la aprobación.
-**Relacionada con:** todas las Decisions vigentes (DEC-C08 a DEC-C15) — MVP1.0 es el primer recorte de implementación sobre ese diseño ya cerrado.
+**Estado:** Decision vigente
+**Fecha original:** 2026-07-18/19
+**Revisión vigente:** 2026-08-29
+**Autoridad:** Dani
+**Relacionada con:** DEC-C09 a DEC-C15
 
 ## Resumen
 
-Define dónde termina el primer entregable funcional de ColaborIA: qué capacidades ya diseñadas (DEC-C09 a DEC-C15) entran en MVP1.0, con qué condiciones operativas reales, y en qué orden se implementan. No rediseña nada — todas las capacidades ya están fijadas en Decisions previas; esta Decision recorta el subconjunto, precisa las condiciones de cada bloque, y fija un criterio de cierre verificable.
+MVP1.0 mantiene el objetivo de convertir ColaborIA en la interfaz operativa real del proyecto, pero adopta una topología de recursos mucho más simple y determinística.
 
-## Decisión
+Regla central de esta revisión:
 
-### Bloque A — Credenciales e integraciones
+- todo proyecto crea automáticamente una carpeta raíz en Google Drive;
+- un proyecto `narrative` no crea repos GitHub por defecto;
+- un proyecto `software` crea además un único repo GitHub de código;
+- no se crea repo de gobernanza por proyecto;
+- la DB de ColaborIA sostiene conversación, estado gobernado, decisiones, tareas, resultados, preguntas abiertas, handoffs e historial;
+- la UI de alta de proyecto no expone `kind`, `provider` ni formularios genéricos de recursos base.
 
-Objetivo correcto (precisión de Papu): no "tokens que no vencen", sino **operación persistente sin renovación manual recurrente en condiciones normales**.
+## Bloque A — Credenciales e integraciones
 
-- **GitHub App**: identidad de la App, clave privada/referencia segura, instalación y permisos autorizados son la configuración durable. Los installation access tokens son efímeros y se generan automáticamente bajo demanda — no se guardan como credencial durable principal.
-- **Google Drive**: OAuth con acceso offline y renovación automática vía refresh token, consentimiento inicial de Dani, scopes mínimos, validación y reconexión si la autorización se revoca o queda inválida. (Ausente en la redacción original de este bloque — corrección de Papu.)
-- **API keys de OpenAI y Anthropic**: cifradas, con validación, rotación/revocación, sin exigir recarga manual frecuente en operación normal.
-- El bloque incluye, como mínimo: cifrado real, alta/reemplazo/revocación, prueba de conexión, estado de credencial, enmascaramiento, renovación automática cuando el proveedor la soporte, y ausencia de secretos en logs/API.
-- No se fijan estimaciones de tiempo dentro de esta Decision (se retira "uno o dos días" de la redacción original — un número no validado no debe leerse como compromiso).
+Objetivo: operación persistente sin renovación manual recurrente en condiciones normales.
 
-### Bloque B — Proyectos y aprovisionamiento de recursos
+- **GitHub App**: configuración durable de App/instalación y tokens efímeros bajo demanda. Debe permitir operar el único repo de código de proyectos software.
+- **Google Drive**: OAuth offline, refresh automático y reconexión integrada cuando el refresh token deje de ser válido.
+- **OpenAI/Anthropic**: API keys cifradas, validables, rotables y revocables.
+- Secretos cifrados, nunca en logs/API.
+- Errores de credencial deben ser tipados y recuperables desde la UI.
 
-- Crear proyecto, elegir tipo (`narrative` | `software`) — tabla `projects` (DEC-C09).
-- Creación automática de recursos asociados, con la convención de nombres de DEC-C09 sección 7 — tabla `project_resources`.
-- **Camino para registrar o vincular recursos ya existentes**, sin obligar a recrearlos — necesario para incorporar a ColaborIA misma (dogfooding) y proyectos ya iniciados. (Agregado por corrección de Papu.)
-- El aprovisionamiento debe ser idempotente, reintentable, verificable, recuperable ante fallo parcial, y capaz de mostrar qué recurso se creó, cuál falló y cuál ya existía.
+Para Drive, si el refresh token es inválido/revocado, la UI debe ofrecer reconexión OAuth y, tras completarla, volver al proyecto y reintentar idempotentemente la operación pendiente. El usuario no debe recibir como salida final instrucciones de endpoints internos.
 
-### Bloque C — Identidad de agentes y autorización efectiva
+## Bloque B — Proyectos y aprovisionamiento
 
-- `config/agents/papu.yml` y `config/agents/chapu.yml` (DEC-C11) — identidad, rol, habilidades, proveedor/modelo e instrucciones, en configuración versionada.
-- **Precisión obligatoria (Papu):** identidad de agente no equivale a autorización. La autorización efectiva vive en el backend, no en el prompt — se aplica la matriz de DEC-C11 (Papu: gobernanza lectura/escritura, código y Drive solo lectura; Chapu: lectura/escritura en los tres) de forma que ningún agente puede exceder sus permisos aunque el modelo lo solicite. Dani autoriza los efectos secundarios.
+### Alta normal
 
-### Bloque D — Sala de chat con contexto gobernado
+Crear proyecto requiere únicamente:
 
-- Canal conversacional completo de DEC-C10: `sessions` con `project_id` obligatorio, `messages`, `agent_turns`, floor lock bajo autoridad del backend, modos de conversación.
-- Agentes reales (Claude y OpenAI vía API) desde el arranque — no hace falta fase de producto con agente simulado.
-- **Adapters determinísticos de prueba como infraestructura obligatoria** (no fase de producto): necesarios para pruebas automatizadas, reproducir timeout/fallos, verificar idempotencia y orden sin costo de proveedor, correr CI sin depender de APIs externas. (Corrección de Papu.)
-- **Bloque de contexto gobernado (agregado, corrección de Papu — el hueco más importante señalado):** sin esto, la sala con APIs reales produce dos asistentes genéricos, no Papu y Chapu operando dentro de ColaborIA. Cada turno debe reconstruir, vía `input_context_ref` (DEC-C10 punto 6), como mínimo: protocolo vigente, manifest del proyecto, perfil del agente, Decisions y estado relevante, historial de sesión necesario, fuentes/archivos recuperados para la consulta, y aislamiento estricto por proyecto. No implica implementar el Context Builder completo — sí el mínimo suficiente para operación real y trazable.
+- `name`;
+- `type: narrative | software`.
 
-### Bloque E — Gateway de recursos tipado
+El backend deriva automáticamente la topología:
 
-**Reformulado (corrección de Papu):** no es reproducir de forma genérica lo que hoy hace Chapu con bash y curl en esta conversación — es un gateway de herramientas controlado por backend, con operaciones tipadas y auditables como mínimo:
+- `narrative` → carpeta raíz Google Drive;
+- `software` → carpeta raíz Google Drive + un único repo GitHub de código.
 
-- localizar/leer archivo o documento;
-- crear/actualizar objeto formal de gobernanza;
-- crear/actualizar `code-task` aprobada;
-- leer/escribir artefacto autorizado;
-- verificar la escritura y devolver referencia exacta (no afirmar éxito antes de verificarlo);
-- rechazar operación fuera de permisos.
+La carpeta Drive se crea siempre y funciona como raíz documental del proyecto.
 
-Cada efecto secundario registra proyecto, solicitante, agente, recurso, autorización, resultado y error.
+El repo de software puede ser monorepo y contener backend/frontend y demás componentes de código.
 
-### Materialización durable (corrección obligatoria de Papu sobre la redacción original)
+No se crea `governance_repo` para proyectos nuevos.
 
-La redacción original de esta sección decía que si la conversación queda solo en DB se contradice DEC-C10 — **no es exacto**, y se corrige:
+### Regla de UI obligatoria
 
-- el historial ordinario de chat puede y debe permanecer en DB como fuente activa (`messages`, DEC-C10 punto 2);
-- no corresponde copiar automáticamente cada mensaje al repo, ni mantener dos logs competidores;
-- cuando Dani aprueba/promueve una propuesta, Decision, Open Question, Task, Result o handoff formal, se crea el objeto durable correspondiente en el repo — eso, y solo eso, es lo que exige DEC-C10 punto 11;
-- la materialización debe ser idempotente, verificable, y enlazar el objeto formal con el mensaje/sesión de origen;
-- una exportación explícita de sesión completa puede existir después como función de archivo, pero no es requisito de durabilidad cotidiana.
-- QC (`handoffs/quick/log.md`) sigue vigente hasta validar el canal en producción (DEC-C10 punto 9); no se convierte en espejo permanente del chat.
+La pantalla de alta **no** debe presentar:
 
-### Criterio de cierre del MVP1.0 (agregado — no existía en la redacción original)
+- selector de proveedor;
+- selector de tipo de recurso;
+- campo propósito para decidir recursos base;
+- formularios paralelos de “vincular” vs. “crear” como flujo normal de alta;
+- combinaciones libres `kind + provider`.
 
-MVP1.0 se considera cerrado cuando Dani puede, con proveedores y recursos reales (no simulados):
+La UI normal es conceptualmente:
 
-1. configurar GitHub App, Google Drive, OpenAI y Anthropic;
-2. crear un proyecto `software` y uno `narrative` (o al menos probar ambos tipos);
-3. crear o vincular sus recursos y recuperarse de un fallo parcial;
-4. entrar a la sala del proyecto y conversar con Papu, Chapu, y ambos secuencialmente;
-5. recargar/reiniciar y conservar proyecto, recursos, sesión e historial;
-6. comprobar que cada agente recibe identidad y contexto correctos;
-7. leer recursos autorizados desde la sala;
-8. autorizar una escritura de Papu en gobernanza y una de Chapu en Drive/código;
-9. comprobar que una escritura no permitida de Papu en código o Drive es rechazada por el backend;
-10. promover un contenido aprobado a objeto formal y verificar su materialización en gobernanza;
-11. recibir enlaces/referencias exactas de las operaciones realizadas;
-12. crear un segundo proyecto y comprobar ausencia de contaminación de contexto/recursos;
-13. recuperar de forma visible errores de proveedor, credencial, timeout y recurso, sin corromper estado.
+```text
+Nombre
+Tipo: Software | Narrativo
+[Crear proyecto]
+```
 
-### Orden de implementación (reformulado — menos serial que la versión original)
+Luego muestra el estado de los recursos que el backend derivó y aprovisionó.
 
-1. **Fundación segura de integraciones**: cifrado, GitHub App, Drive OAuth, claves LLM, validación y renovación.
-2. **Proyectos y aprovisionamiento**: CRUD, tipos, crear/vincular recursos, idempotencia y recuperación parcial.
-3. **Perfiles y política de agentes** — puede avanzar en paralelo con 1 y 2.
-4. **Núcleo conversacional persistente**: sesiones, mensajes, turnos, floor lock, frontend de sala, adapters determinísticos de prueba.
-5. **Contexto gobernado + proveedores reales**: `input_context_ref`, recuperación mínima, OpenAI/Anthropic, aislamiento por proyecto.
-6. **Gateway de recursos y autorizaciones**: lectura/escritura tipada, matriz DEC-C11, confirmaciones, auditoría.
-7. **Materialización durable y cierre operativo**: promoción a objetos formales, verificación, manejo de errores, reinicio, aislamiento, prueba de aceptación completa (sección anterior).
+### Recursos existentes
 
-### No objetivos del MVP1.0
+Se conserva una capacidad separada para vincular/importar recursos existentes en casos de migración, dogfooding o proyectos preexistentes. No debe contaminar el flujo normal de creación.
 
-Quedan fuera, aunque ya estén diseñados en Decisions vigentes: Kanban (DEC-C12), Roadmap/timeline (DEC-C13), mapa de tramas y cronología interna narrativa (DEC-C14/DEC-C15). No implica pérdida de prioridad futura.
+### Robustez
+
+El aprovisionamiento debe ser:
+
+- idempotente;
+- reintentable;
+- verificable;
+- recuperable ante fallo parcial;
+- visible por recurso.
+
+Un error externo no debe corromper el proyecto. La UI debe mostrar acciones contextuales (`Reintentar`, `Reconectar`, `Abrir`) y no detalles de implementación como única salida.
+
+## Bloque C — Identidad y autorización de agentes
+
+Papu y Chapu permanecen definidos en configuración versionada (`config/agents/*.yml`) con identidad, rol, habilidades, proveedor/modelo e instrucciones.
+
+La autorización efectiva vive en backend.
+
+Matriz objetivo:
+
+| Recurso | Papu | Chapu |
+|---|---|---|
+| Estado/gobernanza en DB de ColaborIA | lectura + escritura autorizada | lectura + escritura autorizada |
+| Drive del proyecto | solo lectura | lectura + escritura autorizada |
+| Repo de código (software) | solo lectura | lectura + escritura autorizada |
+
+Dani autoriza efectos secundarios conforme a DEC-C04.
+
+El repo de gobernanza actual de ColaborIA es una excepción transicional del desarrollo y no un recurso aprovisionado por el producto.
+
+## Bloque D — Sala persistente y contexto gobernado
+
+- `sessions.project_id` obligatorio;
+- `messages` como fuente de verdad del contenido;
+- `agent_turns` como trazabilidad de ejecución;
+- floor lock y routing controlados por backend;
+- OpenAI y Anthropic reales;
+- adapters determinísticos para tests;
+- `input_context_ref` reconstructible;
+- contexto mínimo: protocolo aplicable, configuración/manifest del proyecto, agente, Decisions/estado relevantes en DB, historial necesario y fuentes recuperadas;
+- aislamiento estricto entre proyectos.
+
+## Bloque E — Gateway tipado de recursos y estado
+
+El backend expone operaciones tipadas y auditables, no acceso libre del agente.
+
+Como mínimo:
+
+- leer/actualizar estado gobernado autorizado en ColaborIA;
+- localizar/leer documentos del Drive del proyecto;
+- crear/actualizar documentos autorizados en Drive;
+- leer el repo de código de software;
+- escribir código cuando agente/runtime y autorización lo permitan;
+- despachar tareas aprobadas al runtime de ejecución;
+- verificar efectos secundarios antes de reportar éxito;
+- rechazar operaciones fuera de permisos.
+
+Cada operación auditable registra proyecto, solicitante/agente, recurso, autorización, resultado y error.
+
+## Durabilidad
+
+La persistencia se divide por naturaleza del objeto:
+
+- conversación y ejecución → DB;
+- Decisions, Tasks, Results, Open Questions, handoffs, aprobaciones, roadmap y demás estado gobernado → DB;
+- documentos y artefactos de archivo → Drive;
+- código → único repo de código del proyecto software.
+
+No se requiere materialización en un repo de gobernanza por proyecto.
+
+`handoffs/quick/log.md`, `code-tasks/*.md` y el repo de gobernanza actual continúan como infraestructura transicional para desarrollar ColaborIA hasta que Dani autorice su reemplazo/migración. No forman parte del template de proyectos nuevos.
+
+## Criterio de cierre MVP1.0
+
+MVP1.0 se considera cerrado cuando Dani puede:
+
+1. configurar GitHub App, Drive, OpenAI y Anthropic;
+2. crear desde la UI un proyecto `narrative` usando solamente nombre + tipo y obtener automáticamente su carpeta Drive;
+3. crear desde la UI un proyecto `software` usando solamente nombre + tipo y obtener automáticamente carpeta Drive + un único repo de código;
+4. comprobar que la UI nunca permite fabricar combinaciones inválidas `kind/provider` para recursos base;
+5. recuperarse visiblemente de fallos de Drive/GitHub sin corromper el proyecto;
+6. reconectar Drive desde la UI cuando OAuth lo requiera y continuar/reintentar la operación pendiente;
+7. reiniciar/recargar y conservar proyectos, referencias a recursos, sesiones e historial;
+8. conversar en la sala con Papu, Chapu y ambos;
+9. comprobar identidad, contexto e aislamiento correctos por proyecto;
+10. leer documentos autorizados desde Drive;
+11. comprobar que Papu no puede escribir código/Drive si no está autorizado y que Chapu/runtime sólo escriben mediante backend autorizado;
+12. promover conversación aprobada a objetos formales persistidos en DB con trazabilidad de origen;
+13. despachar una tarea aprobada al runtime y recibir/verificar su resultado;
+14. crear un segundo proyecto y comprobar ausencia de contaminación de estado, archivos, contexto y recursos;
+15. recuperar errores de proveedor, credencial, timeout y recurso mediante estados/acciones comprensibles para el usuario.
+
+## Orden de implementación
+
+1. **Fundación segura de integraciones** — cifrado, GitHub App, Drive OAuth/reconexión, claves LLM.
+2. **Proyectos y aprovisionamiento** — CRUD + topología automática simplificada + idempotencia/recuperación.
+3. **Perfiles y política de agentes** — puede avanzar en paralelo.
+4. **Núcleo conversacional persistente** — sesiones, mensajes, turnos, floor lock, frontend de sala, adapters de prueba.
+5. **Contexto gobernado + proveedores reales** — `input_context_ref`, recuperación mínima, aislamiento.
+6. **Gateway tipado y autorizaciones** — DB/Drive/repo código/runtime, auditoría y confirmaciones.
+7. **Objetos formales y cierre operativo** — promoción a estado DB, resultados, reinicio, aislamiento y prueba de aceptación.
+
+## No objetivos MVP1.0
+
+Quedan fuera de este recorte de implementación aunque sigan diseñados:
+
+- Kanban (DEC-C12);
+- Roadmap/timeline (DEC-C13);
+- mapa de tramas (DEC-C14);
+- cronología narrativa (DEC-C15).
 
 ## Pendiente
 
-- Descomposición del primer hito (Fundación segura de integraciones) en code-tasks pequeñas y verificables — cola `Ready` de 2-3 tareas, no todo el backlog de una vez.
-- Detalle de bootstrapping de GitHub App (registro e instalación) — probablemente un paso de configuración manual único de Dani, a definir en especificación técnica.
+- Ajustar implementación existente de proyectos/recursos a esta topología nueva.
+- Retirar de la UI actual los formularios genéricos de recursos que contradigan esta Decision.
+- Definir cuándo se migra o retira la infraestructura transicional del repo de gobernanza de ColaborIA.
