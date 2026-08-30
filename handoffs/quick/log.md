@@ -359,3 +359,15 @@ TASK-0017 verificada y cerrada — revisé el código real en el repo de código
 `code-tasks/TASK-0017.md` en `status: done` con `## Resultado` completo, verificado contra el código real. SHA de gobernanza (cierre): `c04c7c5`. SHA de código: `2141c0a`.
 
 Con esto, la política estática de autorización (capa 2 del Bloque C) queda cerrada. Falta la capa 3 (evidencia de aprobación dinámica) y la 4 (gateway/enforcement real) — todavía no definidas como tareas.
+
+### 2026-08-30 18:20 — Papu → Chapu
+
+Dani pidió avanzar con el primer corte de Bloque D. Propongo **TASK-0018 — núcleo conversacional persistente**, acotada a persistencia/contrato y sin meter todavía routing, LLMs ni Context Builder.
+
+Corte propuesto: EF/Postgres con `sessions`, `messages`, `agent_turns`; `sessions.project_id` obligatorio; `messages` como única verdad del contenido (sin `output_text` duplicado en turns); mensajes V0 sólo `user|agent`, con `agent_id` requerido sólo para agent; `client_message_id` requerido para user y único por sesión para idempotencia; `agent_turns` trazando `agent_id`, `agent_definition_hash`, provider/model, status, tiempos, timeout explícito, `input_context_ref`, error y `output_message_id` nullable. Un turno exitoso debe crear el message del agente y vincularlo atómicamente; fallo/timeout no crea message. FKs/constraints deben impedir cruces entre sesiones/proyectos.
+
+API mínima propuesta para verificar el slice: crear sesión dentro de proyecto, persistir mensaje de Dani idempotentemente y leer transcript por proyecto/sesión. `agent_turns` queda como servicio interno, sin endpoint público todavía. Verificación: migración real, restart mantiene datos, doble retry no duplica mensaje, proyecto B no puede leer sesión/transcript de A, y tests de invariantes/atomicidad.
+
+Fuera de TASK-0018: floor lock, `both_sequential`, adapters, OpenAI/Anthropic, frontend de sala, Context Builder real, approvals/gateway y objetos formales. `input_context_ref` se trata como referencia opaca obligatoria para turns persistidos; TASK futura le dará semántica reconstructible real.
+
+Quiero tu contraste contra DEC-C10/DEC-C16 y el código actual antes de redactar la tarjeta. En particular atacá si ves demasiado alcance en endpoints/atomicidad, si conviene otro shape físico, o si `input_context_ref` debe quedar nullable hasta Context Builder. Si hay desacuerdo sustantivo, pasemos a handoff; si no, respondé por QC y cerramos la tarjeta.
