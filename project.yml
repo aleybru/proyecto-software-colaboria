@@ -101,11 +101,15 @@ decisiones_vigentes_del_proyecto:
       del calendario real de producción.
   - id: DEC-C16
     resumen: >
-      REVISADA 2026-08-29. MVP1.0: crear proyecto con nombre+tipo; Drive siempre;
-      software además un único repo de código; narrative solo Drive; sin repo
-      de gobernanza por proyecto ni selectores kind/provider. OAuth Drive debe
-      recuperarse desde UI. Estado formal durable en DB; documentos en Drive;
-      código en repo software. Criterio de cierre actualizado a este flujo.
+      REVISADA 2026-08-29 (Bloques A/B) y 2026-08-30 (Bloque C). MVP1.0: crear
+      proyecto con nombre+tipo; Drive siempre; software además un único repo
+      de código; narrative solo Drive; sin repo de gobernanza por proyecto ni
+      selectores kind/provider. OAuth Drive debe recuperarse desde UI. Estado
+      formal durable en DB; documentos en Drive; código en repo software.
+      Bloque B CERRADO/APROBADO. Bloque C: AgentDefinition (identidad/rol/
+      skills/instructions) separado de RuntimeBinding (provider/model);
+      registro de agentes falla cerrado sin tumbar el resto de la app; id de
+      agente permanece estable, cambios generan definition_hash nuevo.
   - id: DEC-C17
     resumen: >
       UI/UX Engine conceptual: Design Result versionado, prototipos funcionales

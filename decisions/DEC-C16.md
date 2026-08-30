@@ -91,9 +91,18 @@ Un error externo no debe corromper el proyecto. La UI debe mostrar acciones cont
 
 ## Bloque C — Identidad y autorización de agentes
 
-Papu y Chapu permanecen definidos en configuración versionada (`config/agents/*.yml`) con identidad, rol, habilidades, proveedor/modelo e instrucciones.
+**Revisión vigente 2026-08-30** (ajuste menor de redacción, sin cambio de arquitectura, previo a TASK-0016): separa explícitamente identidad de runtime binding, algo que la redacción anterior mezclaba.
 
-La autorización efectiva vive en backend.
+Papu y Chapu permanecen definidos en configuración versionada (`config/agents/*.yml`), estructurada en dos partes conceptualmente distintas dentro del mismo archivo:
+
+- **`AgentDefinition`**: identidad, rol, `skills` (habilidades declaradas — deliberadamente no "capabilities", para no confundir habilidad declarada con autorización efectiva) e instrucciones. Relativamente estable.
+- **`RuntimeBinding`**: `provider`/`model`. Puede cambiar sin que cambie la identidad del agente.
+
+**Permanencia de identidad:** el `id` de un agente representa su identidad lógica y permanece estable aunque cambien sus instrucciones o su `RuntimeBinding` — esos cambios se reflejan en un `definition_hash` nuevo, no en un `id` nuevo. Solo una identidad genuinamente distinta (no una revisión de la existente) recibe un `id` nuevo.
+
+La autorización efectiva vive en backend — nunca en `instructions`, nunca en el YAML. La identidad de un agente no implica ni otorga permisos por sí sola (DEC-C11 sección 3).
+
+**Robustez del registro de agentes:** una configuración inválida (YAML mal formado, campos obligatorios faltantes, `provider`/`model` inválido, IDs duplicados) no debe tumbar toda la aplicación. El registro de agentes falla cerrado y queda en estado `unavailable`/`degraded`; el resto del sistema (Bloque B — proyectos y aprovisionamiento) sigue operativo. Los endpoints que dependan de agentes rechazan con un estado tipado, no con una caída genérica.
 
 Matriz objetivo:
 
