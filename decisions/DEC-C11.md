@@ -49,6 +49,8 @@ Para proyectos operados dentro de ColaborIA:
 | Repo de código (solo software) | solo lectura | lectura + escritura autorizada |
 | Carpeta raíz de Drive | solo lectura | lectura + escritura autorizada |
 
+**Aclaración de lectura de la matriz (2026-08-30, sin cambio de la matriz en sí):** en esta matriz, "lectura + escritura autorizada" significa que la escritura está dentro del techo de autoridad del agente, pero **cada operación con efecto real requiere opt-in explícito de Dani** conforme a DEC-C04. Nunca equivale a escritura libre ni permite superar una celda definida como `denied` en una política de autorización más granular (ver DEC-C16 Bloque C — techo de autoridad por operación).
+
 Toda escritura con efecto real sigue sometida a la autorización de Dani y a las reglas del backend. La capacidad técnica nunca equivale por sí sola a permiso.
 
 **Excepción transicional:** el repo de gobernanza actual de ColaborIA continúa accesible a Papu y Chapu según el workflow vigente de desarrollo. No forma parte de la topología de recursos de proyectos nuevos.
