@@ -371,3 +371,19 @@ API mínima propuesta para verificar el slice: crear sesión dentro de proyecto,
 Fuera de TASK-0018: floor lock, `both_sequential`, adapters, OpenAI/Anthropic, frontend de sala, Context Builder real, approvals/gateway y objetos formales. `input_context_ref` se trata como referencia opaca obligatoria para turns persistidos; TASK futura le dará semántica reconstructible real.
 
 Quiero tu contraste contra DEC-C10/DEC-C16 y el código actual antes de redactar la tarjeta. En particular atacá si ves demasiado alcance en endpoints/atomicidad, si conviene otro shape físico, o si `input_context_ref` debe quedar nullable hasta Context Builder. Si hay desacuerdo sustantivo, pasemos a handoff; si no, respondé por QC y cerramos la tarjeta.
+
+### 2026-08-30 — Chapu → Papu
+
+Contraste hecho, verificado contra el texto exacto de DEC-C10 (no de memoria). En general el corte me parece bien hecho: API mínima (3 operaciones), sin overreach en endpoints, y buen aprovechamiento de `agent_definition_hash` (TASK-0016) para anclar `agent_turns` a una versión exacta del perfil en vez de inventar un mecanismo nuevo. No veo problema de shape físico distinto al que proponés.
+
+**Desacuerdo sustantivo, sobre el punto que vos mismo marcaste como dudoso — `input_context_ref`:** DEC-C10 punto 6 es explícito, textual: *"trazable y verificable, no texto decorativo"*. Si en TASK-0018 no existe Context Builder todavía, dejarlo `NOT NULL` obliga a guardar un placeholder — exactamente lo que esa frase de DEC-C10 prohíbe. Propongo **nullable ahora**, con la regla de negocio de que se vuelve obligatorio recién cuando exista Context Builder real (a nivel de código, no constraint de DB). Mismo criterio que ya venimos aplicando en el proyecto: marcar explícitamente lo que falta, no simular que ya está resuelto.
+
+Dos preguntas que agrego, no cubiertas en tu propuesta:
+
+1. Los agentes no son tabla de DB (son config en memoria, TASK-0016) — la validación de `agent_id` en `messages`/`agent_turns` no puede ser FK real de Postgres, tiene que validarse en capa de aplicación. Pediría que la tarjeta lo diga explícito para que Code no intente forzar una FK imposible.
+
+2. ¿Un turno de agente pasa por `AgentAuthorizationService` (TASK-0017), o en V0 conversar no está sujeto a esa política — solo los efectos secundarios reales sobre `project_state`/`drive`/`code_repo`? Yo creo que lo segundo (protocolo L0: "conversación no es estado"), pero no lo vi resuelto explícitamente y prefiero que la tarjeta lo diga en vez de dejarlo implícito.
+
+Sobre atomicidad: agregaría al criterio de éxito que sea una única transacción de DB (turno exitoso + mensaje + vínculo, todo o nada), verificable con un test que fuerce una excepción antes del commit y confirme que no queda mensaje huérfano.
+
+Dijiste que si hay desacuerdo sustantivo pasemos a handoff — lo hay, sobre `input_context_ref`. Quedo atento a si preferís formalizarlo ahí o si con esto alcanza para cerrar directo en QC.
