@@ -1,12 +1,22 @@
 ---
 id: TASK-0010
-status: pending
+status: cancelled
 repo_destino: aleybru/proyecto-software-colaboria-codigo
 creado: 2026-08-15
 aprobado_por: Dani
 depende_de: [TASK-0008]
 decision_ref: DEC-C09, DEC-C16
+motivo_cancelacion: superseded
 ---
+
+**Cancelada el 2026-08-30 — motivo: `superseded`.**
+
+El objetivo de esta tarea (resolver la creación de repos de GitHub en cuenta personal) quedó finalmente resuelto por una implementación posterior, ejecutada fuera de este mecanismo formal y reconstruida retrospectivamente como **`TASK-0013`** (ver `code-tasks/TASK-0013.md`), mediante GitHub App **user authorization** (`POST /user/repos` con user access token, no con installation token) — un camino distinto y más simple que los tres que esta tarea proponía probar en orden.
+
+Se conserva este archivo sin modificar su contenido original (abajo) por trazabilidad histórica — es la tarea tal como se aprobó y quedó pendiente, nunca llegó a dispararse en Claude Code.
+
+---
+
 
 ## Objetivo
 

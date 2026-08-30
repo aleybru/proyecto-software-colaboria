@@ -41,7 +41,7 @@ agents:
 protocol:
   version: 1.0
   source: PROTOCOLO-OPERATIVO-MULTIPROYECTO-v1.md
-  last_validated_at: 2026-07-06
+  last_validated_at: 2026-08-30
 
 decisiones_vigentes_del_proyecto:
   - id: DEC-C01

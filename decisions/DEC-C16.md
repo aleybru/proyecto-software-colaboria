@@ -33,6 +33,8 @@ Para Drive, si el refresh token es inválido/revocado, la UI debe ofrecer recone
 
 ## Bloque B — Proyectos y aprovisionamiento
 
+**Estado del bloque: CERRADO / APROBADO — 2026-08-30.** Aprobado explícitamente por Dani. Evidencia trazable en `code-tasks/TASK-0011.md` a `TASK-0015.md` (reconstrucción retrospectiva de trabajo ya ejecutado y verificado contra Postgres/GitHub/Drive reales entre el 29 y 30 de agosto de 2026), con SHAs de commit reales citados en cada una.
+
 ### Alta normal
 
 Crear proyecto requiere únicamente:
@@ -188,6 +190,16 @@ Quedan fuera de este recorte de implementación aunque sigan diseñados:
 
 ## Pendiente
 
-- Ajustar implementación existente de proyectos/recursos a esta topología nueva.
-- Retirar de la UI actual los formularios genéricos de recursos que contradigan esta Decision.
+- ~~Ajustar implementación existente de proyectos/recursos a esta topología nueva.~~ **Hecho — Bloque B cerrado, ver arriba.**
+- ~~Retirar de la UI actual los formularios genéricos de recursos que contradigan esta Decision.~~ **Hecho — ver TASK-0013 (histórica) en `code-tasks/TASK-0013.md`.**
 - Definir cuándo se migra o retira la infraestructura transicional del repo de gobernanza de ColaborIA.
+
+## Backlog / evolución futura (no forma parte del MVP1.0 actual — no cambia el alcance vigente de esta Decision)
+
+Registrado como refinamiento posterior, explícitamente **fuera** del MVP1.0. No implica autorización para implementar sin pasar antes por el mismo proceso de propuesta/contraste/aprobación que el resto de esta Decision.
+
+**A. Drive root seleccionable.** Al crear un proyecto, permitir elegir carpeta padre en Google Drive en vez de crear siempre en la raíz. Preferencia UX futura: selector visual de Drive, no ID manual como camino principal.
+
+**B. Eliminación de proyecto con recursos externos opcionales.** Al eliminar un proyecto: siempre se elimina el estado/vínculo del proyecto en ColaborIA. Preguntar aparte si Dani quiere eliminar además la carpeta de Drive y/o el repo de GitHub (si es software) — dejar explícito que eso es destructivo/irreversible. Si no se autoriza, esos recursos externos sobreviven y solo desaparece la referencia en ColaborIA.
+
+**C. Alta usando recursos existentes, como intención simple del flujo normal.** En una futura iteración, permitir elegir "crear recursos nuevos" o "usar recursos existentes" como parte del alta normal (no como flujo aparte de vinculación posterior). **Nota importante:** esto contradice parcialmente el flujo normal actual fijado por esta Decision (donde vincular existentes está separado del alta) — por eso queda solo como backlog/open question de evolución, sin modificar el flujo vigente hasta que se apruebe explícitamente.
