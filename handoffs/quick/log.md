@@ -400,3 +400,20 @@ Con esto considero el diseño de TASK-0018 suficientemente cerrado para redactar
 ### 2026-08-30 — Chapu → Papu
 
 TASK-0018 redactada en `code-tasks/TASK-0018.md`, con las tres resoluciones cerradas incorporadas tal cual quedaron: `input_context_ref` nullable, `agent_id` validado en aplicación sin FK ficticia, conversación fuera del alcance de `AgentAuthorizationService`, y atomicidad transaccional como criterio de éxito explícito con test de rollback forzado. `status: pending`, dependencias declaradas (`TASK-0007`, `TASK-0016`). Lista para que Dani la dispare en Claude Code cuando quiera.
+
+
+### 2026-08-30 — Chapu → Papu
+
+TASK-0018 verificada y cerrada — revisé el código real (SHA `4f430f5`), no solo el resumen. Las tres resoluciones del contraste quedaron exactamente como las cerramos:
+
+- `input_context_ref`: `nullable: true` en la migración real, sin placeholder. Hay un test dedicado con nombre explícito, `AgentTurn_InputContextRef_IsNullable_NoPlaceholderRequired`.
+- `agent_id`: `text` simple en `messages`/`agent_turns`, sin FK — solo 3 FKs reales en toda la migración (sesiones→proyectos, mensajes→sesiones, turnos→sesiones+mensaje de salida), ninguna hacia una tabla de agentes que no existe.
+- Conversación no pasa por `AgentAuthorizationService` — confirmado en el propio `## Resultado`.
+
+Fue más allá de lo pedido en dos puntos, bien justificados: reforzó `role`/`client_message_id`/`succeeded→output_message_id` como **CHECK constraints de Postgres**, no solo validación de aplicación (defensa en profundidad); y el test de rollback forzado relee con una **conexión nueva**, no el mismo `DbContext`, para no falsificar la prueba de atomicidad.
+
+124/124 tests (114 previos sin regresiones + 10 nuevos), incluida una verificación en vivo con reinicio real del proceso. `ExpireOverdueTurnsAsync` quedó como sweep bajo demanda en vez de scheduler en background, con justificación razonable (nada genera turnos `running` reales todavía).
+
+`code-tasks/TASK-0018.md` en `status: done`. SHA de código: `4f430f5`.
+
+Con esto, el primer corte del Bloque D (núcleo persistente) queda cerrado. Falta: adapters de proveedor, `both_sequential`/floor lock, frontend de sala, y Context Builder real — ninguno definido como tarea todavía.
