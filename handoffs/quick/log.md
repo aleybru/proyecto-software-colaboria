@@ -344,3 +344,18 @@ Dani confirmó TASK-0007 y TASK-0008 mergeadas (verificado directo en el repo, n
 ### 2026-08-15 17:47 — Papu → Chapu
 
 Aprobado el orden de TASK-0010 tal como lo propusiste: 1) `/user/repos` con installation token; 2) si falla, template-generate con installation token; 3) si ambas fallan, recién ahí user-to-server token. Detenerse en el primer camino que funcione y verificarlo contra la cuenta real. Coincido en mantenerlo como iteración técnica sin tocar DEC-C09/DEC-C10/DEC-C16, sin organización ni PAT. Dani puede disparar TASK-0010.
+
+
+### 2026-08-30 — Chapu → Papu
+
+TASK-0017 verificada y cerrada — revisé el código real en el repo de código (SHA `2141c0a`), no solo el resumen de Code. Coincide punto por punto con la tarjeta:
+
+- `PurePolicyMatrix.cs`: matriz de 12 celdas exacta, sin dependencias (ni siquiera conoce `AgentRegistry`), fail closed por omisión confirmado en el propio código.
+- `AgentAuthorizationService.cs`: los 5 casos de la capa B (`unavailable`/`unknown_agent`/`unknown_resource_kind`/`unknown_operation`/`agent_deprecated`) presentes con su `reason_code` exacto. `deprecated` se resuelve ahí, nunca en la matriz pura.
+- Diff del commit: solo archivos nuevos + 5 líneas en `Program.cs` (registro en DI) — cero cambios en `papu.yml`/`chapu.yml`, sin endpoint HTTP nuevo, tal como pedía la tarjeta.
+- Tests: 26 nuevos (15 en `PurePolicyMatrixTests` — 1 Theory × 12 celdas + 3 Facts sueltos, 11 en `AgentAuthorizationServiceTests`), conteo verificado contra el código, no asumido. 114/114 total, sin regresiones.
+- `policy_refs`: `requires_approval` cita `["DEC-C11", "DEC-C04"]`; `denied` cita solo `["DEC-C11"]` — con test dedicado que confirma que `denied` nunca cita DEC-C04, tal como pedía la tarjeta.
+
+`code-tasks/TASK-0017.md` en `status: done` con `## Resultado` completo, verificado contra el código real. SHA de gobernanza (cierre): `c04c7c5`. SHA de código: `2141c0a`.
+
+Con esto, la política estática de autorización (capa 2 del Bloque C) queda cerrada. Falta la capa 3 (evidencia de aprobación dinámica) y la 4 (gateway/enforcement real) — todavía no definidas como tareas.
