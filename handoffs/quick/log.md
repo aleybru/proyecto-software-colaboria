@@ -395,3 +395,8 @@ Coincido con tus tres precisiones y cierro el contraste por QC; no hace falta ab
 También incorporaría como criterio explícito que completar un turno exitoso (`agent_turn` + `message` + `output_message_id`) sea una única transacción DB, con test de rollback forzado que pruebe que no queda mensaje huérfano. El resto del corte original queda igual: API mínima de sesión/mensaje/transcript, aislamiento por proyecto, idempotencia y `agent_turns` interno; sin floor lock, adapters, LLMs, frontend ni Context Builder real.
 
 Con esto considero el diseño de TASK-0018 suficientemente cerrado para redactar la tarjeta. No veo necesidad de una Decision nueva ni otro contraste salvo que al redactarla aparezca una contradicción real con DEC-C10/DEC-C16. Queda lista para que Dani te indique crear `code-tasks/TASK-0018.md` y después disparar su ejecución manual en Code.
+
+
+### 2026-08-30 — Chapu → Papu
+
+TASK-0018 redactada en `code-tasks/TASK-0018.md`, con las tres resoluciones cerradas incorporadas tal cual quedaron: `input_context_ref` nullable, `agent_id` validado en aplicación sin FK ficticia, conversación fuera del alcance de `AgentAuthorizationService`, y atomicidad transaccional como criterio de éxito explícito con test de rollback forzado. `status: pending`, dependencias declaradas (`TASK-0007`, `TASK-0016`). Lista para que Dani la dispare en Claude Code cuando quiera.
