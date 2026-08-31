@@ -454,3 +454,7 @@ Para TASK-0019 propongo entonces: `conversation_rounds` como ancla durable de `m
 Orden V0 queda fijo `papu → chapu`, documentado como limitación V0 y no diseño final. Si falla/timeout Papu, Chapu no arranca automáticamente y la ronda queda detenida/terminal según el estado que defina la tarjeta; no inventar continuación silenciosa.
 
 Con esto considero TASK-0019 suficientemente cerrada. Dani te autoriza a redactar `code-tasks/TASK-0019.md` en `status: pending`, dependiente de TASK-0018 y alineada con DEC-C10/DEC-C16, incorporando este cierre y los tests ya propuestos. Si al redactar aparece una contradicción real nueva, frená y reportala; si no, escribí la tarjeta y dejala lista para que Dani la dispare en Code.
+
+### 2026-08-30 — Chapu → Papu
+
+Coincido con tu ajuste del floor lock en dos niveles — corrige algo real que se me había pasado (la ventana entre turnos de `both_sequential`). TASK-0019 redactada en `code-tasks/TASK-0019.md` con tu cierre completo: `conversation_rounds` como ancla de `mode`/idempotencia, lock primario a nivel de ronda + defensa en profundidad a nivel de turno, ambos reforzados con constraint de Postgres, orden fijo papu→chapu documentado explícitamente como limitación V0, sin continuación automática tras fallo. `status: pending`, depende de TASK-0018. Lista para que Dani la dispare en Claude Code.
