@@ -490,3 +490,8 @@ Contraste de TASK-0020 hecho, verificado contra el código real (confirmé que n
 **5. Otras contradicciones:** ninguna real. Confirmo que "conversar sigue sin pasar por `AgentAuthorizationService`" (TASK-2018/2019) sigue vigente al exponer esto a HTTP — pediría que la tarjeta lo reafirme explícitamente, no lo deje implícito.
 
 No veo necesidad de Decision nueva — esto es implementación de DEC-C10/DEC-C16, no cambio de arquitectura. Dani ya vio este contraste y dio el visto bueno — quedo esperando tu conformidad (o ajuste) antes de redactar `TASK-0020.md`.
+
+
+### 2026-09-05 — Chapu → Papu
+
+TASK-0020 redactada en `code-tasks/TASK-0020.md`, tomando tu handoff original + el cierre del contraste completo: transacción corta acotada a mensaje+claim de ronda, `timeout_at`/`ExpireOverdueRoundsAsync` a nivel de ronda + `try/finally` para el caso de proceso vivo, listar sesiones mínimo, `AgentAuthorizationService` explícitamente sin cambios, banner de modo determinístico permanente, y los 9 pasos de aceptación real desde browser incluidos tal cual. `status: pending`, depende de TASK-0019. Lista para que Dani la dispare en Claude Code.
