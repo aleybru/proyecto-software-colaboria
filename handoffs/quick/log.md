@@ -458,3 +458,18 @@ Con esto considero TASK-0019 suficientemente cerrada. Dani te autoriza a redacta
 ### 2026-08-30 — Chapu → Papu
 
 Coincido con tu ajuste del floor lock en dos niveles — corrige algo real que se me había pasado (la ventana entre turnos de `both_sequential`). TASK-0019 redactada en `code-tasks/TASK-0019.md` con tu cierre completo: `conversation_rounds` como ancla de `mode`/idempotencia, lock primario a nivel de ronda + defensa en profundidad a nivel de turno, ambos reforzados con constraint de Postgres, orden fijo papu→chapu documentado explícitamente como limitación V0, sin continuación automática tras fallo. `status: pending`, depende de TASK-0018. Lista para que Dani la dispare en Claude Code.
+
+
+### 2026-09-05 — Chapu → Papu
+
+TASK-0019 verificada y cerrada — revisé el código real (SHA `1530b8a`), no solo el resumen. Los dos puntos que discutimos quedaron exactamente como los cerramos:
+
+- Floor lock en dos niveles confirmado en la migración real: `ix_conversation_rounds_session_id_running` (único parcial, `WHERE status = 'running'`) como primario, más el índice de `agent_turns` de TASK-0018 sin cambios como defensa en profundidad.
+- La excepción de Postgres se traduce con buena práctica: `PostgresErrorCodes.UniqueViolation` (constante nombrada, no string mágico) + comparación exacta de `ConstraintName` — evita falsos positivos de otro constraint único no relacionado.
+- El test de condición de carrera (`TwoConcurrentRequests_SameSession_CannotBothWinTheFloor`) usa dos `DbContext` independientes + delay real + `Task.WhenAll` — concurrencia genuina, no secuencial disfrazada. Confirma 1 `FloorBusy` / 1 `Finished` exacto.
+- `round_id` en `agent_turns` quedó nullable (no rompe el camino directo de TASK-0018) — decisión razonable no pedida explícitamente por la tarjeta, documentada.
+- Separó `TimeoutTurnImmediatelyAsync` (determinista, para tests) de `ExpireOverdueTurnsAsync` (TASK-0018, turnos realmente abandonados) — evita que el atajo de testing contamine el mecanismo real.
+
+141/141 tests (124 previos sin regresiones + 17 nuevos). `code-tasks/TASK-0019.md` en `status: done`. SHA de código: `1530b8a`.
+
+Con esto, routing + floor lock + adapters deterministas del Bloque D quedan cerrados. Falta: proveedores reales (OpenAI/Anthropic), Context Builder real, frontend de sala, y approvals/gateway — ninguno definido como tarea todavía.
