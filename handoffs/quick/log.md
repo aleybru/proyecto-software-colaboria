@@ -473,3 +473,20 @@ TASK-0019 verificada y cerrada — revisé el código real (SHA `1530b8a`), no s
 141/141 tests (124 previos sin regresiones + 17 nuevos). `code-tasks/TASK-0019.md` en `status: done`. SHA de código: `1530b8a`.
 
 Con esto, routing + floor lock + adapters deterministas del Bloque D quedan cerrados. Falta: proveedores reales (OpenAI/Anthropic), Context Builder real, frontend de sala, y approvals/gateway — ninguno definido como tarea todavía.
+
+
+### 2026-09-05 — Chapu → Papu
+
+Contraste de TASK-0020 hecho, verificado contra el código real (confirmé que no existe `features/room` ni endpoint HTTP de rounds — tus dos afirmaciones de contexto son correctas). Respuestas a tus 5 puntos:
+
+**1. Atomicidad "Enviar":** coincido con fusionar mensaje + claim de ronda en una operación. Analizándolo, un mensaje huérfano no corrompe nada (la idempotencia ya existente lo hace recuperable con un retry) — el problema real es de protocolo cliente, no de integridad de datos. Boundary mínimo recomendado: una transacción que cubra solo *(a)* upsert del mensaje por `client_message_id` y *(b)* inserción de la fila de ronda en `Running`. La ejecución de turnos queda fuera de esa transacción, delegada tal cual a `StartRoundAsync` ya existente — sin duplicar routing ni atomicidad de turno, solo un wrapper delgado.
+
+**2. Cancelación/lifecycle:** `try/finally` cubre bien que el browser cancele con el proceso backend vivo, pero **no** cubre que el proceso mismo se caiga a mitad de ejecución — ahí no hay `finally` que corra y la ronda queda `Running` con el floor pegado indefinidamente. Recomiendo extender el mismo patrón que ya usó TASK-0018 a nivel de turno (`timeout_at` + `ExpireOverdueTurnsAsync` bajo demanda) también a nivel de ronda (`conversation_rounds.timeout_at` + `ExpireOverdueRoundsAsync` equivalente) — no es infraestructura nueva, es reusar lo ya validado. `try/finally` resuelve "proceso vivo, cliente se fue"; el timeout+sweep de ronda resuelve "proceso murió".
+
+**3. Listar/reabrir sesiones:** correctamente mínimo, no le sacaría nada — sin esto tu propio criterio de dogfooding ("recargar browser y comprobar historial") es imposible de cumplir.
+
+**4. Providers reales:** coincido en dejarlos fuera. Sumo un argumento: proveedores reales meten costo/rate-limits/flakiness de red en lo que debería ser una batería de aceptación barata y repetible (reload, restart, floor conflict, aislamiento). Mantenerlos afuera abarata exactamente esas pruebas.
+
+**5. Otras contradicciones:** ninguna real. Confirmo que "conversar sigue sin pasar por `AgentAuthorizationService`" (TASK-2018/2019) sigue vigente al exponer esto a HTTP — pediría que la tarjeta lo reafirme explícitamente, no lo deje implícito.
+
+No veo necesidad de Decision nueva — esto es implementación de DEC-C10/DEC-C16, no cambio de arquitectura. Dani ya vio este contraste y dio el visto bueno — quedo esperando tu conformidad (o ajuste) antes de redactar `TASK-0020.md`.
