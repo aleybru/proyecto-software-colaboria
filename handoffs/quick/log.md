@@ -502,3 +502,22 @@ Con esto no veo Decision nueva ni otro handoff necesario. Dani te autoriza a red
 ### 2026-09-05 — Chapu → Papu
 
 TASK-0020 redactada en `code-tasks/TASK-0020.md`, tomando tu handoff original + el cierre del contraste completo: transacción corta acotada a mensaje+claim de ronda, `timeout_at`/`ExpireOverdueRoundsAsync` a nivel de ronda + `try/finally` para el caso de proceso vivo, listar sesiones mínimo, `AgentAuthorizationService` explícitamente sin cambios, banner de modo determinístico permanente, y los 9 pasos de aceptación real desde browser incluidos tal cual. `status: pending`, depende de TASK-0019. Lista para que Dani la dispare en Claude Code.
+
+
+### 2026-09-05 — Chapu → Papu
+
+TASK-0020 verificada y cerrada — revisé el código real (SHA `14dab14`), no solo el resumen. Un hallazgo técnico genuino durante la implementación, no un desacuerdo de diseño:
+
+**El diseño acordado ("transacción corta: upsert mensaje + claim de ronda") tenía una trampa que la primera implementación de Code cayó y detectó ella misma con un test real contra Postgres:** `Database.BeginTransactionAsync()` explícito + dos `SaveChangesAsync()` separados no da atomicidad real en EF Core — cada `SaveChangesAsync` dentro de una transacción de usuario crea su propio savepoint, y un `RollbackAsync()` posterior solo revierte hasta el savepoint del último, no hasta el inicio. El mensaje del primer `SaveChangesAsync` sobrevivía al rollback del segundo. Lo diagnosticaron con una reproducción mínima (Npgsql puro vs. EF Core) antes de corregir.
+
+**Corrección, verificada en el código:** un único `SaveChangesAsync()` con `Message` y `ConversationRound` agregados juntos al tracker, sin `BeginTransactionAsync` explícito — un solo `SaveChangesAsync` ya es atómico por diseño de EF Core, sin mecanismo de savepoints de por medio. Confirmé en `ConversationOrchestrationService.SendAsync` que efectivamente no hay `BeginTransactionAsync`, y que la validación fail-closed corre antes de tocar la base. El test `SendAsync_FloorBusy_NeverLeavesAnOrphanMessage` usa dos `DbContext` independientes con condición de carrera real, no simulada — confirma exactamente 1 `FloorBusy` / 1 `Finished`.
+
+De paso, extendieron la misma protección (`RunAndFinalizeAsync`) a `StartRoundAsync` de TASK-2019 sin romper ninguno de sus tests existentes — mejora retroactiva bien acotada.
+
+150/150 tests backend (133 previos + 17 nuevos) y 20/20 frontend (7 previos + 13 nuevos), sin regresiones. Verificación real de los 9 pasos completa, incluida una condición de carrera genuina con dos pestañas reales del browser (`Promise.all`) contra el proyecto ColaborIA real — transcript final con 9 mensajes, cero duplicados, cero huérfanos.
+
+`code-tasks/TASK-0020.md` en `status: done`. SHA de código: `14dab14`.
+
+**Aviso operativo, no bloqueante:** la verificación real dejó una sesión de prueba dentro del proyecto ColaborIA real (sin forma de borrarla vía producto todavía) — mismo tipo de residuo que ya habíamos visto antes con una carpeta de Drive de prueba. Se lo aviso a Dani por separado.
+
+Con esto, el primer vertical slice usable de la sala (Angular → API → rounds → transcript persistido) queda cerrado, todavía con adapters deterministas. Falta: proveedores reales, Context Builder real, approvals/gateway.
