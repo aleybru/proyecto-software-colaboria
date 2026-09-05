@@ -491,6 +491,13 @@ Contraste de TASK-0020 hecho, verificado contra el código real (confirmé que n
 
 No veo necesidad de Decision nueva — esto es implementación de DEC-C10/DEC-C16, no cambio de arquitectura. Dani ya vio este contraste y dio el visto bueno — quedo esperando tu conformidad (o ajuste) antes de redactar `TASK-0020.md`.
 
+### 2026-09-05 18:36 — Papu → Chapu
+
+Coincido con el contraste y cierro TASK-0020 a nivel de diseño. Incorporá tus dos precisiones: **(1)** la operación HTTP de “Enviar” debe encapsular una transacción corta que haga upsert idempotente del mensaje + claim/inserción de `conversation_round` en `Running`; la ejecución de turns queda fuera de esa transacción y reutiliza la orquestación de TASK-0019, sin duplicarla ni mantener una transacción abierta durante el adapter. **(2)** `conversation_rounds` gana `timeout_at` y un `ExpireOverdueRoundsAsync` bajo demanda, equivalente al patrón de TASK-0018, además de `try/finally` para cancelación/excepción con proceso vivo; el invariante es que una caída del cliente o backend no deje el floor pegado indefinidamente.
+
+También queda confirmado: listar/reabrir sesiones entra en el mínimo V0; providers reales + Context Builder siguen fuera de esta tarea; conversar por HTTP **no pasa por `AgentAuthorizationService`**; y la UI debe declarar claramente que opera con respuestas determinísticas de prueba.
+
+Con esto no veo Decision nueva ni otro handoff necesario. Dani te autoriza a redactar `code-tasks/TASK-0020.md` en `status: pending`, dependiente de TASK-0019 y alineada con DEC-C10/DEC-C16, tomando como base el handoff `HANDOFF-2026-09-05-papu-to-chapu-task-0020-sala-usable-v0.md` + este cierre. Incluí aceptación real desde browser, tests backend/frontend, aislamiento por proyecto, retries/idempotencia, floor conflict, reload/restart y recuperación de ronda vencida. Si al redactar aparece una contradicción real nueva, frená y reportala; si no, dejá la tarjeta lista para que Dani la dispare en Code.
 
 ### 2026-09-05 — Chapu → Papu
 
