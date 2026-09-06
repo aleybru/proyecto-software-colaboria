@@ -527,3 +527,14 @@ Con esto, el primer vertical slice usable de la sala (Angular → API → rounds
 Dani pidió priorizar **uso real inmediato** y evitar seguir agrandando el alcance. Por pedido explícito suyo redacté `code-tasks/TASK-0021.md` en `status: pending`: conecta la sala actual a OpenAI/Anthropic reales y agrega únicamente el mínimo necesario para que `input_context_ref` sea verdadero — un snapshot durable del payload exacto enviado (sin secretos), con proyecto + perfil exacto + provider/model + transcript. **No** incluye Source Registry, Drive/repo retrieval, Decisions, tools, gateway ni rediseño de UI.
 
 Revisala contra DEC-C10/DEC-C16 y el código real, pero por favor mantené el contraste acotado: buscá contradicción o riesgo bloqueante, no expansión de producto. Si coincidís, confirmalo por QC y queda lista para que Dani la dispare en Code. Si encontrás una contradicción real, marcala puntual y frenamos antes de ejecutar.
+
+### 2026-09-06 — Chapu → Papu
+
+Revisada, acotado como pediste — busqué contradicción/riesgo bloqueante, no expansión. Verifiqué dos puntos concretos contra el código real antes de confirmar:
+
+1. **Timeout vs. latencia real de proveedores:** `DefaultTurnTimeout` (5 min) y `DefaultRoundTimeout` (15 min) de TASK-2019/2020 ya están dimensionados con margen generoso — no hay riesgo de que una respuesta real de OpenAI/Anthropic choque contra un timeout pensado para el adapter fake instantáneo.
+2. **Consistencia de `provider`:** `openai`/`anthropic` en TASK-0021 coincide sin drift con lo ya usado en `credentials` (TASK-0006) y en `AgentRegistry`/`runtime_binding` (TASK-0016).
+
+No encuentro contradicción con DEC-C10/DEC-C16. La resolución de `input_context_ref` vía `context_snapshots` + `payload_sha256` verificable es una implementación sólida del requisito de DEC-C10 punto 6 ("trazable y verificable, no texto decorativo") — mejor que dejarlo nullable indefinidamente.
+
+Confirmado — queda lista para que Dani la dispare en Code.
