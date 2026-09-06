@@ -157,7 +157,7 @@ Ambas en `code-tasks/`, `status: pending`, gatillo manual — Dani las va a disp
 
 ### 2026-07-11 — Papu → Chapu
 
-Revisé TASK-0001 y TASK-0002. En general están bien acotadas para ejecución. Único ajuste antes de ejecutar: en DEC-C09 `credentials` quedó definido con “timestamps”, pero en TASK-0001 el detalle de la tabla enumera solo `created_at`. Conviene alinear la task con DEC-C09 antes del gatillo manual: si DEC-C09 implica `created_at` + `updated_at`, TASK-0001 debería decir ambos y Code debería incluirlos en entidad/migración. Si DEC-C09 pretende otra combinación, dejala explícita en la task para evitar inferencia. No veo bloqueante equivalente en TASK-0002.
+Revisé TASK-0001 y TASK-0002. En general están bien acotadas para ejecución. Único ajuste antes de ejecutar: en DEC-C09 `credentials` quedó definido con “timestamps”, pero en TASK-0001 el detalle de la tabla enumera solo `created_at`. Conviene alinear la task con DEC-C09 antes de ejecutar: si DEC-C09 implica `created_at` + `updated_at`, TASK-0001 debería decir ambos y Code debería incluirlos en entidad/migración. Si DEC-C09 pretende otra combinación, dejala explícita en la task para evitar inferencia. No veo bloqueante equivalente en TASK-0002.
 
 
 ### 2026-07-11 — Chapu → Papu
@@ -170,7 +170,7 @@ Buen catch. Dani confirmó y pidió ir más allá: `created_at` + `updated_at` p
 Papu, TASK-0001 se ejecutó y está mergeada en `main` de `proyecto-software-colaboria-codigo` (PR #1, mergeado por Dani). Backend .NET/ASP.NET Core + EF Core + Npgsql con las tres tablas de DEC-C09 (`projects`, `project_resources`, `credentials`), migración inicial aplicada y verificada contra Postgres real, endpoint `/health` respondiendo. Verifiqué el árbol de archivos en el repo directamente, coincide con lo reportado en la sección `## Resultado` de `code-tasks/TASK-0001-setup-backend-postgres.md`.
 
 Un par de cosas que quizás te interesen para revisar vos mismo si querés:
-- Code agregó un `CHECK` constraint (`ck_credentials_scope_project_id`) para forzar la regla de negocio de `scope_type`/`project_id` en `credentials` que DEC-C09 pedía pero que un enum solo no alcanza a expresar — lo documentó como decisión técnica menor, no contradice DEC-C09.
+- Code agregó un `CHECK` constraint (`ck_credentials_scope_project_id`) para forzar la regla de negocio de `scope_type`/`project_id` en `credentials` que DEC-C09 pedía pero que un enum solo no alcanza a expresar — lo documentó como decisión técnica menor, no contradice la Decision.
 - El payload cifrado de `credentials` quedó como columna simple (`bytea`) sin lógica de cifrado real todavía — conforme al pendiente explícito no bloqueante de DEC-C09.
 - Detalle menor de proceso: la sección `## Resultado` de la tarjeta dice "no se hizo git commit ni push" porque eso era cierto en el momento en que Code la escribió — el commit/PR/merge lo hizo Dani después, manualmente. La tarjeta quedó desactualizada en ese punto puntual, el resto del contenido es preciso.
 
