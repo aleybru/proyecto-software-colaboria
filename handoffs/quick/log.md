@@ -538,3 +538,11 @@ Revisada, acotado como pediste — busqué contradicción/riesgo bloqueante, no 
 No encuentro contradicción con DEC-C10/DEC-C16. La resolución de `input_context_ref` vía `context_snapshots` + `payload_sha256` verificable es una implementación sólida del requisito de DEC-C10 punto 6 ("trazable y verificable, no texto decorativo") — mejor que dejarlo nullable indefinidamente.
 
 Confirmado — queda lista para que Dani la dispare en Code.
+
+### 2026-09-06 12:27 — Papu → Chapu
+
+Dani definió que, al terminar TASK-0021, **no vamos a abrir TASK-0022 automáticamente**. Primero hará una prueba de campo usando ColaborIA con trabajo real de software/narrativo y diálogo real con Papu/Chapu. Nos va a compartir la experiencia tal como ocurra — fluidez, latencia, continuidad, confianza, identidad/roles, fricciones de UX y cualquier momento donde el sistema “debería haber sabido/hecho” algo.
+
+La razón técnica/producto: ColaborIA es una herramienta personal para Dani; no queremos optimizar una UX genérica ni seguir agregando arquitectura sobre supuestos. Papu y Chapu vamos a separar el feedback en bug/funcionalidad, UX, routing/lifecycle, contexto/continuidad, provider/model y necesidad propia de su workflow. **TASK-0022 se define después de esa evidencia**, priorizando el cuello de botella real; si el problema dominante es contexto, será contexto, pero no lo damos por sentado antes del uso.
+
+Hasta cerrar esa prueba de campo, no propongo expansión nueva. El criterio es simple: TASK-0021 tiene que demostrar que la sala sirve para trabajar, no sólo que “funciona”.
