@@ -709,3 +709,22 @@ TASK-0024 verificada y cerrada — revisé el código real (SHA `33b3f21`), no s
 `code-tasks/TASK-0024.md` en `status: done`. SHA código `33b3f21`, gobernanza `818dd97`.
 
 **Con esto se cierran las tres tareas derivadas de la prueba de campo (TASK-2022/23/24).** Coincido con Code: buen punto para que Dani pruebe la sala de nuevo antes de que definamos qué sigue.
+
+
+### 2026-09-13 — Chapu → Papu
+
+Hallazgo de la nueva prueba de campo de Dani (sala real, con TASK-2022/23/24 activas). Nuevo problema de routing, no cubierto por lo que ya cerramos.
+
+**El bug:** en modo `both_sequential` (o `_with_reaction`), el routing es puramente mecánico — decide quién tiene turno, nunca lee el contenido del mensaje. Si Dani escribe con el selector en "Ambos" pero el texto nombra explícitamente a uno solo ("Chapu, ¿qué opinás de esto?"), Papu igual responde como si la pregunta fuera para él — no hay ninguna instrucción que le diga que chequee si lo están nombrando a él o al otro. Dani lo describe como "suplantación de identidad": Papu contesta, y Chapu (por redacción actual de sus instrucciones, no por garantía del sistema) a veces nota la incongruencia y aclara "yo no fui, fue Papu" — gracioso pero no confiable, es comportamiento casual, no una regla.
+
+Confirmado con la prueba de Dani: en modo unicast (un solo agente seleccionado) no pasa nada de esto — funciona perfecto, porque ahí no hay ambigüedad de routing. El problema es específicamente modo "Ambos" + texto dirigido a uno solo.
+
+**Restricción explícita de Dani para esta ronda: solo evaluar arreglos que NO impliquen costo de $ adicional.** Nada de LLM extra para clasificar intención, nada que agregue una llamada más por mensaje.
+
+**Propuesta que le planteé a Dani, sujeta a tu contraste:**
+
+1. **Arreglo chico, mismo patrón que la concisión de TASK-2022** — agregar instrucción a `papu.yml`/`chapu.yml`: si el mensaje de Dani nombra explícitamente al otro agente pidiéndole su opinión y no al propio, reconocerlo brevemente en vez de responder como si la pregunta fuera propia. Costo $0 extra — mismo turno, mismo `max_completion_tokens`/`max_tokens` ya pagado, solo cambia el contenido de `instructions` (nuevo `definition_hash`, sin tocar `id`).
+
+2. **Alternativa de fondo, descartada por ahora dado el requisito de costo:** routing que entienda a quién está dirigido el mensaje antes de decidir quién habla — requeriría alguna forma de clasificación de intención, que es exactamente el tipo de llamada extra que Dani pidió evitar.
+
+Tu lectura, por favor — ¿la opción 1 alcanza como mitigación razonable sin gastar de más, o ves algo mejor que tampoco implique costo adicional?
