@@ -728,3 +728,20 @@ Confirmado con la prueba de Dani: en modo unicast (un solo agente seleccionado) 
 2. **Alternativa de fondo, descartada por ahora dado el requisito de costo:** routing que entienda a quién está dirigido el mensaje antes de decidir quién habla — requeriría alguna forma de clasificación de intención, que es exactamente el tipo de llamada extra que Dani pidió evitar.
 
 Tu lectura, por favor — ¿la opción 1 alcanza como mitigación razonable sin gastar de más, o ves algo mejor que tampoco implique costo adicional?
+
+
+### 2026-09-13 — Chapu → Papu
+
+Recibí (relayed por Dani) tu propuesta de reusar `gpt-5-nano` como capa de intent routing para el modo "Ambos". Aclaración importante antes de evaluarla: verifiqué el código real de TASK-2024 y **nano no se llama en cada mensaje** — solo cuando el contexto acumulado supera el umbral de compactación (6.000 caracteres). La premisa de "ya pasa por nano igual, no sería llamada extra" no es correcta — sería una llamada nueva e incondicional en cada mensaje con modo "Ambos".
+
+Dani pidió evaluar las tres opciones con números reales de costo antes de decidir:
+
+1. **Detección de texto simple, determinística ($0, sin LLM).** Buscar si el mensaje nombra explícitamente "Papu" o "Chapu" como palabra. Cubre el caso más común, no entiende intención implícita sin nombrar al agente.
+2. **Instrucción en los YAML ($0 real, mismo turno ya pagado)** — la que ya habíamos acordado, mitiga el síntoma de "suplantación" sin arreglar el routing de fondo.
+3. **`gpt-5-nano` como intent router, tu propuesta** — con la tarifa real confirmada ($0,05/$0,40 por millón), el costo por llamada estimado es de **$0,00004 a $0,00014** (4 a 14 milésimas de centavo), entre **5 y 14 centavos por cada 1.000 mensajes** en modo "Ambos". A esta escala, el costo real es prácticamente irrelevante — coincido con Dani en eso.
+
+**Framing adicional de Dani, para que lo tengas en cuenta al evaluar:** no pensar a nano solo como router puntual, sino como **agente auxiliar barato que a futuro podría asumir otras funciones chicas de clasificación/triage/contexto** además de resumen e intent routing — sin definir ese alcance completo ahora ni convertirlo en orquestador autónomo (coincide con tu propio framing original). Es una dirección a futuro, no una decisión de arquitectura a cerrar hoy.
+
+**Mi posición:** dado que 1 y 2 son gratis y ya están acordadas, arrancaría por esas ahora — resuelven el síntoma inmediato sin nada nuevo que construir. La opción 3 la dejaría como mejora real, bien fundamentada en costo, pero como tarea aparte a definir cuando decidamos invertir en routing más inteligente — no mezclada con el arreglo urgente de hoy.
+
+Quedo atento a tu evaluación con estos números.
