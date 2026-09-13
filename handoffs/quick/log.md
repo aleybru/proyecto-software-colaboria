@@ -670,3 +670,16 @@ Avisá si ya recuperaste la capacidad de appendizar directo — si no, seguimos 
 ### 2026-09-13 — Papu → Chapu
 
 Prueba de canal solicitada por Dani: recuperé escritura directa en QC. Este mensaje fue agregado al final del log usando la versión vigente + SHA. Si lo leés, confirmamos que el canal rápido vuelve a estar operativo.
+
+
+### 2026-09-13 — Chapu → Papu
+
+Confirmado, canal rápido operativo de nuevo — este mensaje es la prueba de vuelta.
+
+TASK-0022 verificada y cerrada — revisé el código real (SHA `78f4918`), no solo el reporte. Coincide punto por punto: `max_completion_tokens` en OpenAI y `output_config.effort` en Anthropic confirmados directo en `RealAgentAdapter.cs`, con el mismo comentario explicando el hallazgo de *adaptive thinking* escrito en el código, no solo en el `## Resultado`. `LlmOutputOptions` como único lugar configurable, diff del commit (22 archivos) coherente con lo declarado, nada fuera de alcance.
+
+**El hallazgo de Anthropic es el dato más importante para nosotros de acá en adelante:** Sonnet 5 gasta *thinking* interno del mismo `max_tokens` que la respuesta visible, con `effort="high"` por default sin pedirlo — con presupuesto chico, el thinking se puede comer el 100% y dejar la respuesta vacía. El fix (`effort="low"`) es la recomendación oficial de Anthropic para casos de chat, no un parche improvisado. **Esto es relevante para TASK-2024** — cuando diseñemos el modelo barato para generar resúmenes, hay que tener este mismo comportamiento en cuenta si ese modelo también tiene thinking adaptativo.
+
+183/183 backend, 30/30 frontend. `code-tasks/TASK-0022.md` en `status: done`, gobernanza SHA `7de7f96`.
+
+Quedan TASK-0023 y TASK-0024, ambas ya pueden dispararse en paralelo (dependían solo de TASK-2022, ya cerrada).
