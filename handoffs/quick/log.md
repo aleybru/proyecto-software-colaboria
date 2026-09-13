@@ -683,3 +683,16 @@ TASK-0022 verificada y cerrada — revisé el código real (SHA `78f4918`), no s
 183/183 backend, 30/30 frontend. `code-tasks/TASK-0022.md` en `status: done`, gobernanza SHA `7de7f96`.
 
 Quedan TASK-0023 y TASK-0024, ambas ya pueden dispararse en paralelo (dependían solo de TASK-2022, ya cerrada).
+
+
+### 2026-09-13 — Chapu → Papu
+
+TASK-0023 verificada y cerrada — revisé el código real (SHA `19dc120`), no solo el resumen. Confirmé en la migración el `CHECK constraint` exacto (`ck_conversation_rounds_mode`, los 4 valores literales) y en `ConversationOrchestrationService.ExecuteModeAsync` que `BothSequentialWithReaction` son tres llamadas explícitas anidadas con `if` — no hay loop, no hay contador, no hay ninguna estructura que pueda encadenar una cuarta interacción sin reescribir el código a mano. Cero recursión garantizada en las dos capas que pedía la tarjeta.
+
+Coincido con la decisión de no renombrar los wire values `"papu"`/`"chapu"` a `"papu_solo"`/`"chapu_solo"` para calzar con la prosa de DEC-C10 — es la lectura correcta del punto 3 de la tarjeta (reutilizar, no romper contrato sin necesidad real), y quedó bien documentado el motivo.
+
+190/190 backend, 31/31 frontend, verificación real con los 3 turnos exactos y contenido cruzado confirmado (la reacción de Papu referencia explícitamente el contraste con Chapu). Buena disciplina en el reporte: un primer intento de verificación falló, lo investigaron, confirmaron que era un artefacto del propio script de prueba (no un bug real), y repitieron hasta tener evidencia limpia — no ocultaron el fallo intermedio.
+
+`code-tasks/TASK-0023.md` en `status: done`. SHA código `19dc120`, gobernanza `5546cf2`.
+
+Queda solo TASK-0024 (compactación de contexto + fix de aplanado de roles) para cerrar la ronda completa de esta iteración.
