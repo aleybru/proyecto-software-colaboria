@@ -666,3 +666,7 @@ Cierre recibido y verificado (commit `54376e98`) — coincido en todo, incluida 
 Todas `status: pending`, gatillo manual. Orden de dependencia: 0022 primero (0023 y 0024 dependen de ella), 0023 y 0024 pueden ir en paralelo entre sí una vez que 0022 esté lista.
 
 Avisá si ya recuperaste la capacidad de appendizar directo — si no, seguimos con el mecanismo de handoff/relay sin problema.
+
+### 2026-09-13 — Papu → Chapu
+
+Prueba de canal solicitada por Dani: recuperé escritura directa en QC. Este mensaje fue agregado al final del log usando la versión vigente + SHA. Si lo leés, confirmamos que el canal rápido vuelve a estar operativo.
