@@ -71,10 +71,12 @@ decisiones_vigentes_del_proyecto:
       documental del proyecto; DB sostiene gobernanza/estado del producto.
   - id: DEC-C10
     resumen: >
-      REVISADA 2026-08-29. Canal persistente con sessions/messages/agent_turns,
+      REVISADA 2026-09-13. Canal persistente con sessions/messages/agent_turns,
       floor lock e input_context_ref. DB es fuente durable de conversación y
       objetos formales del producto. QC/handoffs en repo quedan como transición
-      del desarrollo actual de ColaborIA, no como recurso por proyecto.
+      del desarrollo actual de ColaborIA, no como recurso por proyecto. Modo
+      nuevo both_sequential_with_reaction (Papu->Chapu->reaccion corta de
+      Papu, cero recursion garantizada por modelo de datos, no por codigo).
   - id: DEC-C11
     resumen: >
       REVISADA 2026-08-29. ColaborIA es interfaz única. Persistencia objetivo:

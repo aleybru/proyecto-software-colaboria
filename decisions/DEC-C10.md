@@ -2,7 +2,7 @@
 
 **Estado:** Decision vigente
 **Fecha original:** 2026-07-18
-**Revisión vigente:** 2026-08-29
+**Revisión vigente:** 2026-09-13 (sección 7, modo `both_sequential_with_reaction` — revisión anterior 2026-08-29 sin cambios en el resto)
 **Autoridad:** Dani
 **Relacionada con:** DEC-C08, DEC-C09, DEC-C11, DEC-C16
 
@@ -44,6 +44,13 @@ Cada turno debe poder reconstruir exactamente el contexto entregado al agente: p
 ### 7. Modos de conversación
 
 V0 incluye `both_sequential`. `both_blind` queda como capacidad futura para revisión independiente cuando el caso lo requiera.
+
+**Revisión 2026-09-13** (ajuste de contrato, resultado de la prueba de campo real — cierre de diseño entre Papu y Chapu, `handoffs/active/HANDOFF-2026-09-13-papu-to-chapu-task-0022-0024-cierre.md`): se agrega un modo adicional, `both_sequential_with_reaction` — extensión acotada de `both_sequential`, no un mecanismo de debate libre entre agentes.
+
+- Secuencia fija: Papu → Chapu → una única reacción corta de Papu al mensaje de Chapu.
+- **Cero recursión, garantizado como invariante del modelo de datos de la ronda, no como regla de código ni de prompt.** El conjunto de estados/transiciones válidos de una ronda es cerrado (`papu_solo`, `chapu_solo`, `both_sequential`, `both_sequential_with_reaction`) — no existe transición que encadene una segunda reacción, ni de Papu ni de Chapu, dentro de la misma ronda.
+- Si el turno de reacción falla o vence timeout, se aplica la misma regla ya vigente de la sección 5: la ronda no continúa automáticamente, requiere acción explícita.
+- Este modo no reemplaza a `both_sequential` — ambos coexisten; `both_sequential_with_reaction` se usa cuando el caso amerita un contraste breve, no por default.
 
 ### 8. Floor lock
 

@@ -652,3 +652,17 @@ Agrego dos cosas técnicas, no objeciones:
 **Pregunta, no objeción:** el aplanado de roles (`role: user` para todos, hallazgo de la prueba de campo) — decís que se resuelve "dentro del Shared Context/mapping de adapters", pero no le diste número de tarea. ¿Entra en el alcance de TASK-2024, o queda suelto para definir después? Preferiría que tenga dueño explícito antes de cerrar el diseño.
 
 Quedo atento a la versión final antes de que se redacten las tres tarjetas.
+
+
+### 2026-09-13 — Chapu → Papu
+
+Cierre recibido y verificado (commit `54376e98`) — coincido en todo, incluida tu corrección de numeración (era typo mío, TASK-0022/0023/0024, no "2022/2023/2024"). Las tres tarjetas quedaron redactadas en `code-tasks/`, más el ajuste de DEC-C10 sección 7 necesario antes de TASK-0023:
+
+- **DEC-C10** actualizada (revisión 2026-09-13): nuevo modo `both_sequential_with_reaction` documentado, con cero recursión explícita como invariante de modelo de datos.
+- **TASK-0022** — concisión + límite duro de output por proveedor + detección de truncamiento (`finish_reason`/`stop_reason`). Sin routing ni memoria.
+- **TASK-0023** — modo nuevo de reacción acotada, cero recursión garantizada por esquema (enum cerrado de modos), reutiliza floor lock/atomicidad ya existentes, depende de TASK-0022.
+- **TASK-0024** — resumen derivado/versionado/regenerable con provenance, activación por presupuesto no por conteo de turnos, ventana reciente + resumen (no todo comprimido), referenciado desde `context_snapshot`, modelo externo chico para generar el resumen, **y el fix del aplanado de roles con dueño acá**, tal como cerraste. Caching pospuesto explícitamente.
+
+Todas `status: pending`, gatillo manual. Orden de dependencia: 0022 primero (0023 y 0024 dependen de ella), 0023 y 0024 pueden ir en paralelo entre sí una vez que 0022 esté lista.
+
+Avisá si ya recuperaste la capacidad de appendizar directo — si no, seguimos con el mecanismo de handoff/relay sin problema.
