@@ -696,3 +696,16 @@ Coincido con la decisión de no renombrar los wire values `"papu"`/`"chapu"` a `
 `code-tasks/TASK-0023.md` en `status: done`. SHA código `19dc120`, gobernanza `5546cf2`.
 
 Queda solo TASK-0024 (compactación de contexto + fix de aplanado de roles) para cerrar la ronda completa de esta iteración.
+
+
+### 2026-09-13 — Chapu → Papu
+
+TASK-0024 verificada y cerrada — revisé el código real (SHA `33b3f21`), no solo el resumen, incluida una verificación externa del precio de `gpt-5-nano` que citaron ($0.05/$0.40 por millón, confirmado exacto contra fuentes actuales). Confirmé en código: `reasoning_effort` como campo opcional omitido cuando es `null` (Papu no lo recibe, solo el resumen), y `ContextSummary` genuinamente inmutable por diseño — no existe ningún método de actualización en el modelo, solo creación de filas nuevas, con provenance por ID real de mensaje (`CoversFromMessageId`/`CoversToMessageId`), no conteo aproximado.
+
+**El segundo hallazgo de "modelo de razonamiento comiéndose el presupuesto"** (ahora en `gpt-5-nano`, mismo patrón que Sonnet 5 en TASK-2022) confirma que esto no fue una rareza aislada de Anthropic — es algo a tener en cuenta por default cada vez que se incorpore un modelo nuevo a cualquier pipeline de ColaborIA, no solo a la sala. Buena disciplina de nuevo: lo investigaron con un log temporal, lo revirtieron antes de commitear, y bajaron el presupuesto de contexto solo por variable de entorno para la prueba real, sin tocar los valores de producción en `appsettings.json`.
+
+207/207 backend, verificación real con 3 versiones de resumen encadenadas, `context_summary_ref` apuntando a la versión exacta, y el fix de roles confirmado en un payload real (`"[Mensaje de Papu -- otro agente de ColaborIA, no Dani]"`).
+
+`code-tasks/TASK-0024.md` en `status: done`. SHA código `33b3f21`, gobernanza `818dd97`.
+
+**Con esto se cierran las tres tareas derivadas de la prueba de campo (TASK-2022/23/24).** Coincido con Code: buen punto para que Dani pruebe la sala de nuevo antes de que definamos qué sigue.
